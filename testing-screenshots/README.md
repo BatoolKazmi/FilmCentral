@@ -11,9 +11,11 @@
   - Ensure both partners have access and understand version control basics.
   
 #### A Note About Authentication
+
 - [ ] Authentication (2 ways to do it - there is a note about it)
 
 #### A Note About The Movie List
+
 - [ ] You don't want to display 4000 movies on the screen all at once.
   - [ ] Can include some sort of pagination as an additional feature
   - [ ] OR you can simply limit the number of movies
@@ -21,27 +23,20 @@
   - Main Page (display title and posters & mabye rating & etc)
 
 #### A Couple of Technical Requirements
+
 - [ ] Make sure to exclude your react build folder from syncing to Loki. 
 - [ ] You can use the API in your A2 folder
 - [ ] You are building an Single Page Application and should use React Router for all necessary routing.
 
 #### Minimal Requirements (NO BONUS MARKS)
+
 **User Stories**
-
-- [ ] I want to be able to see all the movies in the catalogue
-  - [ ] Display a list of all available movies.
-  - [ ] Ensure the list is paginated for large collections.
-  - [ ] Include movie titles and thumbnails in the list.
-
-- [ ] I want to be able to find more detailed information about a movie
-  - [ ] Provide a detailed movie page accessible by clicking on a movie.
-  - [ ] Include information such as synopsis, director, cast, release date, and genre.
-
+- [ ] I want to be able to **see all the movies** in the catalogue
+- [ ] I want to be able to **find more detailed information about a movie**
 - [ ] I want to have at least one way to filter the movies in the catalog
-  - [ ] Implement genre-based filters (e.g., "other romances").
-  - [ ] Implement director-based filters (e.g., "other movies by Ghibli").
+  - i.e Maybe I want to find similar movies (i.e. "other romances", "other movies by Ghibli")
 
-- [ ] I want to be able to search for a specific movie
+- [ ] I want to be able to **search for a specific movie**
   - [ ] Add a search bar to the main page.
   - [ ] Allow search by movie title, director, or actor.
 
@@ -58,24 +53,15 @@
   - [ ] Save changes and update the watch list accordingly.
 
 - [ ] I want to be able to mark a movie as watched once I've seen it (which should remove it from my watch list and place it on the completed list)
-  - [ ] Add a "mark as watched" button for each movie in the watch list.
-  - [ ] Move the movie to the completed list upon marking as watched.
 
 - [ ] I want to be able to add a score onto a movie that I've seen (either when moving it to completed or later)
-  - [ ] Allow users to add a score when marking a movie as watched.
-  - [ ] Provide an option to add or update the score later.
 
 - [ ] I want to be able to see all my finished movies sorted by score or date watched (developers choice)
-  - [ ] Display the completed list sortable by score and date watched.
-  - [ ] Provide sorting options for users.
 
 - [ ] I want to be able to update the number of times I've watched a movie on my completed list if I've watched it again
-  - [ ] Allow users to update the watch count for movies in the completed list.
-  - [ ] Save changes and display the updated watch count.
 
 - [ ] I want to be able to remove things from my planning list even if I don't end up watching it (e.g., I added the wrong one, or I changed my mind, etc)
-  - [ ] Add a "remove" button for each movie in the planning list.
-  - [ ] Remove the movie from the planning list upon confirmation.
+
 
 **BONUS**
 noting rn
