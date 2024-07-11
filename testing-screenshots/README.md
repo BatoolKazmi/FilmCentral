@@ -1,4 +1,3 @@
-
 ### Checklist (overall)
 
 #### Setup and Planning
@@ -11,9 +10,11 @@
   - Ensure both partners have access and understand version control basics.
   
 #### A Note About Authentication
+
 - [ ] Authentication (2 ways to do it - there is a note about it)
 
 #### A Note About The Movie List
+
 - [ ] You don't want to display 4000 movies on the screen all at once.
   - [ ] Can include some sort of pagination as an additional feature
   - [ ] OR you can simply limit the number of movies
@@ -21,11 +22,13 @@
   - Main Page (display title and posters & mabye rating & etc)
 
 #### A Couple of Technical Requirements
-- [ ] Make sure to exclude your react build folder from syncing to Loki. 
+
+- [ ] Make sure to exclude your react build folder from syncing to Loki.
 - [ ] You can use the API in your A2 folder
 - [ ] You are building an Single Page Application and should use React Router for all necessary routing.
 
 #### Minimal Requirements (NO BONUS MARKS)
+
 **User Stories**
 
 - [ ] I want to be able to see all the movies in the catalogue
