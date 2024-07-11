@@ -10,54 +10,75 @@
   - Choose a Git repository to collaborate on (decide who owns the repo and invite collaborators).
   - Ensure both partners have access and understand version control basics.
   
-#### Basic Functionality
+#### A Note About Authentication
+- [ ] Authentication (2 ways to do it - there is a note about it)
 
-- [ ] **Display Movies**
-  - Fetch and display a list of movies from the API (from Assignment #2).
-  - Design a main page to show basic movie information (title, poster, summary).
-- [ ] **Routing Setup**
-  - Implement React Router for navigation between different views (list, details, etc.).
-  - Ensure each route corresponds to a specific view/component in your application.
+#### A Note About The Movie List
+- [ ] You don't want to display 4000 movies on the screen all at once.
+  - [ ] Can include some sort of pagination as an additional feature
+  - [ ] OR you can simply limit the number of movies
+- [ ] You may also want to limit that api to only returning a couple of columns rather then everything.
+  - Main Page (display title and posters & mabye rating & etc)
 
-#### Enhanced Features (Bonus Marks)
+#### A Couple of Technical Requirements
+- [ ] Make sure to exclude your react build folder from syncing to Loki. 
+- [ ] You can use the API in your A2 folder
+- [ ] You are building an Single Page Application and should use React Router for all necessary routing.
 
-- [ ] **Pagination or Limiting**
-  - Implement pagination or limit the number of movies displayed per page.
-- [ ] **Movie Filtering**
-  - Add filtering options (by genre, director, etc.) for the movie list.
-- [ ] **Sorting**
-  - Allow sorting of movies (by title, release date, rating, etc.).
-- [ ] **User Interaction**
-  - Enable adding movies to a watch list with default priorities.
-  - Implement updating priorities of movies on the watch list.
-  - Support marking movies as watched and moving them to a completed list.
-- [ ] **Additional Features**
-  - Add scoring movies, updating the number of times watched, and removing movies from the watch list.
+#### Minimal Requirements (NO BONUS MARKS)
+**User Stories**
 
-#### Deployment and Finalization
+- [ ] I want to be able to see all the movies in the catalogue
+  - [ ] Display a list of all available movies.
+  - [ ] Ensure the list is paginated for large collections.
+  - [ ] Include movie titles and thumbnails in the list.
 
-- [ ] **Build and Deployment**
-  - Build the React application for production.
-  - Deploy the application to Loki (ensure React build folder is excluded from syncing).
-- [ ] **API Integration**
-  - Ensure API calls from the React front-end to the API from Assignment #2 are working smoothly.
-  - Handle CORS headers in the API for local development.
-- [ ] **Documentation**
-  - Create a comprehensive readme file:
-    - Describe the project, its functionalities, and how to use it.
-    - Include deployment instructions, API integration details, and any known issues or limitations.
+- [ ] I want to be able to find more detailed information about a movie
+  - [ ] Provide a detailed movie page accessible by clicking on a movie.
+  - [ ] Include information such as synopsis, director, cast, release date, and genre.
 
-#### Testing and Quality Assurance
+- [ ] I want to have at least one way to filter the movies in the catalog
+  - [ ] Implement genre-based filters (e.g., "other romances").
+  - [ ] Implement director-based filters (e.g., "other movies by Ghibli").
 
-- [ ] **Unit Testing**
-  - Test individual React components for expected behavior.
-  - Ensure UI components render correctly and handle user interactions properly.
-- [ ] **Integration Testing**
-  - Test interactions between front-end components and the back-end API.
-  - Validate data retrieval, updating, and deletion functionalities.
-- [ ] **Debugging and Optimization**
-  - Address any bugs, errors, or performance issues encountered during testing.
-  - Optimize code for efficiency and maintainability.
+- [ ] I want to be able to search for a specific movie
+  - [ ] Add a search bar to the main page.
+  - [ ] Allow search by movie title, director, or actor.
+
+- [ ] I want to "quick add" a movie to my plan-to-watch list from the main page, with no notes and a default priority
+  - [ ] Add a "quick add" button next to each movie on the main page.
+  - [ ] Automatically add the movie to the plan-to-watch list with default settings.
+
+- [ ] I want to see all the movies on my watch list sorted by priority
+  - [ ] Display the watch list sorted by priority.
+  - [ ] Allow users to view and manage their watch list.
+
+- [ ] I want to be able to update the priority of a movie on my watchlist
+  - [ ] Provide an option to edit the priority of movies in the watch list.
+  - [ ] Save changes and update the watch list accordingly.
+
+- [ ] I want to be able to mark a movie as watched once I've seen it (which should remove it from my watch list and place it on the completed list)
+  - [ ] Add a "mark as watched" button for each movie in the watch list.
+  - [ ] Move the movie to the completed list upon marking as watched.
+
+- [ ] I want to be able to add a score onto a movie that I've seen (either when moving it to completed or later)
+  - [ ] Allow users to add a score when marking a movie as watched.
+  - [ ] Provide an option to add or update the score later.
+
+- [ ] I want to be able to see all my finished movies sorted by score or date watched (developers choice)
+  - [ ] Display the completed list sortable by score and date watched.
+  - [ ] Provide sorting options for users.
+
+- [ ] I want to be able to update the number of times I've watched a movie on my completed list if I've watched it again
+  - [ ] Allow users to update the watch count for movies in the completed list.
+  - [ ] Save changes and display the updated watch count.
+
+- [ ] I want to be able to remove things from my planning list even if I don't end up watching it (e.g., I added the wrong one, or I changed my mind, etc)
+  - [ ] Add a "remove" button for each movie in the planning list.
+  - [ ] Remove the movie from the planning list upon confirmation.
+
+**BONUS**
+noting rn
 
 #### Submission and Presentation
 
@@ -77,7 +98,6 @@
 - [ ] Item 3
 
 <!-- 
-- Authentication (2 ways to do it - there is a note about it)
 
 - Movie List
   - Not includin all 4000 movies on the screen all at once
@@ -91,5 +111,4 @@
   - use API in your A2 folder
   - Build an Single Page Application 
   - use React Router
-  - 
  -->
