@@ -1,6 +1,6 @@
 
 ### Checklist
 
-- [ ] Item 1
-- [x] Item 2
+- [x] Learn how to push and pull!
+- [ ] Item 2
 - [ ] Item 3
