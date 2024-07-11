@@ -1,4 +1,3 @@
-
 ### Checklist (overall)
 
 #### Setup and Planning
