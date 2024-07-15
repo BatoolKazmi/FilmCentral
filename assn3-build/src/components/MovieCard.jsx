@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 
-function MovieCard({ title, id }) {
+function MovieCard({ movie, id }) {
     return (
         <article>
-            <h2>{title} : {id}</h2>
+            <img src={movie.poster} alt="movie poster" />
+            <h2>{movie.title}</h2>
             {/* What should go here? */}
-            {/* <Link to={`/movie/${id}`}>Movie Details</Link> */}
+            <Link to={`/movies/${id}`}>Movie Details</Link>
         </article>
     );
 }

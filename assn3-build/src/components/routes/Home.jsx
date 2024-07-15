@@ -28,7 +28,7 @@ function Home() {
             <main>
                 {/* Info goes here! */}
                 {movies.map((movie) => (
-                    <MovieCard title={movie.title} id={movie.movieid} />
+                    <MovieCard movie={movie} id={movie.movieid} />
                 ))}
             </main>
         </>

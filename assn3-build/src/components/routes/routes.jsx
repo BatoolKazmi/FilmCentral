@@ -19,7 +19,7 @@ const routes = [
         element: <CompletedWatchList />
     },
     {
-        path: "/movies",
+        path: "/movies/:id",
         element: <Movie />
     }
 ];
