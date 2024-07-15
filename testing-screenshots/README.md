@@ -15,15 +15,15 @@
 
 #### A Note About The Movie List
 
-- [ ] You don't want to display 4000 movies on the screen all at once.
+- [x] You don't want to display 4000 movies on the screen all at once.
   - [ ] Can include some sort of pagination as an additional feature
-  - [ ] OR you can simply limit the number of movies
+  - [x] OR you can simply limit the number of movies (limited to 30)
 - [ ] You may also want to limit that api to only returning a couple of columns rather then everything.
   - Main Page (display title and posters & mabye rating & etc)
 
 #### A Couple of Technical Requirements
 
-- [ ] Make sure to exclude your react build folder from syncing to Loki. 
+- [x] Make sure to exclude your react build folder from syncing to Loki. 
 - [ ] You can use the API in your A2 folder
 - [ ] You are building an Single Page Application and should use React Router for all necessary routing.
 
@@ -63,24 +63,12 @@
 
 
 **BONUS**
-noting rn
+Do some additional stuff
 
 #### Submission and Presentation
 
 - [ ] **Submission**
   - Prepare for submission according to your course guidelines (submit on time, include required documentation and information).
-
-## Shelmah
-
-- [x] Learn how to push and pull!
-- [ ] Item 2
-- [ ] Item 3
-
-## Batool
-
-- [x] Learn how to push and pull!
-- [ ] Item 2
-- [ ] Item 3
 
 <!-- 
 
