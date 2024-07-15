@@ -42,9 +42,6 @@ header("Access-Control-Allow-Origin: *");
   - i.e Maybe I want to find similar movies (i.e. "other romances", "other movies by Ghibli")
 
 - [x] I want to be able to **search for a specific movie**
-  - [ ] Add a search bar to the main page.
-  - [ ] Allow search by movie title, director, or actor.
-
 - [ ] I want to "quick add" a movie to my plan-to-watch list from the main page, with no notes and a default priority
   - [ ] Add a "quick add" button next to each movie on the main page.
   - [ ] Automatically add the movie to the plan-to-watch list with default settings.
