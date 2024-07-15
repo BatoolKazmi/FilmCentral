@@ -24,14 +24,21 @@ function Movie() {
 
 
     // IDK HOW TO EXTRACT GENRES NAMES
+    // IDK WHAT TO DO WITH GENRES AND PRODUCTION COMPANIES
 
     return (
         <>
             <NavBar />
             <h1>{movie.title}</h1>
             <img src={movie.poster} alt={movie.title} />
-            <p>Runtime: {movie.runtime} minutes</p>
-            <p>Vote Average: {movie.vote_average}</p>
+            <p><strong>Tagline:</strong> {movie.tagline}</p>
+            <p><strong>Overview:</strong> {movie.overview}</p>
+            <p><strong>Release Date:</strong> {movie.release_date}</p>
+            <p><strong>Runtime:</strong> {movie.runtime} minutes</p>
+            <p><strong>Vote Average:</strong> {movie.vote_average}</p>
+            <p><strong>Vote Count:</strong> {movie.vote_count}</p>
+            <p><strong>Original Language:</strong> {movie.original_language}</p>
+            {/* GENRES & PRODUCTION COMPANIES??? */}
         </>
     );
 };
