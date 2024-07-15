@@ -26,6 +26,12 @@
 - [x] Make sure to exclude your react build folder from syncing to Loki. 
 - [ ] You can use the API in your A2 folder
 - [ ] You are building an Single Page Application and should use React Router for all necessary routing.
+- [ ] You must build and deploy your finished application to Loki when your done.
+- [ ] You will need to add a CORS header to your JSON responses in your API from A2 in order to be able to make API requests from your local app. You can see an example of this in the API I provided you for Lab 8.
+
+```php 
+header("Access-Control-Allow-Origin: *"); 
+```
 
 #### Minimal Requirements (NO BONUS MARKS)
 
