@@ -41,7 +41,7 @@ header("Access-Control-Allow-Origin: *");
 - [ ] I want to have at least one way to filter the movies in the catalog
   - i.e Maybe I want to find similar movies (i.e. "other romances", "other movies by Ghibli")
 
-- [ ] I want to be able to **search for a specific movie**
+- [x] I want to be able to **search for a specific movie**
   - [ ] Add a search bar to the main page.
   - [ ] Allow search by movie title, director, or actor.
 

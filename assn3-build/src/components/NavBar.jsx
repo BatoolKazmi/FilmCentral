@@ -5,7 +5,6 @@ function NavBar() {
     return (
         <nav className="navbar">
             <NavLink to="/" >Home</NavLink>
-            <NavLink to="/movies">Movies</NavLink>
             <NavLink to="/towatchlist">My WatchList</NavLink>
             <NavLink to="/completedwatchlist">Completed WatchList</NavLink>
         </nav>
