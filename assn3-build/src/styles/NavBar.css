@@ -1,4 +1,18 @@
-nav {
-    background-color: pink;
-    color: black;
+.navbar>a {
+    display: inline-block;
+    box-sizing: border-box;
+    margin-left: 1em;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+}
+
+a.active {
+    text-decoration: underline;
+}
+
+.navbar {
+    background-color: black;
+    padding: 1em;
+    font-size: 1.5rem;
 }
