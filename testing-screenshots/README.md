@@ -36,8 +36,8 @@ header("Access-Control-Allow-Origin: *");
 #### Minimal Requirements (NO BONUS MARKS)
 
 **User Stories**
-- [ ] I want to be able to **see all the movies** in the catalogue
-- [ ] I want to be able to **find more detailed information about a movie**
+- [x???] I want to be able to **see all the movies** in the catalogue
+- [x] I want to be able to **find more detailed information about a movie**
 - [ ] I want to have at least one way to filter the movies in the catalog
   - i.e Maybe I want to find similar movies (i.e. "other romances", "other movies by Ghibli")
 
