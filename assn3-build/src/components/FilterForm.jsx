@@ -32,21 +32,26 @@ function FilterForm({ filters }) {
             <form
                 className="FilterForm"
                 onSubmit={handleSubmit}>
-                <label htmlFor="search">Search the title of a movie</label>
-                <input
-                    type="text"
-                    name="search"
-                    id="search"
-                    value={see}
-                    onChange={updateSearch} />
+                <div>
+                    <label htmlFor="search">Search the title of a movie</label>
+                    <input
+                        type="text"
+                        name="search"
+                        id="search"
+                        value={see}
+                        onChange={updateSearch} />
+                </div>
 
-                <label htmlFor="rate">{label}</label>
-                <input
-                    type="number"
-                    name="rate"
-                    id="rate"
-                    value={rate}
-                    onChange={updateRate} />
+                <div>
+                    <label htmlFor="rate">{label}</label>
+                    <input
+                        type="number"
+                        name="rate"
+                        id="rate"
+                        value={rate}
+                        onChange={updateRate} />
+                </div>
+
                 <button>Find Movie!</button>
             </form>
         </>
