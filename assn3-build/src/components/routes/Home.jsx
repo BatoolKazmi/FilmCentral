@@ -3,6 +3,7 @@ import NavBar from "../NavBar";
 import MovieCard from "../MovieCard";
 import FilterForm from "../FilterForm";
 import MovieDeck from "../MovieDeck";
+import { Pagination } from "../Pagination";
 
 function Home() {
     const [movies, setMovies] = useState([]);
@@ -28,10 +29,15 @@ function Home() {
     }, [name, rate]);
 
     // Adding pagination
+    ///
     const [currentPage, setCurrentPage] = useState(1);
     // Do like 20, 30, 40 or 50
     const [moviesPerPage, setmoviesPerPage] = useState(3);
 
+    const lastPostIndex = currentPage * moviesPerPage;
+    const firstPostIndex = lastPostIndex - moviesPerPage;
+
+    const currentPosts = movies.slice(firstPostIndex, lastPostIndex);
 
 
     return (
@@ -44,8 +50,14 @@ function Home() {
             </header>
             <main>
                 {/* Info goes here! */}
-                <MovieDeck movies={movies} />
+                <MovieDeck movies={currentPosts} />
             </main>
+            <Pagination
+                totalMovies={movies.length}
+                moviesPerPage={moviesPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+            />
         </>
     )
 };
