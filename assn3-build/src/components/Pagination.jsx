@@ -46,11 +46,13 @@ function Pagination({ currentPage, total, limit, onPageChange }) {
                 page='<<'
                 currentPage={currentPage}
                 onPageChange={() => onPageChange(1)}
+                Deactivate={currentPage == 1 ? true : false}
             />
             <PaginationItem
                 page='<'
                 currentPage={currentPage}
                 onPageChange={currentPage <= 1 ? () => onPageChange(currentPage) : () => onPageChange(currentPage - 1)}
+                Deactivate={currentPage == 1 ? true : false}
             />
             {pages.map((page, index) => (
                 <PaginationItem
@@ -64,11 +66,13 @@ function Pagination({ currentPage, total, limit, onPageChange }) {
                 page='>'
                 currentPage={currentPage}
                 onPageChange={currentPage >= pageCount ? () => onPageChange(currentPage) : () => onPageChange(currentPage + 1)}
+                Deactivate={currentPage == pageCount ? true : false}
             />
             <PaginationItem
                 page='>>'
                 currentPage={currentPage}
                 onPageChange={() => onPageChange(pageCount)}
+                Deactivate={currentPage == pageCount ? true : false}
             />
         </>
     );

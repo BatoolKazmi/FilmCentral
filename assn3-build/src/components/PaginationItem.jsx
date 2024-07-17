@@ -1,12 +1,14 @@
 import React from 'react'
 import "../styles/Pagination.css"
 
-function PaginationItem({ page, currentPage, onPageChange }) {
+function PaginationItem({ page, currentPage, onPageChange, Deactivate }) {
+
+    var name = `hello ${page == currentPage ? 'current' : ''}  ${Deactivate == true ? 'deactivate' : ""}`;
 
     return (
         <>
             <button
-                className={page == currentPage ? 'current' : ''}
+                className={name}
                 onClick={() => onPageChange(page)}>
                 {page}
             </button>
