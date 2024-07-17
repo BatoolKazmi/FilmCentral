@@ -32,7 +32,7 @@ function Home() {
     ///
     const [currentPage, setCurrentPage] = useState(1);
     // Do like 20, 30, 40 or 50
-    const [moviesPerPage, setmoviesPerPage] = useState(25);
+    const [moviesPerPage, setmoviesPerPage] = useState(30);
 
     const lastPostIndex = currentPage * moviesPerPage;
     const firstPostIndex = lastPostIndex - moviesPerPage;
@@ -52,7 +52,7 @@ function Home() {
                 <Pagination
                     currentPage={currentPage}
                     total={movies.length}
-                    limit={25}
+                    limit={30}
                     onPageChange={(page) => setCurrentPage(page)}
                 />
             </div>
@@ -64,7 +64,7 @@ function Home() {
                 <Pagination
                     currentPage={currentPage}
                     total={movies.length}
-                    limit={25}
+                    limit={30}
                     onPageChange={(page) => setCurrentPage(page)}
                 />
             </div>
