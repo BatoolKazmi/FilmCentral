@@ -38,6 +38,8 @@ function Pagination({ currentPage, total, limit, onPageChange }) {
         pages.push(i);
     }
 
+    console.log(pageCount)
+
     return (
         <>
             <PaginationItem

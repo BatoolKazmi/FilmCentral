@@ -26,7 +26,7 @@ function FilterForm({ filters, page }) {
         page(1);
     }
 
-    const label = `Rating (>=): `;
+    const label = `Rating (>=) out of 10: `;
 
     return (
         <>
