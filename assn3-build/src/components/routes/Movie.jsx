@@ -6,6 +6,10 @@ function Movie() {
     let { id } = useParams();
     const [movie, setMovie] = useState([]);
 
+    if (movie.poster == 'NA') {
+        movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
+    }
+
     const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/movie/${id}`;
 
 
