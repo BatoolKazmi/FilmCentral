@@ -3,7 +3,7 @@ import NavBar from "../NavBar";
 import MovieCard from "../MovieCard";
 import FilterForm from "../FilterForm";
 import MovieDeck from "../MovieDeck";
-import { Pagination } from "../Pagination";
+import Pagination from "../Pagination";
 
 function Home() {
     const [movies, setMovies] = useState([]);
@@ -46,18 +46,21 @@ function Home() {
                 {/* What component should go here? */}
                 <NavBar />
                 <h1>Movies</h1>
-                <FilterForm filters={getFilter} />
+                <FilterForm filters={getFilter} page={setCurrentPage} />
             </header>
             <main>
                 {/* Info goes here! */}
                 <MovieDeck movies={currentPosts} />
             </main>
-            <Pagination
-                totalMovies={movies.length}
-                moviesPerPage={moviesPerPage}
-                setCurrentPage={setCurrentPage}
-                currentPage={currentPage}
-            />
+            <div>
+                <Pagination
+                    currentPage={currentPage}
+                    total={movies.length}
+                    limit={3}
+                    onPageChange={(page) => setCurrentPage(page)}
+                />
+            </div>
+
         </>
     )
 };

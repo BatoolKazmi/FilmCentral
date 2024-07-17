@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function FilterForm({ filters }) {
+function FilterForm({ filters, page }) {
 
     const [see, setSearch] = useState("");
     const [rate, setRate] = useState("");
@@ -23,6 +23,7 @@ function FilterForm({ filters }) {
         filters(see, rate);
         setSearch("");
         setRate("");
+        page(1);
     }
 
     const label = `Rating (>=): `;
