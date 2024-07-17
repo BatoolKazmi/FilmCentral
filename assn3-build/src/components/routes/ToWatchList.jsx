@@ -2,10 +2,19 @@ import NavBar from "../NavBar";
 
 function ToWatchList() {
     return (
-        <>
-            <NavBar />
-            <h1>my Watch List</h1>
-        </>
+      <>
+        <header>
+          <NavBar />
+          <h1>my Watch List</h1>
+          <FindMovie onKeySubmit={getMovies} />
+        </header>
+        <main>
+          {/* Info goes here! */}
+          {movies.map((movie) => (
+            <MovieCard movie={movie} id={movie.movieid} />
+          ))}
+        </main>
+      </>
     );
 };
 
