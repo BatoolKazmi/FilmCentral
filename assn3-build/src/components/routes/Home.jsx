@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import NavBar from "../NavBar";
 import MovieCard from "../MovieCard";
-import SearchForm from "../SearchForm";
+import FilterForm from "../FilterForm";
+import MovieDeck from "../MovieDeck";
+import Pagination from "../Pagination";
 
 function Home() {
     const [movies, setMovies] = useState([]);
     const [name, setName] = useState("");
+    const [rate, setRate] = useState("");
 
-    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/movie/?title=${name}`;
+    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/movie/?title=${name}&vote_average=${rate}`;
+
+    function getFilter(name, rate) {
+        setName(name);
+        setRate(rate);
+    }
 
     async function fetchContact() {
         const resp = await fetch(API);
@@ -18,11 +26,19 @@ function Home() {
 
     useEffect(() => {
         fetchContact();
-    }, [name]);
+    }, [name, rate]);
 
-    function getMovies(name) {
-        setName(name);
-    }
+    // Adding pagination
+    ///
+    const [currentPage, setCurrentPage] = useState(1);
+    // Do like 20, 30, 40 or 50
+    const [moviesPerPage, setmoviesPerPage] = useState(30);
+
+    const lastPostIndex = currentPage * moviesPerPage;
+    const firstPostIndex = lastPostIndex - moviesPerPage;
+
+    const currentPosts = movies.slice(firstPostIndex, lastPostIndex);
+
 
     return (
         <>
@@ -30,14 +46,29 @@ function Home() {
                 {/* What component should go here? */}
                 <NavBar />
                 <h1>Movies</h1>
-                <SearchForm search={getMovies} />
+                <FilterForm filters={getFilter} page={setCurrentPage} />
             </header>
+            <div>
+                <Pagination
+                    currentPage={currentPage}
+                    total={movies.length}
+                    limit={30}
+                    onPageChange={(page) => setCurrentPage(page)}
+                />
+            </div>
             <main>
                 {/* Info goes here! */}
-                {movies.map((movie) => (
-                    <MovieCard movie={movie} id={movie.movieid} />
-                ))}
+                <MovieDeck movies={currentPosts} />
             </main>
+            <div>
+                <Pagination
+                    currentPage={currentPage}
+                    total={movies.length}
+                    limit={30}
+                    onPageChange={(page) => setCurrentPage(page)}
+                />
+            </div>
+
         </>
     )
 };

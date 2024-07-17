@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import NavBar from "../NavBar";
 
 function Movie() {
-  let { id } = useParams();
-  const [movie, setMovie] = useState([]);
+    let { id } = useParams();
+    const [movie, setMovie] = useState([]);
 
   const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/movies/${id}`;
 

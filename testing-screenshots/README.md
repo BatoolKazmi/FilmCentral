@@ -16,9 +16,9 @@
 #### A Note About The Movie List
 
 - [x] You don't want to display 4000 movies on the screen all at once.
-  - [ ] Can include some sort of pagination as an additional feature
-  - [x] OR you can simply limit the number of movies (limited to 30)
-- [ ] You may also want to limit that api to only returning a couple of columns rather then everything.
+  - [x] Can include some sort of pagination as an additional feature
+  - [x] OR you can simply limit the number of movies 
+- [x] You may also want to limit that api to only returning a couple of columns rather then everything.
   - Main Page (display title and posters & mabye rating & etc)
 
 #### A Couple of Technical Requirements
@@ -27,7 +27,7 @@
 - [ ] You can use the API in your A2 folder
 - [ ] You are building an Single Page Application and should use React Router for all necessary routing.
 - [ ] You must build and deploy your finished application to Loki when your done.
-- [ ] You will need to add a CORS header to your JSON responses in your API from A2 in order to be able to make API requests from your local app. You can see an example of this in the API I provided you for Lab 8.
+- [x!] You will need to add a CORS header to your JSON responses in your API from A2 in order to be able to make API requests from your local app. You can see an example of this in the API I provided you for Lab 8.
 
 ```php 
 header("Access-Control-Allow-Origin: *"); 
@@ -38,7 +38,7 @@ header("Access-Control-Allow-Origin: *");
 **User Stories**
 - [x???] I want to be able to **see all the movies** in the catalogue
 - [x] I want to be able to **find more detailed information about a movie**
-- [ ] I want to have at least one way to filter the movies in the catalog
+- [x??] I want to have at least one way to filter the movies in the catalog
   - i.e Maybe I want to find similar movies (i.e. "other romances", "other movies by Ghibli")
 
 - [x] I want to be able to **search for a specific movie**
