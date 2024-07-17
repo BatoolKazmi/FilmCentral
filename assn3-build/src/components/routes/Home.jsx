@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import NavBar from "../NavBar";
 import MovieCard from "../MovieCard";
 import FilterForm from "../FilterForm";
+import MovieDeck from "../MovieDeck";
 
 function Home() {
     const [movies, setMovies] = useState([]);
@@ -26,9 +27,11 @@ function Home() {
         fetchContact();
     }, [name, rate]);
 
-    // function getMovies(name) {
+    // Adding pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    // Do like 20, 30, 40 or 50
+    const [moviesPerPage, setmoviesPerPage] = useState(3);
 
-    // }
 
 
     return (
@@ -41,9 +44,7 @@ function Home() {
             </header>
             <main>
                 {/* Info goes here! */}
-                {movies.map((movie) => (
-                    <MovieCard movie={movie} id={movie.movieid} />
-                ))}
+                <MovieDeck movies={movies} />
             </main>
         </>
     )
