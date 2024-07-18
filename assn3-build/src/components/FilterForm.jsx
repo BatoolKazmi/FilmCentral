@@ -52,6 +52,7 @@ function FilterForm({ filters, page }) {
         filters(see, rate, genre);
         setSearch("");
         setRate("");
+        setGenre("")
         page(1);
     }
 
