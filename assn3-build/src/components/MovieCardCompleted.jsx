@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "../styles/MovieCard.css";
 
-function MovieCardCompleted({ movie, id }) {
+function MovieCardCompleted({ movie, id, key }) {
   const alt = `${movie.title} poster`;
 
   if (movie.poster == "NA") {
@@ -13,7 +13,7 @@ function MovieCardCompleted({ movie, id }) {
       <img src={movie.poster} alt={alt} />
       <h2>{movie.title}</h2>
       {/* What should go here? */}
-      <Link to={`/movies/${id}`}>Rating Details</Link>
+      <Link to={`/completedwatchlist/entries`}>Rating Details</Link>
       <Link to={`/movies/${id}`}>Movie Details</Link>
     </article>
   );
