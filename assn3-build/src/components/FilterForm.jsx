@@ -18,13 +18,6 @@ function FilterForm({ filters, page }) {
         setRate(ev.target.value);
     }
 
-    const handleSubmit = (ev) => {
-        ev.preventDefault();
-        filters(see, rate);
-        setSearch("");
-        setRate("");
-        page(1);
-    }
 
     const label = `Rating (>=) out of 10: `;
 
@@ -51,6 +44,15 @@ function FilterForm({ filters, page }) {
         console.log("Change event!");
         console.log(ev);
         setGenre(ev.target.value);
+    }
+
+    // HANDLE SUBMISSION
+    const handleSubmit = (ev) => {
+        ev.preventDefault();
+        filters(see, rate, genre);
+        setSearch("");
+        setRate("");
+        page(1);
     }
 
     return (
