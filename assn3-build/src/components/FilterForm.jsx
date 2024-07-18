@@ -19,7 +19,7 @@ function FilterForm({ filters, page }) {
     }
 
 
-    const label = `Rating (>=) out of 10: `;
+    const label = `Rating (?/10): `;
 
     // GENRES
     const [genres, setGenres] = useState([]);
@@ -62,7 +62,7 @@ function FilterForm({ filters, page }) {
                 className="FilterForm"
                 onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="search">Search the title of a movie</label>
+                    <label htmlFor="search">Search the Title: </label>
                     <input
                         type="text"
                         name="search"
@@ -74,13 +74,12 @@ function FilterForm({ filters, page }) {
                 <div>
                     <label htmlFor="rate">{label}</label>
                     <select name="rate" id="rate" value={rate} onChange={updateRate}>
-                        <option value="Select">Select Genre</option>
+                        <option value="Select">Select Rating</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
-                        <option value="6">6</option>
                         <option value="6">6</option>
                         <option value="7">7</option>
                         <option value="8">8</option>
