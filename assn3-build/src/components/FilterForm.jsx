@@ -28,6 +28,31 @@ function FilterForm({ filters, page }) {
 
     const label = `Rating (>=) out of 10: `;
 
+    // GENRES
+    const [genres, setGenres] = useState([]);
+
+
+
+    async function fetchContact() {
+        const genresApi = "https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/genres/";
+        const resp = await fetch(genresApi);
+        const jsonResponse = await resp.json();
+        const set = jsonResponse;
+        setGenres(set);
+    }
+
+    useEffect(() => {
+        fetchContact();
+    }, []);
+
+    const [genre, setGenre] = useState("");
+
+    const updateGenres = (ev) => {
+        console.log("Change event!");
+        console.log(ev);
+        setGenre(ev.target.value);
+    }
+
     return (
         <>
             <form
@@ -45,13 +70,32 @@ function FilterForm({ filters, page }) {
 
                 <div>
                     <label htmlFor="rate">{label}</label>
-                    <input
-                        type="number"
-                        name="rate"
-                        id="rate"
-                        value={rate}
-                        onChange={updateRate} />
+                    <select name="rate" id="rate" value={rate} onChange={updateRate}>
+                        <option value="Select">Select Genre</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
                 </div>
+
+                <div>
+                    <label for="genres" sr-only>Genre Type: </label>
+                    <select name="genres" id="genres" value={genre} onChange={updateGenres}>
+                        <option value="Select">Select Genre</option>
+                        {genres.map((genre, index) => (
+                            <option value={genre.name} id={index}>{genre.name}</option>
+                        ))}
+                    </select>
+                </div>
+
 
                 <button>Find Movie!</button>
             </form>
