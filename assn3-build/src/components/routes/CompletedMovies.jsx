@@ -34,25 +34,19 @@ function Movie() {
       <h1>{movie.title}</h1>
       <img src={movie.poster} alt={movie.title} />
       <p>
-        <strong>Tagline:</strong> {movie.tagline}
+        <strong>Rating:</strong> {movie.rating}
       </p>
       <p>
-        <strong>Overview:</strong> {movie.overview}
+        <strong>Notes:</strong> {movie.notes}
       </p>
       <p>
-        <strong>Release Date:</strong> {movie.release_date}
+        <strong>First watched on:</strong> {movie.date_initially_watched}
       </p>
       <p>
-        <strong>Runtime:</strong> {movie.runtime} minutes
+        <strong>Last watched on:</strong> {movie.date_last_watched}
       </p>
       <p>
-        <strong>Vote Average:</strong> {movie.vote_average}
-      </p>
-      <p>
-        <strong>Vote Count:</strong> {movie.vote_count}
-      </p>
-      <p>
-        <strong>Original Language:</strong> {movie.original_language}
+        <strong>Times Watched:</strong> {movie.times_watched}
       </p>
       {/* GENRES & PRODUCTION COMPANIES??? */}
     </>
