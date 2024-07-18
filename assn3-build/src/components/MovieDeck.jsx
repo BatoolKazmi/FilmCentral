@@ -4,7 +4,7 @@ function MovieDeck({ movies }) {
     return (
         <>
             {movies.map((movie) => (
-                <MovieCard movie={movie} id={movie.movieid} />
+                <MovieCard movie={movie} id={movie.movie_id} />
             ))}
         </>
 

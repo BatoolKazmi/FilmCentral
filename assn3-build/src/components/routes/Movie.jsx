@@ -6,15 +6,11 @@ function Movie() {
   let { id } = useParams();
   const [movie, setMovie] = useState([]);
 
-  if (movie.poster == "NA") {
-    movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
-  }
-
-  const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/movie/${id}`;
-
   async function fetchContact() {
+    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/movie/${id}`;
     const resp = await fetch(API);
     const jsonResponse = await resp.json();
+    console.log("JSON Response:", jsonResponse);
     const set = jsonResponse;
     setMovie(set);
   }
@@ -26,6 +22,10 @@ function Movie() {
 
   // IDK HOW TO EXTRACT GENRES NAMES
   // IDK WHAT TO DO WITH GENRES AND PRODUCTION COMPANIES
+
+  if (movie.poster == null) {
+    movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
+  }
 
   return (
     <>
@@ -53,7 +53,11 @@ function Movie() {
       <p>
         <strong>Original Language:</strong> {movie.original_language}
       </p>
-      {/* GENRES & PRODUCTION COMPANIES??? */}
+
+      <p>
+        <strong>Genres:</strong> {movie.genre_names ? movie.genre_names.replace(/,/g, ", ") : ""}
+      </p>
+      {/* PRODUCTION COMPANIES??? */}
     </>
   );
 }
