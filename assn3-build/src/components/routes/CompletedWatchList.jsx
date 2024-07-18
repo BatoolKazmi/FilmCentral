@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import NavBar from "../NavBar";
-import MovieCard from "../MovieCard";
+import MovieCardCompleted from "../MovieCardCompleted";
 import FindMovie from "../FindMovie";
 
 function CompletedWatchList() {
@@ -43,7 +43,7 @@ function CompletedWatchList() {
       <main>
         {/* Info goes here! */}
         {movies.map((movie) => (
-          <MovieCard movie={movie} id={movie.movieid} />
+          <MovieCardCompleted movie={movie} id={movie.movieid} />
         ))}
       </main>
     </>
