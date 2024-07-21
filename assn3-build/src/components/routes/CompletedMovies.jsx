@@ -2,16 +2,16 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NavBar from "../NavBar";
 
-function Movie() {
-    let { key } = useParams();
-    const [movie, setMovie] = useState([]);
-    
-    if (movie.poster == "NA") {
-      movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
-    }
+function CompletedMovies() {
+  const { key, id } = useParams();
+  const [movie, setMovie] = useState([]);
+
+  if (movie.poster == "NA") {
+    movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
+  }
 
   //const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/movies/${id}`;
-  const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries?key=${key}`;
+  const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries/${id}?key=${key}`;
 
   async function fetchContact() {
     const resp = await fetch(API);
@@ -53,4 +53,4 @@ function Movie() {
   );
 }
 
-export default Movie;
+export default CompletedMovies;
