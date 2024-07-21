@@ -43,7 +43,12 @@ function CompletedWatchList() {
       <main>
         {/* Info goes here! */}
         {movies.map((movie) => (
-          <MovieCardCompleted movie={movie} id={movie.movieid} />
+          <MovieCardCompleted
+            movie={movie}
+            id={movie.movieid}
+            completedId={movie.completedId}
+            apiKey={key}
+          />
         ))}
       </main>
     </>
