@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import NavBar from "../NavBar";
 import MovieCard from "../MovieCard";
 import FindMovie from "../FindMovie";
+import MovieCardTowatch from "../MovieCardToWatch";
 
 function ToWatchList() {
   const [movies, setMovies] = useState([]);
@@ -43,7 +44,12 @@ function ToWatchList() {
       <main>
         {/* Info goes here! */}
         {movies.map((movie) => (
-          <MovieCard movie={movie} id={movie.movieid} />
+          <MovieCardTowatch
+            movie={movie}
+            id={movie.movieid}
+            Watchlistid={movie.Watchlistid}
+            apiKey={key}
+          />
         ))}
       </main>
     </>
