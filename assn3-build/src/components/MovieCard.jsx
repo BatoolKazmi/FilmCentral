@@ -4,7 +4,7 @@ import "../styles/MovieCard.css"
 function MovieCard({ movie, id }) {
     const alt = `${movie.title} poster`;
 
-    if (movie.poster == 'NA') {
+    if (movie.poster == null) {
         movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
     }
 
