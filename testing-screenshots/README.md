@@ -49,12 +49,12 @@ header("Access-Control-Allow-Origin: *");
   - [ ] Add a "quick add" button next to each movie on the main page.
   - [ ] Automatically add the movie to the plan-to-watch list with default settings.
 
-- [ ] I want to see all the movies on my watch list sorted by priority
+- [x] I want to see all the movies on my watch list sorted by priority
 
-  - [ ] Display the watch list sorted by priority.
+  - [x] Display the watch list sorted by priority.
   - [ ] Allow users to view and manage their watch list.
 
-- [ ] I want to be able to update the priority of a movie on my watchlist
+- [x] I want to be able to update the priority of a movie on my watchlist
 
   - [ ] Provide an option to edit the priority of movies in the watch list.
   - [ ] Save changes and update the watch list accordingly.
@@ -65,7 +65,7 @@ header("Access-Control-Allow-Origin: *");
 
 - [ ] I want to be able to see all my finished movies sorted by score or date watched (developers choice)
 
-- [ ] I want to be able to update the number of times I've watched a movie on my completed list if I've watched it again
+- [x] I want to be able to update the number of times I've watched a movie on my completed list if I've watched it again
 
 - [ ] I want to be able to remove things from my planning list even if I don't end up watching it (e.g., I added the wrong one, or I changed my mind, etc)
 
