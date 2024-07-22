@@ -38,7 +38,7 @@ function ToWatchList() {
     <>
       <header>
         <NavBar />
-        <h1>Completed Watch List</h1>
+        <h1>To Watch List</h1>
         <FindMovie onKeySubmit={getMovies} />
       </header>
       <main>
