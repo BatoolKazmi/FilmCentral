@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "../styles/MovieCard.css";
 import { useState } from "react";
 
-function MovieCardTowatch({ movie, id, Watchlistid, apiKey }) {
+function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
   const alt = `${movie.title} poster`;
   const [isProcessing, setIsProcessing] = useState(false);
   const [showRatingInput, setShowRatingInput] = useState(false);
@@ -11,7 +11,35 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey }) {
   if (movie.poster == "NA") {
     movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
   }
-  console.log(Watchlistid);
+  console.log(id);
+  //console.log(Watchlistid);
+  async function handleDelete() {
+    setIsProcessing(true);
+    const removeFromPlanningListAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${Watchlistid}`;
+
+    try {
+      const removeResponse = await fetch(removeFromPlanningListAPI, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Api-Key": apiKey,
+        },
+        body: JSON.stringify({ movie_id: id }),
+      });
+
+      if (!removeResponse.ok) {
+        throw new Error("Failed to remove movie from planning list");
+      }
+
+      console.log("Movie removed from planning list successfully");
+
+      if (onRemove) onRemove(); // Trigger onRemove callback
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsProcessing(false);
+    }
+  }
   async function handleMarkAsWatched() {
     setIsProcessing(true);
     const removeFromWatchlistAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${Watchlistid}`;
@@ -30,6 +58,7 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey }) {
       if (!removeResponse.ok) {
         throw new Error("Failed to remove movie from watchlist");
       }
+      if (onRemove) onRemove();
       function formatDate(inputDate) {
         const date = new Date(inputDate);
         const year = date.getFullYear();
@@ -107,6 +136,11 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey }) {
             </button>
           </div>
         )}
+      </div>
+      <div>
+        <button onClick={handleDelete} disabled={isProcessing}>
+          {isProcessing ? "Processing..." : "Remove from ToWatchList"}
+        </button>
       </div>
     </article>
   );
