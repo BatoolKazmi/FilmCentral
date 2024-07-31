@@ -7,7 +7,7 @@ function CompletedWatchList() {
   const [movies, setMovies] = useState([]);
   const [key, setKey] = useState("");
 
-  // const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries?key=${key}`;
+  //const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries?key=${key}`;
   const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries?key=${key}`
 
   async function fetchMovie() {
@@ -47,9 +47,9 @@ function CompletedWatchList() {
           <MovieCardCompleted
             movie={movie}
             id={movie.movieid}
-            // completedId={movie.completedId}
+            completedId={movie.completedId}
             // Batool
-            completedId={movie.completedWatchListId}
+            //completedId={movie.completedWatchListId}
             apiKey={key}
           />
         ))}
