@@ -30,13 +30,22 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey }) {
       if (!removeResponse.ok) {
         throw new Error("Failed to remove movie from watchlist");
       }
+      function formatDate(inputDate) {
+        const date = new Date(inputDate);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+        const day = String(date.getDate()).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+      }
+      const currentDate = new Date().toISOString();
       // Add to completed list
       const payload = {
         movie_id: id,
         rating: userRating, // User-provided rating
-        notes: "", // Default notes
-        date_initially_watched: new Date().toISOString(), // Default date watched
-        date_last_watched: new Date().toISOString(), // Same as date initially watched for the first watch
+        notes: "Nice watch", // Default notes
+        date_initially_watched: formatDate(currentDate), // Format date
+        date_last_watched: formatDate(currentDate), // Format date
         times_watched: 1, // Default watch count
       };
 
