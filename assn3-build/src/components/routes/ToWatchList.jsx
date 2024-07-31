@@ -36,6 +36,9 @@ function ToWatchList() {
   function getMovies(key) {
     setKey(key);
   }
+  function handleMovieRemoval() {
+    fetchMovie(); // Refresh the movie list
+  }
   return (
     <>
       <header>
@@ -49,8 +52,9 @@ function ToWatchList() {
           <MovieCardTowatch
             movie={movie}
             key={i}
+            id={movie.movieid}
             Watchlistid={movie.Watchlistid}
-
+            onRemove={handleMovieRemoval}
             // Batool
             //Watchlistid={movie.watchListId}
             apiKey={key}
