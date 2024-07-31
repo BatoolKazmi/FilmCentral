@@ -43,10 +43,10 @@ function CompletedWatchList() {
       </header>
       <main>
         {/* Info goes here! */}
-        {movies.map((movie) => (
+        {movies.map((movie, i) => (
           <MovieCardCompleted
             movie={movie}
-            id={movie.movieid}
+            key={i}
             completedId={movie.completedId}
             // Batool
             //completedId={movie.completedWatchListId}

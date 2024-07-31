@@ -4,6 +4,9 @@ function FilterForm({ filters, page }) {
 
     const [see, setSearch] = useState("");
     const [rate, setRate] = useState("");
+    // GENRES
+    const [genres, setGenres] = useState([]);
+    const [genre, setGenre] = useState("");
 
 
     const updateSearch = (ev) => {
@@ -18,12 +21,13 @@ function FilterForm({ filters, page }) {
         setRate(ev.target.value);
     }
 
+    const updateGenres = (ev) => {
+        console.log("Change event!");
+        console.log(ev);
+        setGenre(ev.target.value);
+    }
 
     const label = `Rating (?/10): `;
-
-    // GENRES
-    const [genres, setGenres] = useState([]);
-
 
 
     async function fetchContact() {
@@ -37,14 +41,7 @@ function FilterForm({ filters, page }) {
     useEffect(() => {
         fetchContact();
     }, []);
-
-    const [genre, setGenre] = useState("");
-
-    const updateGenres = (ev) => {
-        console.log("Change event!");
-        console.log(ev);
-        setGenre(ev.target.value);
-    }
+    
 
     // HANDLE SUBMISSION
     const handleSubmit = (ev) => {
@@ -89,11 +86,11 @@ function FilterForm({ filters, page }) {
                 </div>
 
                 <div>
-                    <label for="genres" sr-only>Genre Type: </label>
+                    <label htmlFor="genres">Genre Type: </label>
                     <select name="genres" id="genres" value={genre} onChange={updateGenres}>
                         <option value="Select">Select Genre</option>
                         {genres.map((genre, index) => (
-                            <option value={genre.name} id={index}>{genre.name}</option>
+                            <option value={genre.name} key={index}>{genre.name}</option>
                         ))}
                     </select>
                 </div>
