@@ -48,7 +48,7 @@ function ToWatchList() {
         {movies.map((movie) => (
           <MovieCardTowatch
             movie={movie}
-            id={movie.movieid}
+            key={movie.movieid}
             // Watchlistid={movie.Watchlistid}
 
             // Batool

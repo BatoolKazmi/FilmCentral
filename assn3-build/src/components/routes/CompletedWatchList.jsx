@@ -46,7 +46,7 @@ function CompletedWatchList() {
         {movies.map((movie) => (
           <MovieCardCompleted
             movie={movie}
-            id={movie.movieid}
+            key={movie.movieid}
             // completedId={movie.completedId}
             // Batool
             completedId={movie.completedWatchListId}
