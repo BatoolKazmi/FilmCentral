@@ -30,7 +30,7 @@
 
 ## Bonus Stuff
 - Pagination (allowed me to add all 4000 movies in the movie list!)
-- Used Matt's SQL table to find different genres in the movie list
+- Used Matt's SQL table to find different genres in the movie list (Used many joins)
 
 
 
