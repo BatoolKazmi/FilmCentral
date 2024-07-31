@@ -2,12 +2,11 @@ import MovieCard from "./MovieCard";
 
 function MovieDeck({ movies }) {
     return (
-        <>
-            {movies.map((movie) => (
-                <MovieCard movie={movie} key={movie.movie_id} />
-            ))}
-        </>
-
+      <>
+        {movies.map((movie) => (
+          <MovieCard movie={movie} key={movie.movie_id} id={movie.movie_id} />
+        ))}
+      </>
     );
 }
 
