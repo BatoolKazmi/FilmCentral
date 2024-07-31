@@ -12,7 +12,8 @@ function ToWatchListMovies() {
     movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
   }
   //const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/movies/${id}`;
-  const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${id}?key=${key}`;
+  // const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${id}?key=${key}`;
+  const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries/${id}?key=${key}`;
 
   async function fetchContact() {
     const resp = await fetch(API);
@@ -29,7 +30,8 @@ function ToWatchListMovies() {
 
   async function updatePriority(newPriority) {
     try {
-      const updateAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${id}/priority?key=${key}`;
+      // const updateAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${id}/priority?key=${key}`;
+      const updateAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries/${id}/priority?key=${key}`;
       const response = await fetch(updateAPI, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -60,7 +62,7 @@ function ToWatchListMovies() {
       <h1>{movie.title}</h1>
       <img src={movie.poster} alt={movie.title} />
       <p>
-        <strong>Rating:</strong> {priority}
+        <strong>Priority:</strong> {priority}
       </p>
       <div>
         <label htmlFor="priority">{label}</label>
