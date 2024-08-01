@@ -1,25 +1,26 @@
-# Testing
-
-## Assignment 3 - 3430
-
-### API Keys so that you can test completed watch list and towatchlist
-
-### Shelmah
-
+# Assignment 3 - 3430 
+By Shelmah & Batool Kazmi (0810583)
+#### API Keys so that you can test completed watch list and towatchlist
+# Shelmah
 - e9565ada8f7fd1446156bd80c8e328cd4ed543ef
 - aba017fc6876149ca1a405e9eb27236af6e83662
 
-### Batool
+# Note about this assignment:
+- Though, we had started early, we spend alot of time trying to connect to one database, this eventually lead us to change alot from assignmnet 2 but still we weren't that successful. So, for now, Batool's database has all the 4000 movies while, Shelmah's database has the CompletedWatchList & ToWatchList. 
 
-- 7f2909fd2970488b3c0a19da2eb803e8 (user 4)
-
-### Minimal Requirements
-
+# Testing 
+## Minimal Requirements 
 - [x] I want to be able to **see all the movies** in the catalogue
+
 - [x] I want to be able to **find more detailed information about a movie**
+
 - [x] I want to have at least one way to filter the movies in the catalog
   - i.e Maybe I want to find similar movies (i.e. "other romances", "other movies by Ghibli")
+
+
 - [x] I want to be able to **search for a specific movie**
+
+
 
 - [x] I want to "quick add" a movie to my plan-to-watch list from the main page, with no notes and a default priority
 - [x] I want to see all the movies on my watch list sorted by priority

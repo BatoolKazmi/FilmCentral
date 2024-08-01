@@ -13,7 +13,7 @@ function ToWatchListMovies() {
   }
   //const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/movies/${id}`;
   const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${id}?key=${key}`;
-  //const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries/${id}?key=${key}`;
+  // const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries/${id}?key=${key}`;
 
   async function fetchContact() {
     const resp = await fetch(API);
@@ -31,7 +31,7 @@ function ToWatchListMovies() {
   async function updatePriority(newPriority) {
     try {
       const updateAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${id}/priority?key=${key}`;
-      //const updateAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries/${id}/priority?key=${key}`;
+      // const updateAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries/${id}/priority?key=${key}`;
       const response = await fetch(updateAPI, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
