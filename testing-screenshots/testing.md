@@ -7,6 +7,7 @@ By Shelmah & Batool Kazmi (0810583)
 
 # Note about this assignment:
 - Though, we had started early, we spend alot of time trying to connect to one database, this eventually lead us to change alot from assignmnet 2 but still we weren't that successful. So, for now, Batool's database has all the 4000 movies while, Shelmah's database has the CompletedWatchList & ToWatchList. 
+- Shelmah's Completed WatchList & toWatchlist has only movies up too 30, so the rest of the thousand won't be used in the assignment, we worked on.
 
 # Testing 
 ## Minimal Requirements 
