@@ -8,8 +8,8 @@ function ToWatchList() {
   const [movies, setMovies] = useState([]);
   const [key, setKey] = useState("");
 
-  const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries?key=${key}`;
-  // const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries?key=${key}`
+  // const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries?key=${key}`;
+  const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries?key=${key}`
 
   console.log(key);
   async function fetchMovie() {
@@ -53,10 +53,10 @@ function ToWatchList() {
             movie={movie}
             key={i}
             id={movie.movieid}
-            Watchlistid={movie.Watchlistid}
+            // Shelmah
+            // Watchlistid={movie.Watchlistid}
+            Watchlistid={movie.watchListId}
             onRemove={handleMovieRemoval}
-            // Batool
-            //Watchlistid={movie.watchListId}
             apiKey={key}
           />
         ))}

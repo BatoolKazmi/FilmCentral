@@ -12,8 +12,11 @@ function MovieCard({ movie, id }) {
   }
   async function handleQuickAdd(userApiKey) {
     setIsAdding(true); // Set state to indicate the process is ongoing
+    // const API =
+    //   "https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries";
+
     const API =
-      "https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries";
+      "https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries";
 
     const payload = {
       movie_id: id,

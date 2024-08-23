@@ -15,7 +15,8 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
   //console.log(Watchlistid);
   async function handleDelete() {
     setIsProcessing(true);
-    const removeFromPlanningListAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${Watchlistid}`;
+    // const removeFromPlanningListAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${Watchlistid}`;
+    const removeFromPlanningListAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries/${Watchlistid}`;
 
     try {
       const removeResponse = await fetch(removeFromPlanningListAPI, {
@@ -42,9 +43,13 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
   }
   async function handleMarkAsWatched() {
     setIsProcessing(true);
-    const removeFromWatchlistAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${Watchlistid}`;
+    // const removeFromWatchlistAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${Watchlistid}`;
+    const removeFromWatchlistAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries/${Watchlistid}`;
+
+    // const addToCompletedListAPI =
+    //   "https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries";
     const addToCompletedListAPI =
-      "https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries";
+      "https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries";
     try {
       const removeResponse = await fetch(removeFromWatchlistAPI, {
         method: "DELETE",
