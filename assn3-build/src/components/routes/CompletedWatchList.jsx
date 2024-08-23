@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import NavBar from "../NavBar";
 import MovieCardCompleted from "../MovieCardCompleted";
 import FindMovie from "../FindMovie";
+import Pagination from "../Pagination";
 
 function CompletedWatchList() {
   const [movies, setMovies] = useState([]);
@@ -34,6 +35,19 @@ function CompletedWatchList() {
   function getMovies(key) {
     setKey(key);
   }
+
+  // Adding pagination
+  ///
+  const [currentPage, setCurrentPage] = useState(1);
+  // Do like 20, 30, 40 or 50
+  const [moviesPerPage, setmoviesPerPage] = useState(30);
+
+  const lastPostIndex = currentPage * moviesPerPage;
+  const firstPostIndex = lastPostIndex - moviesPerPage;
+
+  const currentPosts = movies.slice(firstPostIndex, lastPostIndex);
+
+
   return (
     <>
       <header>
@@ -41,6 +55,14 @@ function CompletedWatchList() {
         <h1>Completed Watch List</h1>
         <FindMovie onKeySubmit={getMovies} />
       </header>
+      <div>
+                <Pagination
+                    currentPage={currentPage}
+                    total={movies.length}
+                    limit={30}
+                    onPageChange={(page) => setCurrentPage(page)}
+                />
+            </div>
       <main>
         {/* Info goes here! */}
         {movies.map((movie, i) => (
@@ -54,6 +76,14 @@ function CompletedWatchList() {
           />
         ))}
       </main>
+      <div>
+                <Pagination
+                    currentPage={currentPage}
+                    total={movies.length}
+                    limit={30}
+                    onPageChange={(page) => setCurrentPage(page)}
+                />
+            </div>
     </>
   );
 }
