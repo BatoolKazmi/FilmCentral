@@ -7,6 +7,7 @@ function NavBar() {
             <NavLink to="/" >Home</NavLink>
             <NavLink to="/towatchlist">My WatchList</NavLink>
             <NavLink to="/completedwatchlist">Completed WatchList</NavLink>
+            <NavLink to="/login">Login</NavLink>
         </nav>
     );
 };

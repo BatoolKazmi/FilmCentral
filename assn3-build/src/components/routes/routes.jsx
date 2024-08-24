@@ -5,6 +5,8 @@ import CompletedWatchList from "./CompletedWatchList";
 import CompletedMovies from "./CompletedMovies";
 import Movie from "./Movie";
 import ToWatchListMovies from "./TowatchlistMovies";
+import Login from "../LoginSignup/Login";
+import Signup from "../LoginSignup/Signup";
 
 const routes = [
   {
@@ -32,6 +34,14 @@ const routes = [
     path: "/towatchlist/entries/:id/:key",
     element: <ToWatchListMovies />,
   },
+  {
+    path: "/login",
+    element: <Login/>
+  },
+  {
+    path: "/signup",
+    element: <Signup/>
+  }
 ];
 
 export default routes;
