@@ -18,7 +18,12 @@ COMPLETED ALL OF THEM!!! :DDDD
 
 
 ## Important to do:
-- [ ] Create a login/Sign up page (w/ forgot password)
+- [x] Create a login/Sign up page (w/ forgot password)
+  - [ ] Make it so that (no need to input API for):
+    - [ ] Quick Add to WatchList (from homepage)
+    - [ ] No need to enter Api key for toWatchList
+    - [ ] No need to enter APi key for CompletedWatchList
+  - [ ] Make sure that the completed list entries api has movies detail in there: "so that when you click movie details you can actually see the movies in there"
 - [ ] Make it look Pretty (css) -- try to use good UX practice 
   
 ## Extra stuff to do:

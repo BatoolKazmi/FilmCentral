@@ -47,6 +47,9 @@ app.post('/api/auth/login', async (req, res) => {
             // Store user ID in session
             req.session.userId = response.data.userId;
             req.session.username = response.data.username;
+            req.session.email = response.data.email;
+            req.session.api_key = response.data.api_key;
+            req.session.api_date = response.data.api_date;
             res.json({ success: true });
             console.log("login success")
         } else {
@@ -75,7 +78,7 @@ app.get('/api/user/stats', async (req, res) => {
     }
 
     console.log(req.session.userId);
-    
+
     try {
         const response = await axios.get(`https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/user/${req.session.userId}/stats`);
         res.json(response.data);
