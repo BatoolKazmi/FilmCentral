@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import NavBar from '../NavBar';
 import "../../styles/LoginSignup.css";
 import SignupValidation from './SignupValidation';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
 
@@ -12,13 +14,31 @@ export default function Signup() {
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
 
     // HANDLE SUBMISSION
-    const handleSubmit = (ev) => {
-    ev.preventDefault();
-    const validationErrors = SignupValidation(username, email, password, password2)
-    setErrors(validationErrors); // Clear errors
-    }
+    const handleSubmit = async (ev) => {
+      ev.preventDefault();
+      const validationErrors = SignupValidation(username, email, password, password2)
+      setErrors(validationErrors); // Clear errors
+
+      try {
+        const response = await axios.post('https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/create-account.php', {
+          username,
+          email,
+          password,
+        });
+        
+        if (response.data.error) {
+          setErrors({ server: response.data.error });
+        } else {
+          navigate('/login');
+        }
+      } catch (err) {
+        console.error('There was an error!', err);
+      }
+
+    };
 
   return (
     <><NavBar/>
@@ -83,11 +103,6 @@ export default function Signup() {
                 {errors.p_match}
               </span>
             </div>
-            {errors.general && (
-                            <div className="error">
-                                {errors.general}
-                            </div>
-                        )}
             <button id="submit" name="submit">Create Account</button>
             <Link to="/login">Sign In</Link>
           </form>
