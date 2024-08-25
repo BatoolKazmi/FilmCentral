@@ -7,6 +7,7 @@ import Movie from "./Movie";
 import ToWatchListMovies from "./TowatchlistMovies";
 import Login from "../LoginSignup/Login";
 import Signup from "../LoginSignup/Signup";
+import User from "../User";
 
 const routes = [
   {
@@ -41,6 +42,10 @@ const routes = [
   {
     path: "/signup",
     element: <Signup/>
+  },
+  {
+    path: "/user",
+    element: <User/>
   }
 ];
 
