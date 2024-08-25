@@ -1,25 +1,31 @@
 import NavBar from "./NavBar";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useUser } from "./UserContext";
 
-const User = ({ userId }) =>  {
-    const [stats, setStats] = useState([]);
+const User = () =>  {
+  const { user, logout } = useUser();
+  const [stats, setStats] = useState({});
 
-    useEffect(() => {
-        const fetchStats = async () => {
-
-            const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/user/${userId}/stats`
-          try {
-            const response = await axios.get(API);
-            setStats(response.data);
-          } catch (error) {
-            console.error('Error fetching user stats:', error);
-          }
-        };
+  useEffect(() => {
     
-        fetchStats();
-      }, [userId]);
+    fetchStats();
+
+  }, []);
     
+  const fetchStats = async () => {
+    if (!user) {
+      console.error('User not authenticated');
+      return;
+    }
+  
+    try {
+      const response = await axios.get(`http://localhost:5000/api/user/stats`, { withCredentials: true });
+      setStats(response.data);
+    } catch (error) {
+      console.error('Error fetching user stats:', error);
+    }
+  };
 
     return (
         <>

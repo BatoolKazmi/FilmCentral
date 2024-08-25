@@ -3,6 +3,7 @@ import NavBar from "../NavBar";
 import MovieCardCompleted from "../MovieCardCompleted";
 import FindMovie from "../FindMovie";
 import Pagination from "../Pagination";
+import Logout from "../LoginSignup/Logout";
 
 function CompletedWatchList() {
   const [movies, setMovies] = useState([]);
@@ -55,6 +56,7 @@ function CompletedWatchList() {
         <h1>Completed Watch List</h1>
         <FindMovie onKeySubmit={getMovies} />
       </header>
+      <Logout/>
       <div>
                 <Pagination
                     currentPage={currentPage}

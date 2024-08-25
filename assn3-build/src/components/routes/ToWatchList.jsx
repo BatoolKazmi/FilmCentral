@@ -4,6 +4,7 @@ import MovieCard from "../MovieCard";
 import FindMovie from "../FindMovie";
 import MovieCardTowatch from "../MovieCardToWatch";
 import Pagination from "../Pagination";
+import Logout from "../LoginSignup/Logout";
 
 function ToWatchList() {
   const [movies, setMovies] = useState([]);
@@ -60,6 +61,7 @@ function ToWatchList() {
         <h1>To Watch List</h1>
         <FindMovie onKeySubmit={getMovies} />
       </header>
+      <Logout/>
       <div>
                 <Pagination
                     currentPage={currentPage}

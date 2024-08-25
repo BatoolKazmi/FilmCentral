@@ -22,21 +22,25 @@ export default function Signup() {
       const validationErrors = SignupValidation(username, email, password, password2)
       setErrors(validationErrors); // Clear errors
 
+      const API = "https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/signup";
       try {
-        const response = await axios.post('https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/create-account.php', {
+        const response = await axios.post(API, {
           username,
-          email,
           password,
+          password2,
+          email
         });
-        
         if (response.data.error) {
           setErrors({ server: response.data.error });
         } else {
+          alert("YOU SIGNED UP!!")
           navigate('/login');
         }
       } catch (err) {
         console.error('There was an error!', err);
       }
+
+      navigate("/login");
 
     };
 

@@ -8,32 +8,33 @@ import ToWatchListMovies from "./TowatchlistMovies";
 import Login from "../LoginSignup/Login";
 import Signup from "../LoginSignup/Signup";
 import User from "../User";
+import ProtectedRoute from "./ProtectedRoute";
 
 const routes = [
   {
     path: "/",
-    element: <Home />,
+    element: <ProtectedRoute><Home /></ProtectedRoute>,
     errorElement: <ErrorPage />,
   },
   {
     path: "/towatchlist",
-    element: <ToWatchList />,
+    element: <ProtectedRoute><ToWatchList /></ProtectedRoute>,
   },
   {
     path: "/completedwatchlist",
-    element: <CompletedWatchList />,
+    element: <ProtectedRoute><CompletedWatchList /></ProtectedRoute>,
   },
   {
     path: "/movies/:id",
-    element: <Movie />,
+    element: <ProtectedRoute><Movie /></ProtectedRoute>,
   },
   {
     path: "/completedwatchlist/entries/:id/:key",
-    element: <CompletedMovies />,
+    element: <ProtectedRoute><CompletedMovies /></ProtectedRoute>,
   },
   {
     path: "/towatchlist/entries/:id/:key",
-    element: <ToWatchListMovies />,
+    element: <ProtectedRoute><ToWatchListMovies /></ProtectedRoute>,
   },
   {
     path: "/login",
@@ -45,8 +46,8 @@ const routes = [
   },
   {
     path: "/user",
-    element: <User/>
-  }
+    element: <ProtectedRoute><User/></ProtectedRoute>
+  },
 ];
 
 export default routes;
