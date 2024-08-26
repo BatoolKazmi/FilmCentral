@@ -50,8 +50,12 @@ app.post('/api/auth/login', async (req, res) => {
             req.session.email = response.data.email;
             req.session.api_key = response.data.api_key;
             req.session.api_date = response.data.api_date;
+
+            console.log("Session after login:", req.session);
             res.json({ success: true });
             console.log("login success")
+            
+            
         } else {
             res.status(401).json({ error: 'Invalid credentials' });
         }
@@ -59,6 +63,8 @@ app.post('/api/auth/login', async (req, res) => {
         console.error('Error during login:', error);
         res.status(500).json({ error: 'Failed to authenticate' });
     }
+
+    
 });
 
 // Logout Route
@@ -87,6 +93,67 @@ app.get('/api/user/stats', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch user stats' });
     }
 });
+
+app.post('/api/towatchlist/entries', async (req, res) => {
+    
+
+    if (!req.session.api_key) {
+        return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const { movie_id, priority, notes } = req.body;
+    const API = "https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries";
+
+    try {
+        const response = await axios.post(API, {
+            key: req.session.api_key,
+            movie_id,
+            priority,
+            notes,
+            
+        });
+
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error adding movie to watchlist:', error);
+        res.status(500).json({ error: 'Failed to add movie to watchlist' });
+    }
+});
+
+app.get('/api/towatchlist/entries', async (req, res) => {
+    if (!req.session.api_key) {
+        return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries?key=${req.session.api_key}`;
+
+    try {
+        const response = await axios.get(API);
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching movies:', error);
+        res.status(500).json({ error: 'Failed to fetch movies' });
+    }
+});
+
+
+app.get('/api/completedwatchlist/entries', async (req, res) => {
+    if (!req.session.api_key) {
+        return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries?key=${req.session.api_key}`;
+
+    try {
+        const response = await axios.get(API);
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching movies:', error);
+        res.status(500).json({ error: 'Failed to fetch movies' });
+    }
+});
+
+
 
 app.listen(PORT, () => {
     console.log('Server is running on port 5000');
