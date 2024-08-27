@@ -8,7 +8,7 @@ function CompletedMovies() {
   const [timesWatched, setTimesWatched] = useState(0);
   const [rating, setRating] = useState("");
 
-  if (movie.poster === "NA") {
+  if (movie.poster === null) {
     movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
   }
 

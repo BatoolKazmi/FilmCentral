@@ -41,11 +41,11 @@ COMPLETED ALL OF THEM!!! :DDDD
   
 ## Extra stuff to do:
 - [ ] Create more filters:
-  - [ ] Production company filter
+  - [x] Production company filter
     - [ ] Make the company also appear in Movie Details
 
-  - [ ] Filter To Watch List (same as home page mabye -- searching & stuff)
-  - [ ] Filter Completed Watch List (same as home page mabye -- searching & stuff)
+- [ ] Filter To Watch List (same as home page mabye -- searching & stuff)
+- [ ] Filter Completed Watch List (same as home page mabye -- searching & stuff)
 
 ## Remember
  1. 3430_users (userId, username, email, password, api_key, 	api_date), 2. 3430_toWatchList (watchListId, userId, movieid, priority, notes), 3. 3430_completedWatchList (completedId, userId, movieid, rating, notes, date_initially_watched, date_last_watched, times_watched), 4. 3430_movies (id, title, tagline, overview, 	original_language, poster, runtime, vote_average, vote_count, 	budget, revenue, homepage, release_date)

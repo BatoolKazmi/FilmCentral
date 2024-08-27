@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import NavBar from "../NavBar";
-import MovieCard from "../MovieCard";
+// import MovieCard from "../MovieCard";
 // import FindMovie from "../FindMovie";
-import MovieCardTowatch from "../MovieCardToWatch";
+// import MovieCardTowatch from "../MovieCardToWatch";
 import Pagination from "../Pagination";
 import axios from "axios";
+// import DeckToWatch from "../DecktoWatch";
+import DeckToWatch from "../DeckToWatch";
 
 function ToWatchList() {
   const [movies, setMovies] = useState([]);
@@ -51,7 +53,7 @@ function ToWatchList() {
     ///
     const [currentPage, setCurrentPage] = useState(1);
     // Do like 20, 30, 40 or 50
-    const [moviesPerPage, setmoviesPerPage] = useState(30);
+    const [moviesPerPage, setmoviesPerPage] = useState(20);
 
     const lastPostIndex = currentPage * moviesPerPage;
     const firstPostIndex = lastPostIndex - moviesPerPage;
@@ -71,30 +73,19 @@ function ToWatchList() {
                 <Pagination
                     currentPage={currentPage}
                     total={movies.length}
-                    limit={30}
+                    limit={20}
                     onPageChange={(page) => setCurrentPage(page)}
                 />
             </div>
       <main>
         {/* Info goes here! */}
-        {movies.map((movie, i) => (
-          <MovieCardTowatch
-            movie={movie}
-            key={i}
-            id={movie.movieid}
-            // Shelmah
-            // Watchlistid={movie.Watchlistid}
-            Watchlistid={movie.watchListId}
-            onRemove={handleMovieRemoval}
-            apiKey={key}
-          />
-        ))}
+        <DeckToWatch movies={currentPosts} key={key} handleMovieRemoval={handleMovieRemoval}/>
       </main>
       <div>
           <Pagination
               currentPage={currentPage}
               total={movies.length}
-              limit={30}
+              limit={20}
               onPageChange={(page) => setCurrentPage(page)}
           />
       </div>

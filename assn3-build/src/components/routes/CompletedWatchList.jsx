@@ -5,6 +5,7 @@ import FindMovie from "../FindMovie";
 import Pagination from "../Pagination";
 import Logout from "../LoginSignup/Logout";
 import axios from "axios";
+import DeckCompleted from "../DeckCompleted";
 
 function CompletedWatchList() {
   const [movies, setMovies] = useState([]);
@@ -45,7 +46,7 @@ function CompletedWatchList() {
   ///
   const [currentPage, setCurrentPage] = useState(1);
   // Do like 20, 30, 40 or 50
-  const [moviesPerPage, setmoviesPerPage] = useState(30);
+  const [moviesPerPage, setmoviesPerPage] = useState(20);
 
   const lastPostIndex = currentPage * moviesPerPage;
   const firstPostIndex = lastPostIndex - moviesPerPage;
@@ -65,30 +66,19 @@ function CompletedWatchList() {
                 <Pagination
                     currentPage={currentPage}
                     total={movies.length}
-                    limit={30}
+                    limit={20}
                     onPageChange={(page) => setCurrentPage(page)}
                 />
             </div>
       <main>
         {/* Info goes here! */}
-        {movies.map((movie, i) => (
-          <MovieCardCompleted
-            movie={movie}
-            key={i}
-            completedId={movie.completedId}
-            id={movie.movieid}
-            // Batool
-            //completedId={movie.completedWatchListId}
-            apiKey={key}
-            onRemove={handleMovieRemoval}
-          />
-        ))}
+        <DeckCompleted movies={currentPosts} key={key} handleMovieRemoval={handleMovieRemoval} />
       </main>
       <div>
                 <Pagination
                     currentPage={currentPage}
                     total={movies.length}
-                    limit={30}
+                    limit={20}
                     onPageChange={(page) => setCurrentPage(page)}
                 />
             </div>

@@ -8,7 +8,7 @@ function ToWatchListMovies() {
   const [priority, setPriority] = useState("");
   const label = `Update Priority (?/10): `;
 
-  if (movie.poster == "NA") {
+  if (movie.poster == null) {
     movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
   }
   //const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/movies/${id}`;

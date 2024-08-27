@@ -61,6 +61,9 @@ function Movie() {
         <strong>Genres:</strong> {movie.genre_names ? movie.genre_names.replace(/,/g, ", ") : ""}
       </p>
       {/* PRODUCTION COMPANIES??? */}
+      <p>
+        <strong>Production Company:</strong> {movie.company_names ? movie.company_names.replace(/,/g, ", ") : ""}
+      </p>
     </>
   );
 }
