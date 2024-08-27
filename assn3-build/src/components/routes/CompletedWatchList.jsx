@@ -72,7 +72,7 @@ function CompletedWatchList() {
             </div>
       <main>
         {/* Info goes here! */}
-        <DeckCompleted movies={currentPosts} key={key} handleMovieRemoval={handleMovieRemoval} />
+        <DeckCompleted movies={currentPosts} api={key} handleMovieRemoval={handleMovieRemoval} />
       </main>
       <div>
                 <Pagination

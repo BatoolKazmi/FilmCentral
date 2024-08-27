@@ -1,6 +1,6 @@
 import MovieCardCompleted from "./MovieCardCompleted";
 
-function DeckCompleted({ movies, key, handleMovieRemoval }) {
+function DeckCompleted({ movies, api, handleMovieRemoval }) {
     return (
         <>
             {movies.map((movie, i) => (
@@ -11,7 +11,7 @@ function DeckCompleted({ movies, key, handleMovieRemoval }) {
             id={movie.movieid}
             // Batool
             //completedId={movie.completedWatchListId}
-            apiKey={key}
+            apiKey={api}
             onRemove={handleMovieRemoval}
           />
         ))}

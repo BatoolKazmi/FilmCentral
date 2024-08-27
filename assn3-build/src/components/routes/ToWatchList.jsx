@@ -13,10 +13,19 @@ function ToWatchList() {
   const [key, setKey] = useState("");
 
   useEffect(() => {
-    fetchMovies();
-    fetchApiKey();
-}, [key, movies]);
-
+    async function fetchKeyAndMovies() {
+      await fetchApiKey();
+      fetchMovies();
+    }
+    fetchKeyAndMovies();
+  }, []);
+  
+  useEffect(() => {
+    if (key) {
+      fetchMovies();
+    }
+  }, [key, movies]);
+  
   async function fetchMovies() {
     try {
       const response = await axios.get('http://localhost:5000/api/towatchlist/entries', {withCredentials: true});
@@ -45,8 +54,15 @@ function ToWatchList() {
   // }
 
   function handleMovieRemoval(id) {
-    setMovies((prevMovies) => prevMovies.filter((movie) => movie.movieid !== id));
+    setMovies((prevMovies) => {
+      const updatedMovies = prevMovies.filter((movie) => movie.movieid !== id);
+      if (currentPage > 1 && updatedMovies.length <= firstPostIndex) {
+        setCurrentPage(currentPage - 1);
+      }
+      return updatedMovies;
+    });
   }
+  
 
 
   // Adding pagination
@@ -59,7 +75,6 @@ function ToWatchList() {
     const firstPostIndex = lastPostIndex - moviesPerPage;
 
     const currentPosts = movies.slice(firstPostIndex, lastPostIndex);
-
 
   return (
     <>
@@ -79,7 +94,13 @@ function ToWatchList() {
             </div>
       <main>
         {/* Info goes here! */}
-        <DeckToWatch movies={currentPosts} key={key} handleMovieRemoval={handleMovieRemoval}/>
+        {key && (
+        <DeckToWatch
+          movies={currentPosts}
+          api={key}
+          handleMovieRemoval={handleMovieRemoval}
+        />
+      )}
       </main>
       <div>
           <Pagination

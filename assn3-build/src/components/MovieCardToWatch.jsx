@@ -11,6 +11,7 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
   if (movie.poster == null) {
     movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
   }
+  // console.log(apiKey);
   //console.log(Watchlistid);
   async function handleDelete() {
     setIsProcessing(true);

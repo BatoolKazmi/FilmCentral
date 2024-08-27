@@ -1,6 +1,7 @@
 import MovieCardTowatch from "./MovieCardToWatch";
 
-function DeckToWatch({ movies, key, handleMovieRemoval }) {
+function DeckToWatch({ movies, api, handleMovieRemoval }) {
+
     return (
         <>
             {movies.map((movie, i) => (
@@ -12,8 +13,10 @@ function DeckToWatch({ movies, key, handleMovieRemoval }) {
             // Watchlistid={movie.Watchlistid}
             Watchlistid={movie.watchListId}
             onRemove={handleMovieRemoval}
-            apiKey={key}
+            apiKey={api}
           />
+
+          
         ))}
         </>
 
