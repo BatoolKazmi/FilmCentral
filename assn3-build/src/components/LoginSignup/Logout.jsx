@@ -1,20 +1,24 @@
 import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../UserContext';
 
 const Logout = () => {
-  const { logout } = useUser();
   const navigate = useNavigate();
     
   const handleLogout = async () => {
     try {
-        await logout(); // Use the logout function from UserContext
-        navigate('/login'); // Redirect to login page
+        // Call the backend logout route
+        await axios.get('http://localhost:5000/logout', { withCredentials: true });
+
+        // // Perform any frontend logout operations
+        // logout();
+
+        // Redirect to login page
+        navigate('/login');
     } catch (error) {
         console.error('Error during logout:', error);
     }
-  };
+};
 
   return (
     <button href="/login" onClick={handleLogout}>Logout</button>

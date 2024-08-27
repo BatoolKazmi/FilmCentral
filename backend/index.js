@@ -22,9 +22,14 @@ app.use(session({
 }));
 
 app.get('/api/auth/session', (req, res) => {
-    console.log("hey")
+    console.log("hey this is user auth")
+    console.log(req.session.userId)
+    console.log(req.session.api_key)
     if (req.session.userId) {
-        res.json({ user: req.session.userId });
+        res.json({ 
+            user: req.session.userId,
+            api_key: req.session.api_key
+        });
     } else {
         res.status(401).json({ error: 'Not authenticated' });
     }

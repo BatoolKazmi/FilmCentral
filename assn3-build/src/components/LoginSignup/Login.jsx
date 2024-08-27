@@ -5,11 +5,11 @@ import "../../styles/LoginSignup.css"
 import Validation from './LoginValidation';"./LoginValidation";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { useUser } from '../UserContext';
+// import { useUser } from '../UserContext';
 
 function Login() {
 
-  const { login } = useUser();
+  // const { login } = useUser();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({
@@ -25,7 +25,7 @@ function Login() {
     ev.preventDefault();
     const validationErrors = Validation(username, password)
     setErrors(validationErrors); // Clear errors
-    login({ username });
+    // login({ username });
 
     // const API = "https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/login";
     // try {

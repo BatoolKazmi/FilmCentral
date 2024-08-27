@@ -1,10 +1,10 @@
 import NavBar from "../NavBar";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useUser } from "../UserContext";
+// import { useUser } from "../UserContext";
 
 const User = () =>  {
-  const { user, logout } = useUser();
+  // const { user, logout } = useUser();
   const [stats, setStats] = useState({});
 
   useEffect(() => {
@@ -14,10 +14,6 @@ const User = () =>  {
   }, []);
     
   const fetchStats = async () => {
-    if (!user) {
-      console.error('User not authenticated');
-      return;
-    }
   
     try {
       const response = await axios.get(`http://localhost:5000/api/user/stats`, { withCredentials: true });
