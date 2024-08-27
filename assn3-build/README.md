@@ -33,6 +33,7 @@ COMPLETED ALL OF THEM!!! :DDDD
   - [ ] To Completed WatchList
     - [x] make a comment at the top that it is ordered by rating
     - [ ] Make Times Watched Decrease
+    - [ ] Make user being able to edit notes for the completed watch list
     - [ ] Remove from completed list & add back toWatchlist
 
   - [ ] When movie (MOVIES FROM HOME PAGE) is in towatchlist or completed watch list then you cannot add it to any list
@@ -40,9 +41,9 @@ COMPLETED ALL OF THEM!!! :DDDD
 - [ ] Make it look Pretty (css) -- try to use good UX practice 
   
 ## Extra stuff to do:
-- [ ] Create more filters:
+- [x] Create more filters:
   - [x] Production company filter
-    - [ ] Make the company also appear in Movie Details
+    - [x] Make the company also appear in Movie Details
 
 - [ ] Filter To Watch List (same as home page mabye -- searching & stuff)
 - [ ] Filter Completed Watch List (same as home page mabye -- searching & stuff)

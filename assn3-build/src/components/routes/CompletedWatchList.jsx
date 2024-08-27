@@ -11,14 +11,44 @@ function CompletedWatchList() {
   const [movies, setMovies] = useState([]);
   const [key, setKey] = useState("");
 
+
+  // FILTERATION
+  const [name, setName] = useState("");
+
+  // function getFilter(name) {
+  //   setTitle(name);
+  // }
+
+  const updateSearch = (ev) => {
+    setName(ev.target.value);
+}
+
   useEffect(() => {
     fetchMovies();
+  }, [name]);
+
+  // HANDLE SUBMISSION
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+    // filters(name);
+    setName("")
+    page(1);
+    fetchMovies();
+}
+
+  // Filter stuff ends
+
+
+  useEffect(() => {
     fetchApiKey();
   }, [movies]);
 
   async function fetchMovies() {
     try {
-      const response = await axios.get('http://localhost:5000/api/completedwatchlist/entries', { withCredentials: true });
+      const response = await axios.get('http://localhost:5000/api/completedwatchlist/entries', {
+        params: { title: name }, // Pass title as query parameter
+        withCredentials: true
+      });
       if (Array.isArray(response.data)) {
         setMovies(response.data);
       } else {
@@ -62,6 +92,20 @@ function CompletedWatchList() {
         <p>Completed Watch List is ordered by Rating</p>
         {/* <FindMovie onKeySubmit={getMovies} /> */}
       </header>
+      <form
+        className="FilterForm"
+        onSubmit={handleSubmit}>
+        <div>
+            <label htmlFor="search">Search the Title: </label>
+            <input
+                type="text"
+                name="search"
+                id="search"
+                value={name}
+                onChange={updateSearch} 
+                placeholder="Search a Title of a Movie" />
+        </div>
+      </form>
       <div>
                 <Pagination
                     currentPage={currentPage}
