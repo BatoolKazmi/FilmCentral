@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "../styles/filterform.css"
 
 function FilterForm({ filters, page }) {
 
@@ -8,6 +9,12 @@ function FilterForm({ filters, page }) {
     const [genres, setGenres] = useState([]);
     const [genre, setGenre] = useState("");
 
+    // Production  companies
+    const [companies, setCompanies] = useState([]);
+    const [company, setCompany] = useState("");
+    const [companySearch, setCompanySearch] = useState(""); // New state for company search
+
+    const updateCompanySearch = (ev) => setCompanySearch(ev.target.value); // Update company search query
 
     const updateSearch = (ev) => {
         console.log("Change event!");
@@ -27,6 +34,11 @@ function FilterForm({ filters, page }) {
         setGenre(ev.target.value);
     }
 
+    const selectCompany = (companyName) => {
+        setCompany(companyName);
+        setCompanySearch(""); // Clear search input after selection
+    };
+
     const label = `Rating (?/10): `;
 
 
@@ -36,6 +48,12 @@ function FilterForm({ filters, page }) {
         const jsonResponse = await resp.json();
         const set = jsonResponse;
         setGenres(set);
+
+        const companyApi = "https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/companies/";
+        const rep = await fetch(companyApi);
+        const json = await rep.json();
+        const comp = json;
+        setCompanies(comp);
     }
 
     useEffect(() => {
@@ -46,12 +64,18 @@ function FilterForm({ filters, page }) {
     // HANDLE SUBMISSION
     const handleSubmit = (ev) => {
         ev.preventDefault();
-        filters(see, rate, genre);
+        filters(see, rate, genre, company);
         setSearch("");
         setRate("");
-        setGenre("")
+        setGenre("");
+        setCompany("");
         page(1);
     }
+
+    // Filter companies based on search input
+    const filteredCompanies = companies.filter((company) =>
+        company.name.toLowerCase().includes(companySearch.toLowerCase())
+    );
 
     return (
         <>
@@ -65,7 +89,8 @@ function FilterForm({ filters, page }) {
                         name="search"
                         id="search"
                         value={see}
-                        onChange={updateSearch} />
+                        onChange={updateSearch} 
+                        placeholder="Search a Title of a Movie" />
                 </div>
 
                 <div>
@@ -94,7 +119,37 @@ function FilterForm({ filters, page }) {
                         ))}
                     </select>
                 </div>
-
+                <div className="selectBox">
+                    <label htmlFor="companies">Production Company: </label>
+                    <input type="text" 
+                        className="search-box" 
+                        placeholder="Select Company" 
+                        onChange={updateCompanySearch}
+                        value={companySearch} /> 
+                    <ul className="options">
+                        <ul className="options">
+                            {/* <li value="Select">Select Company</li>
+                            {companies.map((company, index) => (
+                                <li value={company.name} key={index}>{company.name}</li>
+                            ))} */}
+                             {filteredCompanies.length > 0 ? (
+                                filteredCompanies.map((company, index) => (
+                            <li
+                                key={index}
+                                onClick={() => selectCompany(company.name)}
+                                className={company === company.name ? "selected" : ""}
+                            >
+                                {company.name}
+                            </li>
+                            ))
+                            ) : (
+                                <li>No matching companies</li>
+                            )}
+                        </ul>
+                    </ul>
+                    <div class="selected-option" value>{company || "Select an option"}</div> 
+                    <button id="clear-button" onClick={() => setCompany("")} >Clear Selection</button>
+                </div>
 
                 <button>Find Movie!</button>
             </form>

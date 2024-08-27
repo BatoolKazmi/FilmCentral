@@ -8,7 +8,7 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
   const [showRatingInput, setShowRatingInput] = useState(false);
   const [userRating, setUserRating] = useState("");
 
-  if (movie.poster == "NA") {
+  if (movie.poster == null) {
     movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
   }
   //console.log(Watchlistid);

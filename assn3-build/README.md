@@ -28,10 +28,10 @@ COMPLETED ALL OF THEM!!! :DDDD
 
   - [ ] To Watch List 
     - [ ] Make User being able to edit Notes for the movie
-    - [ ] Make a comment at the top that it is ordered by priority
+    - [x] Make a comment at the top that it is ordered by priority
 
   - [ ] To Completed WatchList
-    - [ ] make a comment at the top that it is ordered by rating
+    - [x] make a comment at the top that it is ordered by rating
     - [ ] Make Times Watched Decrease
     - [ ] Remove from completed list & add back toWatchlist
 

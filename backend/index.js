@@ -17,8 +17,7 @@ app.use(cors({
 app.use(session({
     secret: config.SESSION_SECRET,
     resave: true,
-    saveUninitialized: false,
-    cookie: {  maxAge: 1000000 } // set secure: true if using https
+    saveUninitialized: false
 }));
 
 app.get('/api/auth/session', (req, res) => {

@@ -58,6 +58,7 @@ function CompletedWatchList() {
       <header>
         <NavBar />
         <h1>Completed Watch List</h1>
+        <p>Completed Watch List is ordered by Rating</p>
         {/* <FindMovie onKeySubmit={getMovies} /> */}
       </header>
       <div>

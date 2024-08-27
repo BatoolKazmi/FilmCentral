@@ -9,14 +9,16 @@ function Home() {
     const [movies, setMovies] = useState([]);
     const [name, setName] = useState("");
     const [rate, setRate] = useState("");
-    const [genre, setGenre] = useState("")
+    const [genre, setGenre] = useState("");
+    const [company, setCompany] = useState("");
 
-    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/movie/?title=${name}&vote_average=${rate}&genres=${genre}`;
+    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/movie/?title=${name}&vote_average=${rate}&genres=${genre}&company=${company}`;
 
-    function getFilter(name, rate, genre) {
+    function getFilter(name, rate, genre, company) {
         setName(name);
         setRate(rate);
         setGenre(genre);
+        setCompany(company);
     }
 
     async function fetchContact() {
@@ -28,7 +30,7 @@ function Home() {
 
     useEffect(() => {
         fetchContact();
-    }, [name, rate, genre]);
+    }, [name, rate, genre, company]);
 
     // Adding pagination
     ///

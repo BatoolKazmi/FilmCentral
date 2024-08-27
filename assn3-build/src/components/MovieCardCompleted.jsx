@@ -7,7 +7,7 @@ function MovieCardCompleted({ movie, id, completedId, apiKey, onRemove }) {
   const [isProcessing, setIsProcessing] = useState(false);
 
 
-  if (movie.poster == "NA") {
+  if (movie.poster == null) {
     movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
   }
 
