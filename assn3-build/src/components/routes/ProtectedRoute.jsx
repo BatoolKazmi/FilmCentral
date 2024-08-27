@@ -5,7 +5,7 @@ import { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function ProtectedRoute({ children }) {
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState(null);
 
     const fetchUser = async () => {
         try {

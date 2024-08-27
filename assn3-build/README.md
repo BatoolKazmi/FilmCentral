@@ -19,15 +19,19 @@ COMPLETED ALL OF THEM!!! :DDDD
 
 ## Important to do:
 - [x] Create a login/Sign up page (w/ forgot password)
-  - [ ] Make it so that (no need to input API for):
-    - [ ] Quick Add to WatchList (from homepage)
-    - [ ] No need to enter Api key for toWatchList
-    - [ ] No need to enter APi key for CompletedWatchList
-  - [ ] Make sure that the completed list entries api has movies detail in there: "so that when you click movie details you can actually see the movies in there"
+  - [x] Make it so that (no need to input API for):
+    - [x] Quick Add to WatchList (from homepage)
+    - [x] No need to enter Api key for toWatchList
+    - [x] No need to enter APi key for CompletedWatchList
+  - [x] Make sure that the completed list entries api has movies detail in there: "so that when you click movie details you can actually see the movies in there"
+
+
+
 - [ ] Make it look Pretty (css) -- try to use good UX practice 
   
 ## Extra stuff to do:
-- [ ] Create more filters
+- [ ] Create more filters:
+  - [ ] Production company filter
 
 ## Remember
  1. 3430_users (userId, username, email, password, api_key, 	api_date), 2. 3430_toWatchList (watchListId, userId, movieid, priority, notes), 3. 3430_completedWatchList (completedId, userId, movieid, rating, notes, date_initially_watched, date_last_watched, times_watched), 4. 3430_movies (id, title, tagline, overview, 	original_language, poster, runtime, vote_average, vote_count, 	budget, revenue, homepage, release_date)
