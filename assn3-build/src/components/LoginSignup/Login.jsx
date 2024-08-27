@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import NavBar from '../NavBar';
 import "../../styles/LoginSignup.css"
 import Validation from './LoginValidation';"./LoginValidation";
 import { useNavigate } from "react-router-dom";
@@ -69,8 +68,7 @@ function Login() {
 
   return (
     <>
-    <NavBar/>
-        <main>
+      <main>
         <div id="center-container">
           <h2>Login</h2>
           <form action="" onSubmit={handleSubmit}>

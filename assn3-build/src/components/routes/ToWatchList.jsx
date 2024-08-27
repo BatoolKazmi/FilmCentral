@@ -1,46 +1,51 @@
 import { useEffect, useState } from "react";
 import NavBar from "../NavBar";
 import MovieCard from "../MovieCard";
-import FindMovie from "../FindMovie";
+// import FindMovie from "../FindMovie";
 import MovieCardTowatch from "../MovieCardToWatch";
 import Pagination from "../Pagination";
-import Logout from "../LoginSignup/Logout";
+import axios from "axios";
 
 function ToWatchList() {
   const [movies, setMovies] = useState([]);
   const [key, setKey] = useState("");
 
-  // const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries?key=${key}`;
-  const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries?key=${key}`
+  useEffect(() => {
+    fetchMovies();
+    fetchApiKey();
+}, [key, movies]);
 
-  console.log(key);
-  async function fetchMovie() {
+  async function fetchMovies() {
     try {
-      const resp = await fetch(API);
-      if (!resp.ok) {
-        throw new Error(`HTTP error! status: ${resp.status}`);
-      }
-      const jsonResponse = await resp.json();
-      console.log("API Response:", jsonResponse);
-      if (Array.isArray(jsonResponse)) {
-        setMovies(jsonResponse);
+      const response = await axios.get('http://localhost:5000/api/towatchlist/entries', {withCredentials: true});
+      if (Array.isArray(response.data)) {
+        setMovies(response.data);
       } else {
-        console.error("API response is not an array:", jsonResponse);
+        console.error("API response is not an array:", response.data);
       }
     } catch (error) {
       console.error("Failed to fetch movies:", error);
     }
   }
 
-  useEffect(() => {
-    fetchMovie();
-  }, [key]);
-  function getMovies(key) {
-    setKey(key);
+
+  async function fetchApiKey() {
+    try {
+      const response = await axios.get('http://localhost:5000/api/getApiKey', { withCredentials: true });
+      setKey(response.data.apiKey);
+    } catch (error) {
+      console.error("Failed to fetch API key:", error);
+    }
   }
-  function handleMovieRemoval() {
-    fetchMovie(); // Refresh the movie list
+
+  // function handleMovieRemoval() {
+  //   fetchMovie(); // Refresh the movie list
+  // }
+
+  function handleMovieRemoval(id) {
+    setMovies((prevMovies) => prevMovies.filter((movie) => movie.movieid !== id));
   }
+
 
   // Adding pagination
     ///
@@ -59,9 +64,8 @@ function ToWatchList() {
       <header>
         <NavBar />
         <h1>To Watch List</h1>
-        <FindMovie onKeySubmit={getMovies} />
+        {/* <FindMovie onKeySubmit={getMovies} /> */}
       </header>
-      <Logout/>
       <div>
                 <Pagination
                     currentPage={currentPage}
@@ -86,13 +90,13 @@ function ToWatchList() {
         ))}
       </main>
       <div>
-                <Pagination
-                    currentPage={currentPage}
-                    total={movies.length}
-                    limit={30}
-                    onPageChange={(page) => setCurrentPage(page)}
-                />
-            </div>
+          <Pagination
+              currentPage={currentPage}
+              total={movies.length}
+              limit={30}
+              onPageChange={(page) => setCurrentPage(page)}
+          />
+      </div>
     </>
   );
 }

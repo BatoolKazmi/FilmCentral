@@ -4,7 +4,6 @@ import MovieCard from "../MovieCard";
 import FilterForm from "../FilterForm";
 import MovieDeck from "../MovieDeck";
 import Pagination from "../Pagination";
-import Logout from "../LoginSignup/Logout"
 
 function Home() {
     const [movies, setMovies] = useState([]);
@@ -51,7 +50,6 @@ function Home() {
                 <h1>Movies</h1>
                 <FilterForm filters={getFilter} page={setCurrentPage} />
             </header>
-            <Logout/>
             <div>
                 <Pagination
                     currentPage={currentPage}

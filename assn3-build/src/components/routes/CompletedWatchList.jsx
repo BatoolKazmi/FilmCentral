@@ -4,37 +4,41 @@ import MovieCardCompleted from "../MovieCardCompleted";
 import FindMovie from "../FindMovie";
 import Pagination from "../Pagination";
 import Logout from "../LoginSignup/Logout";
+import axios from "axios";
 
 function CompletedWatchList() {
   const [movies, setMovies] = useState([]);
   const [key, setKey] = useState("");
 
-  // const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries?key=${key}`;
-  const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries?key=${key}`
+  useEffect(() => {
+    fetchMovies();
+    fetchApiKey();
+  }, [movies]);
 
-  async function fetchMovie() {
+  async function fetchMovies() {
     try {
-      const resp = await fetch(API);
-      if (!resp.ok) {
-        throw new Error(`HTTP error! status: ${resp.status}`);
-      }
-      const jsonResponse = await resp.json();
-      console.log("API Response:", jsonResponse);
-      if (Array.isArray(jsonResponse)) {
-        setMovies(jsonResponse);
+      const response = await axios.get('http://localhost:5000/api/completedwatchlist/entries', { withCredentials: true });
+      if (Array.isArray(response.data)) {
+        setMovies(response.data);
       } else {
-        console.error("API response is not an array:", jsonResponse);
+        console.error("API response is not an array:", response.data);
       }
     } catch (error) {
       console.error("Failed to fetch movies:", error);
     }
   }
 
-  useEffect(() => {
-    fetchMovie();
-  }, [key]);
-  function getMovies(key) {
-    setKey(key);
+  async function fetchApiKey() {
+    try {
+      const response = await axios.get('http://localhost:5000/api/getApiKey', { withCredentials: true });
+      setKey(response.data.apiKey);
+    } catch (error) {
+      console.error("Failed to fetch API key:", error);
+    }
+  }
+
+  function handleMovieRemoval(id) {
+    setMovies((prevMovies) => prevMovies.filter((movie) => movie.completedId !== id));
   }
 
   // Adding pagination
@@ -54,9 +58,8 @@ function CompletedWatchList() {
       <header>
         <NavBar />
         <h1>Completed Watch List</h1>
-        <FindMovie onKeySubmit={getMovies} />
+        {/* <FindMovie onKeySubmit={getMovies} /> */}
       </header>
-      <Logout/>
       <div>
                 <Pagination
                     currentPage={currentPage}
@@ -72,9 +75,11 @@ function CompletedWatchList() {
             movie={movie}
             key={i}
             completedId={movie.completedId}
+            id={movie.movieid}
             // Batool
             //completedId={movie.completedWatchListId}
             apiKey={key}
+            onRemove={handleMovieRemoval}
           />
         ))}
       </main>

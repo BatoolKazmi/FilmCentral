@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState} from "react";
 import { Link } from "react-router-dom";
-import NavBar from '../NavBar';
 import "../../styles/LoginSignup.css";
 import SignupValidation from './SignupValidation';
 import axios from 'axios';
@@ -45,8 +44,8 @@ export default function Signup() {
     };
 
   return (
-    <><NavBar/>
-        <main>
+    <>
+      <main>
         <div id="center-container">
           <h2>Create Account</h2>
           <form id="create-account" action="" onSubmit={handleSubmit}>

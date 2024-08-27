@@ -67,6 +67,14 @@ app.post('/api/auth/login', async (req, res) => {
     
 });
 
+app.get('/api/getApiKey', (req, res) => {
+    if (!req.session.api_key) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+    res.json({ apiKey: req.session.api_key });
+  });
+  
+
 // Logout Route
 app.get("/logout", (req, res) => {  
     req.session.destroy((err) => {
@@ -94,6 +102,8 @@ app.get('/api/user/stats', async (req, res) => {
     }
 });
 
+
+/// TO WATCH LIST 
 app.post('/api/towatchlist/entries', async (req, res) => {
     
 
@@ -121,14 +131,17 @@ app.post('/api/towatchlist/entries', async (req, res) => {
 });
 
 app.get('/api/towatchlist/entries', async (req, res) => {
+
     if (!req.session.api_key) {
         return res.status(401).json({ error: 'Not authenticated' });
     }
 
-    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries?key=${req.session.api_key}`;
+    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries`;
 
     try {
-        const response = await axios.get(API);
+        const response = await axios.get(API, {
+            headers: { "X-Api-Key": req.session.api_key }, // Pass API key in headers
+        });
         res.json(response.data);
     } catch (error) {
         console.error('Error fetching movies:', error);
@@ -136,16 +149,19 @@ app.get('/api/towatchlist/entries', async (req, res) => {
     }
 });
 
+// COMPLETED WATCH LIST API HANDELING START!!
 
 app.get('/api/completedwatchlist/entries', async (req, res) => {
     if (!req.session.api_key) {
         return res.status(401).json({ error: 'Not authenticated' });
     }
 
-    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries?key=${req.session.api_key}`;
+    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries`;
 
     try {
-        const response = await axios.get(API);
+        const response = await axios.get(API, {
+            headers: { "X-Api-Key": req.session.api_key }, // Pass API key in headers
+        });
         res.json(response.data);
     } catch (error) {
         console.error('Error fetching movies:', error);

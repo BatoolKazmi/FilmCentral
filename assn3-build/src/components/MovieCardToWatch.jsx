@@ -11,7 +11,6 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
   if (movie.poster == "NA") {
     movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
   }
-  console.log(id);
   //console.log(Watchlistid);
   async function handleDelete() {
     setIsProcessing(true);
@@ -93,7 +92,8 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
       });
 
       if (!addResponse.ok) {
-        throw new Error("Failed to add movie to completed list");
+        const errorText = await addResponse.text();
+        throw new Error("Failed to add movie to completed list", errorText);
       }
 
       const jsonResponse = await addResponse.json();

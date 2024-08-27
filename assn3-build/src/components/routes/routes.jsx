@@ -7,8 +7,9 @@ import Movie from "./Movie";
 import ToWatchListMovies from "./TowatchlistMovies";
 import Login from "../LoginSignup/Login";
 import Signup from "../LoginSignup/Signup";
-import User from "../User";
+import User from "./User";
 import ProtectedRoute from "./ProtectedRoute";
+import Logout from "../LoginSignup/Logout";
 
 const routes = [
   {
@@ -48,6 +49,10 @@ const routes = [
     path: "/user",
     element: <ProtectedRoute><User/></ProtectedRoute>
   },
+  {
+    path: "/logout",
+    element: <Logout/>
+  }
 ];
 
 export default routes;

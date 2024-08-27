@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import "../styles/NavBar.css";
+import Logout from "./LoginSignup/Logout";
 
 function NavBar() {
     return (
@@ -8,7 +9,7 @@ function NavBar() {
             <NavLink to="/towatchlist">My WatchList</NavLink>
             <NavLink to="/completedwatchlist">Completed WatchList</NavLink>
             <NavLink to="/user">User</NavLink>
-            {/* <NavLink to="/login">Login</NavLink> */}
+            <Logout />
         </nav>
     );
 };
