@@ -25,7 +25,7 @@ function CompletedWatchList() {
 
   useEffect(() => {
     fetchMovies();
-  }, [name]);
+  }, [movies]);
 
   // HANDLE SUBMISSION
   const handleSubmit = (ev) => {

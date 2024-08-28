@@ -26,8 +26,8 @@ COMPLETED ALL OF THEM!!! :DDDD
   - [x] Make sure that the completed list entries api has movies detail in there: "so that when you click movie details you can actually see the movies in there"
 
 
-  - [ ] To Watch List 
-    - [ ] Make User being able to edit Notes for the movie
+  - [x] To Watch List 
+    - [x] Make User being able to edit Notes for the movie
     - [x] Make a comment at the top that it is ordered by priority
 
   - [ ] To Completed WatchList
@@ -36,7 +36,7 @@ COMPLETED ALL OF THEM!!! :DDDD
     - [ ] Make user being able to edit notes for the completed watch list
     - [ ] Remove from completed list & add back toWatchlist
 
-  - [ ] When movie (MOVIES FROM HOME PAGE) is in towatchlist or completed watch list then you cannot add it to any list
+  - [x] When movie (MOVIES FROM HOME PAGE) is in towatchlist or completed watch list then you cannot add it to any list
 
 - [ ] Make it look Pretty (css) -- try to use good UX practice 
   
@@ -45,8 +45,8 @@ COMPLETED ALL OF THEM!!! :DDDD
   - [x] Production company filter
     - [x] Make the company also appear in Movie Details
 
-- [ ] Filter To Watch List (same as home page mabye -- searching & stuff)
-- [ ] Filter Completed Watch List (same as home page mabye -- searching & stuff)
+- [x] Filter To Watch List (same as home page mabye -- searching & stuff)
+- [x] Filter Completed Watch List (same as home page mabye -- searching & stuff)
 
 ## Remember
  1. 3430_users (userId, username, email, password, api_key, 	api_date), 2. 3430_toWatchList (watchListId, userId, movieid, priority, notes), 3. 3430_completedWatchList (completedId, userId, movieid, rating, notes, date_initially_watched, date_last_watched, times_watched), 4. 3430_movies (id, title, tagline, overview, 	original_language, poster, runtime, vote_average, vote_count, 	budget, revenue, homepage, release_date)

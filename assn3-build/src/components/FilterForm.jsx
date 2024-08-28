@@ -147,7 +147,7 @@ function FilterForm({ filters, page }) {
                             )}
                         </ul>
                     </ul>
-                    <div class="selected-option" value>{company || "Select an option"}</div> 
+                    <div className="selected-option" value>{company || "Select an option"}</div> 
                     <button id="clear-button" onClick={() => setCompany("")} >Clear Selection</button>
                 </div>
 

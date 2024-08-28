@@ -21,18 +21,18 @@ function ToWatchList() {
 
   const updateSearch = (ev) => {
     setName(ev.target.value);
-}
+  }
 
   useEffect(() => {
     fetchMovies();
-  }, [name]);
+  }, [movies]);
 
   // HANDLE SUBMISSION
   const handleSubmit = (ev) => {
     ev.preventDefault();
     // filters(name);
     setName("")
-    page(1);
+    currentPage(1);
     fetchMovies();
 }
 

@@ -141,13 +141,14 @@ app.get('/api/towatchlist/entries', async (req, res) => {
     }
 
     const title = req.query.title; // Get title filter from query parameters
+    const movieid = req.query.movieid;
 
     const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries`;
 
     try {
         const response = await axios.get(API, {
             headers: { "X-Api-Key": req.session.api_key }, // Pass API key in headers
-            params: { title: title }
+            params: { title: title, movieid: movieid}
         });
         res.json(response.data);
     } catch (error) {
@@ -164,12 +165,13 @@ app.get('/api/completedwatchlist/entries', async (req, res) => {
     }
 
     const title = req.query.title; // Get title filter from query parameters
+    const movieid = req.query.movieid;
 
     const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries`;
     try {
         const response = await axios.get(API, {
             headers: { "X-Api-Key": req.session.api_key },
-            params: { title: title } // Pass the filter title as query parameter
+            params: { title: title, movieid: movieid } // Pass the filter title as query parameter
         });
         res.json(response.data);
     } catch (error) {
