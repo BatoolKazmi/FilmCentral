@@ -30,10 +30,10 @@ COMPLETED ALL OF THEM!!! :DDDD
     - [x] Make User being able to edit Notes for the movie
     - [x] Make a comment at the top that it is ordered by priority
 
-  - [ ] To Completed WatchList
+  - [x] To Completed WatchList
     - [x] make a comment at the top that it is ordered by rating
     - [x] Make user being able to edit notes for the completed watch list
-    - [ ] Remove from completed list & add back toWatchlist
+    - [x] Remove from completed list & add back toWatchlist
 
   - [x] When movie (MOVIES FROM HOME PAGE) is in towatchlist or completed watch list then you cannot add it to any list
 
