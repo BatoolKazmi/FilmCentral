@@ -32,8 +32,7 @@ COMPLETED ALL OF THEM!!! :DDDD
 
   - [ ] To Completed WatchList
     - [x] make a comment at the top that it is ordered by rating
-    - [ ] Make Times Watched Decrease
-    - [ ] Make user being able to edit notes for the completed watch list
+    - [x] Make user being able to edit notes for the completed watch list
     - [ ] Remove from completed list & add back toWatchlist
 
   - [x] When movie (MOVIES FROM HOME PAGE) is in towatchlist or completed watch list then you cannot add it to any list
