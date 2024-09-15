@@ -201,13 +201,15 @@ app.post('/login', async (req,res) => {
                 }
 
                 if (!result) {
-                    return res.status(401).json({ message: "Passwords do not match! Authentication failed." });
+                    return res.status(401).json({ message: "Invalid username or password" });
                 }
             
                 // Start session and store user information
-                req.session.user_id = user.userId;
+                req.session.userId = user.userId;
                 req.session.username = user.username;
                 req.session.email = user.email;
+                req.session.api_key = user.api_key;
+                req.session.api_date = user.api_date;
 
                 // Send successful response
                 res.status(200).json({
@@ -224,7 +226,7 @@ app.post('/login', async (req,res) => {
         
     }catch (error){
         console.error(error);
-        res.status(500).json({ message: "Internal Server Error." });
+        res.status(500).json({ message: "Login Failed" });
     }
    
 });

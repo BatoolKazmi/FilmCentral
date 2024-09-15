@@ -2,7 +2,6 @@ import React from 'react'
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/LoginSignup.css"
-import Validation from "./LoginValidation";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 // import { useUser } from '../UserContext';
@@ -17,14 +16,35 @@ function Login() {
     password: ''
   });
   const navigate = useNavigate();
+
+  // Validate function to check for empty fields
+  const validateInputs = () => {
+    const validationErrors = {};
+    if (!username) validationErrors.username = 'Username is required';
+    if (!password) validationErrors.password = 'Password is required';
+    return validationErrors;
+  };
   
 
 
   // HANDLE SUBMISSION
   const handleSubmit = async (ev) => {
     ev.preventDefault();
-    const validationErrors = Validation(username, password)
-    setErrors(validationErrors); // Clear errors
+
+    setErrors({
+      username: '',
+      password: '',
+      server: ''
+    })
+    // // Clear previous server errors
+    // setErrors(prev => ({ ...prev, server: '' }));
+
+    // Validate frontend inputs first
+    const validationErrors = validateInputs();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
 
     try {
       const response = await axios.post('http://localhost:5000/login', { 
@@ -32,17 +52,20 @@ function Login() {
           password 
       }, { withCredentials: true });
 
-      if (response.data.success) {
+      if (response.status === 200) {
           // Redirect or update state based on successful login
-          console.log('Login successful');
           alert("Login successful!");
           navigate('/'); // Navigate to the home page
-      } else {
-          setErrors('Invalid credentials');
-      }
+      } 
   } catch (error) {
-      console.error('Error during login:', error);
-      setErrors('Failed to authenticate');
+    if (error.response) {
+      // Handle errors returned by the server
+      const serverErrorMessage = error.response.data.message || "Login failed!";
+      setErrors(prev => ({ ...prev, server: serverErrorMessage }));
+    } else {
+      // Handle any other errors (like network errors)
+      setErrors(prev => ({ ...prev, server: "An error occurred. Please try again." }));
+    }
   }
 
   }
@@ -81,6 +104,13 @@ function Login() {
                 {errors.password}
               </span>
             </div>
+
+            {/* Server-side error */}
+            {errors.server && (
+              <div className="form-item col">
+                <span className="error">{errors.server}</span>
+              </div>
+            )}
 
             {/* <div className="form-item row">
               <label htmlFor="remember">Remember Me:</label>
