@@ -4,9 +4,13 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import axios from "axios";
 import mysql from "mysql";
+import bcrypt from "bcrypt";
+import crypto from "crypto";
 
-// import loginhandler from "./loginhandler.js";
-// import signuphandler from "./signuphandler.js";
+// import { loginhandler } from "./loginhandler.js";
+// import { signuphandler } from "./signuphandler.js";
+// // const loginHandler = require('./loginhandler');
+// // const signupHandler = require('./signuphandler');
 
 const app = express();
 const PORT = 5000;
@@ -16,6 +20,8 @@ app.use(cors({
     origin: 'http://localhost:5173', // React app URL
     credentials: true
 }));
+app.use(express.json());
+
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -30,6 +36,14 @@ app.use(session({
     resave: true,
     saveUninitialized: false
 }));
+
+// authentication API KEY
+// Mock authentication function
+function authenticateApiKey(apiKey) {
+    // Replace with real authentication logic
+    const mockUserId = 1;
+    return apiKey === 'valid_api_key' ? mockUserId : null;
+}
 
 app.get('/', (req, res) => {
     return res.json("from backend side");
@@ -154,13 +168,127 @@ app.get('/genres', (req, res) => {
     });
 });
 
-// authentication API KEY
-// Mock authentication function
-function authenticateApiKey(apiKey) {
-    // Replace with real authentication logic
-    const mockUserId = 1;
-    return apiKey === 'valid_api_key' ? mockUserId : null;
-}
+// POST endpoint routing
+//login
+app.post('/login', async (req,res) => {
+
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ message: "Username and password are required." });
+    }
+
+    try{
+        // Query to check if user exists
+        const query = 'SELECT userId, username, email, password, api_key, api_date FROM 3430_users WHERE username = ? AND password = ?';
+        
+        db.query(query, [username, password], (err, result) => {
+            
+            if (err) return res.status(500).json({ error: err.message });
+
+            // Check if user exists
+            if (!result || result.length === 0) {
+                return res.status(401).json({ message: "Invalid username or password." });
+            }
+
+            const user = result[0];
+
+            const isPasswordValid = bcrypt.compare(password, user.password);
+            if (!isPasswordValid) {
+            return res.status(401).json({ message: "Invalid username or password." });
+            }
+
+            
+
+            // Start session and store user information
+            req.session.user_id = user.userId;
+            req.session.username = user.username;
+            req.session.email = user.email;
+
+            // Send successful response
+            res.status(200).json({
+                message: "Login successful.",
+                userId: user.userId,
+                username: user.username,
+                email: user.email,
+                api_key: user.api_key,
+                api_date: user.api_date
+            });
+
+            res.json(result);
+        });
+        
+    }catch (error){
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error." });
+    }
+   
+});
+
+app.post('/signup', async (req,res) => {
+    const { username, password, password2, email } = req.body;
+
+    // Input validation
+    if (!username || !password || !email) {
+        return res.status(400).json({ message: "Username, password, and email are required." });
+    }
+
+    if (password !== password2) {
+        return res.status(400).json({ message: "Passwords do not match." });
+    }
+
+    if (password.length < 10) {
+        return res.status(400).json({ message: "Password must be at least 10 characters long." });
+    }
+
+    try {
+        // Check if username already exists
+        const usernameQuery = 'SELECT COUNT(userId) AS count FROM 3430_users WHERE username = ?';
+        const [usernameCheck] = await new Promise((resolve, reject) => {
+            db.query(usernameQuery, [username], (err, result) => {
+                if (err) return reject(err);
+                resolve(result);
+            });
+        });
+
+        if (usernameCheck.count > 0) {
+            return res.status(400).json({ message: "Username is already taken." });
+        }
+
+        // Check if email already exists
+        const emailQuery = 'SELECT COUNT(userId) AS count FROM 3430_users WHERE email = ?';
+        const [emailCheck] = await new Promise((resolve, reject) => {
+            db.query(emailQuery, [email], (err, result) => {
+                if (err) return reject(err);
+                resolve(result);
+            });
+        });
+
+        if (emailCheck.count > 0) {
+            return res.status(400).json({ message: "Email is already registered." });
+        }
+
+        // Generate API key and hash password
+        const apiKey = crypto.randomBytes(16).toString('hex');
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Insert user into the database
+        const insertQuery = 'INSERT INTO 3430_users (username, email, password, api_key, api_date) VALUES (?, ?, ?, ?, NOW())';
+        await new Promise((resolve, reject) => {
+            db.query(insertQuery, [username, email, hashedPassword, apiKey], (err, result) => {
+                if (err) return reject(err);
+                resolve(result);
+            });
+        });
+
+        // Send success response
+        res.status(201).json({ message: "User registered successfully." });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to register user." });
+    }
+});
 
 
 app.get('/api/auth/session', (req, res) => {
@@ -175,43 +303,6 @@ app.get('/api/auth/session', (req, res) => {
     } else {
         res.status(401).json({ error: 'Not authenticated' });
     }
-});
-
-// Example login route
-app.post('/api/auth/login', async (req, res) => {
-    console.log("login")
-    const { username, password } = req.body;
-    // Authenticate user (this is just an example)
-    try {
-        // Authenticate user using your API
-        const response = await axios.post('https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/login', { username, password });
-        console.log("login...");
-        console.log(username);
-        console.log(password);
-        console.log(response.data);
-
-        if (response.data) {
-            // Store user ID in session
-            req.session.userId = response.data.userId;
-            req.session.username = response.data.username;
-            req.session.email = response.data.email;
-            req.session.api_key = response.data.api_key;
-            req.session.api_date = response.data.api_date;
-
-            console.log("Session after login:", req.session);
-            res.json({ success: true });
-            console.log("login success")
-            
-            
-        } else {
-            res.status(401).json({ error: 'Invalid credentials' });
-        }
-    } catch (error) {
-        console.error('Error during login:', error);
-        res.status(500).json({ error: 'Failed to authenticate' });
-    }
-
-    
 });
 
 app.get('/api/getApiKey', (req, res) => {

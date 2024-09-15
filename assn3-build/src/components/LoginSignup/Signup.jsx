@@ -21,7 +21,7 @@ export default function Signup() {
       const validationErrors = SignupValidation(username, email, password, password2)
       setErrors(validationErrors); // Clear errors
 
-      const API = "https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/signup";
+      const API = "http://localhost:5000/signup";
       try {
         const response = await axios.post(API, {
           username,
@@ -38,9 +38,6 @@ export default function Signup() {
       } catch (err) {
         console.error('There was an error!', err);
       }
-
-      navigate("/login");
-
     };
 
   return (

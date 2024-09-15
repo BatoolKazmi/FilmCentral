@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/LoginSignup.css"
-import Validation from './LoginValidation';"./LoginValidation";
+import Validation from "./LoginValidation";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 // import { useUser } from '../UserContext';
@@ -25,28 +25,9 @@ function Login() {
     ev.preventDefault();
     const validationErrors = Validation(username, password)
     setErrors(validationErrors); // Clear errors
-    // login({ username });
-
-    // const API = "https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/login";
-    // try {
-    //     const response = await axios.post(API, { username, password });
-    //     if (response.data.message === "Login successful.") {
-    //         // Save user data in localStorage or sessionStorage
-    //         localStorage.setItem('user_id', response.data.user_id);
-    //         localStorage.setItem('username', response.data.username);
-
-    //         alert("Login successful!");
-    //         navigate('/'); // Navigate to the home page
-    //     } else {
-    //         setErrors({ server: response.data.message });
-    //     }
-    // } catch (err) {
-    //     console.error('There was an error!', err);
-    //     setErrors({ server: "Login failed. Please try again." });
-    // }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { 
+      const response = await axios.post('http://localhost:5000/login', { 
           username, 
           password 
       }, { withCredentials: true });
