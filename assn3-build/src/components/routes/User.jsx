@@ -33,13 +33,6 @@ const User = () =>  {
                 <p>Email: {stats.email}</p>
                 <p>API Key: {stats.api_key}</p>
                 <p>API Date: {stats.api_date}</p>
-
-                <h3>Other Stats</h3>
-                <p>Total Time Watched: {stats.total_time_watched} minutes</p>
-                <p>Average Rating: {stats.avg_rating}</p>
-                <p>Total Movies Watched: {stats.total_movies_watched}</p>
-                <p>Total Movies in Watch List: {stats.total_watch_list_movies}</p>
-
             </div>
         </>
     );

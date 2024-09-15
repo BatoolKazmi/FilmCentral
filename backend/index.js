@@ -296,7 +296,6 @@ app.post('/signup', async (req,res) => {
     }
 });
 
-
 app.get('/api/auth/session', (req, res) => {
     console.log("hey this is user auth")
     console.log(req.session.userId)
@@ -317,7 +316,6 @@ app.get('/api/getApiKey', (req, res) => {
     }
     res.json({ apiKey: req.session.api_key });
   });
-  
 
 // Logout Route
 app.get("/logout", (req, res) => {  
@@ -329,6 +327,7 @@ app.get("/logout", (req, res) => {
     });
 });
 
+
 // Fetch User Stats Route
 app.get('/api/user/stats', async (req, res) => {
     if (!req.session.userId) {
@@ -337,13 +336,16 @@ app.get('/api/user/stats', async (req, res) => {
 
     console.log(req.session.userId);
 
-    try {
-        const response = await axios.get(`https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/user/${req.session.userId}/stats`);
-        res.json(response.data);
-    } catch (error) {
-        console.error('Error fetching user stats:', error);
-        res.status(500).json({ error: 'Failed to fetch user stats' });
-    }
+    // Send successful response
+    res.status(200).json({
+        message: "Login successful.",
+        userId: req.session.userId,
+        username: req.session.username,
+        email: req.session.email,
+        api_key: req.session.api_key,
+        api_date: req.session.api_date
+    });
+    
 });
 
 
