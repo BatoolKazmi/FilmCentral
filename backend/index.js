@@ -72,21 +72,16 @@ app.get('/movies', (req, res) => {
                 LEFT JOIN 3430_production_companies pc ON mc.company_id = pc.id`;
     
     let params = [];
-    const { title, runtime, vote_average, genres, company } = req.query;
+    const { title, vote_average, genres, company } = req.query;
 
     // Filtering logic
-    if (title || runtime || vote_average || genres || company) {
+    if (title || vote_average || genres || company) {
         query += " WHERE ";
         const conditions = [];
 
         if (title) {
             conditions.push("m.title LIKE ?");
             params.push(`%${title}%`);
-        }
-
-        if (runtime) {
-            conditions.push("m.runtime >= ?");
-            params.push(runtime);
         }
 
         if (vote_average) {

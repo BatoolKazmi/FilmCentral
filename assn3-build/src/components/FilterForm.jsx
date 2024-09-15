@@ -43,13 +43,13 @@ function FilterForm({ filters, page }) {
 
 
     async function fetchContact() {
-        const genresApi = "https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/genres/";
+        const genresApi = "http://localhost:5000/genres";
         const resp = await fetch(genresApi);
         const jsonResponse = await resp.json();
         const set = jsonResponse;
         setGenres(set);
 
-        const companyApi = "https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/companies/";
+        const companyApi = "http://localhost:5000/companies";
         const rep = await fetch(companyApi);
         const json = await rep.json();
         const comp = json;

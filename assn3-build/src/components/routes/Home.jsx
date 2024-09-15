@@ -12,8 +12,6 @@ function Home() {
     const [genre, setGenre] = useState("");
     const [company, setCompany] = useState("");
 
-    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/movie/?title=${name}&vote_average=${rate}&genres=${genre}&company=${company}`;
-
     function getFilter(name, rate, genre, company) {
         setName(name);
         setRate(rate);
@@ -21,15 +19,28 @@ function Home() {
         setCompany(company);
     }
 
-    async function fetchContact() {
-        const resp = await fetch(API);
-        const jsonResponse = await resp.json();
-        const set = jsonResponse;
-        setMovies(set);
+    // Fetch movies based on filters
+    async function fetchMovies() {
+        try {
+            // Construct the API URL based on filters
+            let apiUrl = 'http://localhost:5000/movies';
+            if (name || rate || genre || company) {
+                apiUrl += `?title=${name}&vote_average=${rate}&genres=${genre}&company=${company}`;
+            }
+
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const jsonResponse = await response.json();
+            setMovies(jsonResponse);
+        } catch (error) {
+            console.error("Error fetching movies:", error);
+        }
     }
 
     useEffect(() => {
-        fetchContact();
+        fetchMovies();
     }, [name, rate, genre, company]);
 
     // Adding pagination
