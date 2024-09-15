@@ -180,9 +180,9 @@ app.post('/login', async (req,res) => {
 
     try{
         // Query to check if user exists
-        const query = 'SELECT userId, username, email, password, api_key, api_date FROM 3430_users WHERE username = ? AND password = ?';
+        const query = 'SELECT userId, username, email, password, api_key, api_date FROM 3430_users WHERE username = ?';
         
-        db.query(query, [username, password], (err, result) => {
+        db.query(query, [username], (err, result) => {
             
             if (err) return res.status(500).json({ error: err.message });
 
@@ -193,29 +193,33 @@ app.post('/login', async (req,res) => {
 
             const user = result[0];
 
-            const isPasswordValid = bcrypt.compare(password, user.password);
-            if (!isPasswordValid) {
-            return res.status(401).json({ message: "Invalid username or password." });
-            }
+            bcrypt.compare(password, user.password, (err, result) => {
+                
+                if(err){
+                    // handle error
+                    return res.status(500).json({ message: "Error" });
+                }
 
+                if (!result) {
+                    return res.status(401).json({ message: "Passwords do not match! Authentication failed." });
+                }
             
+                // Start session and store user information
+                req.session.user_id = user.userId;
+                req.session.username = user.username;
+                req.session.email = user.email;
 
-            // Start session and store user information
-            req.session.user_id = user.userId;
-            req.session.username = user.username;
-            req.session.email = user.email;
+                // Send successful response
+                res.status(200).json({
+                    message: "Login successful.",
+                    userId: user.userId,
+                    username: user.username,
+                    email: user.email,
+                    api_key: user.api_key,
+                    api_date: user.api_date
+                });
 
-            // Send successful response
-            res.status(200).json({
-                message: "Login successful.",
-                userId: user.userId,
-                username: user.username,
-                email: user.email,
-                api_key: user.api_key,
-                api_date: user.api_date
             });
-
-            res.json(result);
         });
         
     }catch (error){
