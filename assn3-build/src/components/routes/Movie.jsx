@@ -4,27 +4,36 @@ import NavBar from "../NavBar";
 
 function Movie() {
   let { id } = useParams();
-  const [movie, setMovie] = useState([]);
+  const [movie, setMovie] = useState({});
 
+  async function fetchMovie() {
+    try {
+        const API = `http://localhost:5000/movies/${id}`;
+        const response = await fetch(API);
 
-  async function fetchContact() {
-    console.log(id);
-    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/movie/${id}`;
-    // const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/movies/${id}`;
-    const resp = await fetch(API);
-    const jsonResponse = await resp.json();
-    console.log("JSON Response:", jsonResponse);
-    const set = jsonResponse;
-    setMovie(set);
-  }
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const jsonResponse = await response.json();
+        console.log("Fetched Movie Data:", jsonResponse);
+
+        if (jsonResponse.length > 0) {
+            setMovie(jsonResponse[0]); // Use the first item of the array
+        } else {
+            console.error('No movie found with the given ID.');
+            // Handle no movie found case
+            setMovie({});
+        }
+    } catch (error) {
+        console.error('Error fetching movie data:', error);
+    }
+}
 
   useEffect(() => {
     // Parse the genres string into an array
-    fetchContact();
+    fetchMovie();
   }, []);
-
-  // IDK HOW TO EXTRACT GENRES NAMES
-  // IDK WHAT TO DO WITH GENRES AND PRODUCTION COMPANIES
 
   if (movie.poster == null) {
     movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
