@@ -3,7 +3,10 @@ import session from "express-session";
 import cors from "cors";
 import bodyParser from "body-parser";
 import axios from "axios";
-import config from "./config.js"
+import mysql from "mysql";
+
+// import loginhandler from "./loginhandler.js";
+// import signuphandler from "./signuphandler.js";
 
 const app = express();
 const PORT = 5000;
@@ -14,11 +17,151 @@ app.use(cors({
     credentials: true
 }));
 
+const db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "batoolkazmi"
+
+})
+
 app.use(session({
-    secret: config.SESSION_SECRET,
+    secret: 'hi',
     resave: true,
     saveUninitialized: false
 }));
+
+app.get('/', (req, res) => {
+    return res.json("from backend side");
+});
+
+/////////////////// MOOOOVIES //////////////////////////////////////
+app.get('/movies', (req, res) => {
+    let query = `SELECT 
+                    m.id AS movie_id, 
+                    m.title, 
+                    GROUP_CONCAT(DISTINCT g.id ORDER BY g.id) AS genre_ids, 
+                    GROUP_CONCAT(DISTINCT g.name ORDER BY g.name) AS genre_names,
+                    GROUP_CONCAT(DISTINCT pc.id ORDER BY pc.id) AS company_ids, 
+                    GROUP_CONCAT(DISTINCT pc.name ORDER BY pc.name) AS company_names,
+                    m.runtime, 
+                    m.poster, 
+                    m.vote_average, 
+                    m.original_language, 
+                    m.overview, 
+                    m.tagline, 
+                    m.vote_count
+                FROM 3430_movies m
+                LEFT JOIN 3430_movie_genres mg ON m.id = mg.movie_id
+                LEFT JOIN 3430_genres g ON mg.genre_id = g.id
+                LEFT JOIN 3430_movie_companies mc ON m.id = mc.movie_id
+                LEFT JOIN 3430_production_companies pc ON mc.company_id = pc.id`;
+    
+    let params = [];
+    const { title, runtime, vote_average, genres, company } = req.query;
+
+    // Filtering logic
+    if (title || runtime || vote_average || genres || company) {
+        query += " WHERE ";
+        const conditions = [];
+
+        if (title) {
+            conditions.push("m.title LIKE ?");
+            params.push(`%${title}%`);
+        }
+
+        if (runtime) {
+            conditions.push("m.runtime >= ?");
+            params.push(runtime);
+        }
+
+        if (vote_average) {
+            conditions.push("m.vote_average LIKE ?");
+            params.push(`${vote_average}.%`);
+        }
+
+        if (genres) {
+            conditions.push("g.name LIKE ?");
+            params.push(`%${genres}%`);
+        }
+
+        if (company) {
+            conditions.push("pc.name LIKE ?");
+            params.push(`%${company}%`);
+        }
+
+        query += conditions.join(" AND ");
+    }
+
+    query += " GROUP BY m.id, m.title";
+
+    db.query(query, params, (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(result);
+    });
+});
+
+// Get specific movie details --- ? idk if it works..
+app.get('/movies/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = `SELECT 
+                    m.id AS movie_id, 
+                    m.title, 
+                    GROUP_CONCAT(DISTINCT g.id ORDER BY g.id) AS genre_ids, 
+                    GROUP_CONCAT(DISTINCT g.name ORDER BY g.name) AS genre_names,
+                    GROUP_CONCAT(DISTINCT pc.id ORDER BY pc.id) AS company_ids, 
+                    GROUP_CONCAT(DISTINCT pc.name ORDER BY pc.name) AS company_names,
+                    m.runtime, 
+                    m.poster, 
+                    m.vote_average, 
+                    m.original_language, 
+                    m.overview, 
+                    m.tagline, 
+                    m.vote_count
+                FROM 3430_movies m
+                LEFT JOIN 3430_movie_genres mg ON m.id = mg.movie_id
+                LEFT JOIN 3430_genres g ON mg.genre_id = g.id
+                LEFT JOIN 3430_movie_companies mc ON m.id = mc.movie_id
+                LEFT JOIN 3430_production_companies pc ON mc.company_id = pc.id
+                WHERE m.id = ?
+                GROUP BY m.id, m.title`;
+
+    db.query(query, [id], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(result);
+    });
+});
+
+/// Get all
+////// companies get all ///////
+app.get('/companies', (req, res) => {
+    const query = 'SELECT id, name FROM 3430_production_companies';
+
+    db.query(query, (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(result);
+    });
+});
+
+/////// GENRES ////////
+app.get('/genres', (req, res) => {
+    const query = 'SELECT id, name FROM 3430_genres';
+
+    db.query(query, (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(result);
+    });
+});
+
+// authentication API KEY
+// Mock authentication function
+function authenticateApiKey(apiKey) {
+    // Replace with real authentication logic
+    const mockUserId = 1;
+    return apiKey === 'valid_api_key' ? mockUserId : null;
+}
+
 
 app.get('/api/auth/session', (req, res) => {
     console.log("hey this is user auth")
@@ -183,5 +326,5 @@ app.get('/api/completedwatchlist/entries', async (req, res) => {
 
 
 app.listen(PORT, () => {
-    console.log('Server is running on port 5000');
+    console.log('Server is running on port 5000 :)');
 });
