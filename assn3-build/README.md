@@ -1,11 +1,11 @@
 ## Fix API's:
 # Testing 
 ## Minimal Requirements --- REDO THIS FOR NODE -- REDO REST API FOR NODE
-- [ ] I want to be able to **see all the movies** in the catalogue
-- [ ] I want to be able to **find more detailed information about a movie**
-- [ ] I want to have at least one way to filter the movies in the catalog
+- [x] I want to be able to **see all the movies** in the catalogue
+- [x] I want to be able to **find more detailed information about a movie**
+- [x] I want to have at least one way to filter the movies in the catalog
   - i.e Maybe I want to find similar movies (i.e. "other romances", "other movies by Ghibli")
-- [ ] I want to be able to **search for a specific movie**
+- [x] I want to be able to **search for a specific movie**
 
 #### WatchList
 - [ ] I want to "quick add" a movie to my plan-to-watch list from the main page, with no notes and a default priority

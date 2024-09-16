@@ -32,18 +32,10 @@ const db = mysql.createConnection({
 })
 
 app.use(session({
-    secret: 'hi',
+    secret: 'New_Secret_Session',
     resave: true,
     saveUninitialized: false
 }));
-
-// authentication API KEY
-// Mock authentication function
-function authenticateApiKey(apiKey) {
-    // Replace with real authentication logic
-    const mockUserId = 1;
-    return apiKey === 'valid_api_key' ? mockUserId : null;
-}
 
 app.get('/', (req, res) => {
     return res.json("from backend side");
@@ -291,10 +283,8 @@ app.post('/signup', async (req,res) => {
     }
 });
 
+// protecting route (authenticate session)
 app.get('/api/auth/session', (req, res) => {
-    console.log("hey this is user auth")
-    console.log(req.session.userId)
-    console.log(req.session.api_key)
     if (req.session.userId) {
         res.json({ 
             user: req.session.userId,
@@ -305,13 +295,6 @@ app.get('/api/auth/session', (req, res) => {
     }
 });
 
-app.get('/api/getApiKey', (req, res) => {
-    if (!req.session.api_key) {
-      return res.status(401).json({ error: 'Not authenticated' });
-    }
-    res.json({ apiKey: req.session.api_key });
-  });
-
 // Logout Route
 app.get("/logout", (req, res) => {  
     req.session.destroy((err) => {
@@ -321,7 +304,6 @@ app.get("/logout", (req, res) => {
         res.json({ success: true });
     });
 });
-
 
 // Fetch User Stats Route
 app.get('/api/user/stats', async (req, res) => {
@@ -343,80 +325,107 @@ app.get('/api/user/stats', async (req, res) => {
     
 });
 
+// Authentification for next steps
+app.get('/api/getApiKey', (req, res) => {
+    if (!req.session.api_key) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+    res.json({ apiKey: req.session.api_key });
+  });
 
-/// TO WATCH LIST 
-app.post('/api/towatchlist/entries', async (req, res) => {
+
+// function
+function authenticateApiKey(req, res, next) {
+    const apiKey = req.headers['x-api-key'] || '';
+    if (!apiKey) {
+      return res.status(401).json({ message: 'API key is required.' });
+    }
+
+    // Replace 'your_valid_api_key' with the actual valid API key
+    const validApiKey = req.session.api_key;
+  
+    // if (apiKey !== validApiKey) {
+    //     return res.status(403).json({ error: 'Invalid API key' });
+    // }
     
+    next(); // API key is valid, proceed to the next middleware or route handler
+}
 
-    if (!req.session.api_key) {
-        return res.status(401).json({ error: 'Not authenticated' });
+////// TO WATCH LIST //////
+// Route to get "To Watch List" entries
+app.get('/towatchlist/entries', (req, res) => {
+    const { title } = req.query;
+    const userId = req.session.userId;
+    
+    let query = `SELECT tw.watchListId, tw.priority, tw.notes, tw.movieid, m.title, m.poster 
+                 FROM 3430_towatchlist tw 
+                 JOIN 3430_movies m ON tw.movieid = m.id 
+                 WHERE tw.userId = ?`;
+    let params = [userId];
+
+    // Title search
+    if (title && title.trim() !== '') {
+        query += " AND m.title LIKE ?";
+        params.push(`%${title}%`);
     }
 
-    const { movie_id, priority, notes } = req.body;
-    const API = "https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries";
-
-    try {
-        const response = await axios.post(API, {
-            key: req.session.api_key,
-            movie_id,
-            priority,
-            notes,
-            
-        });
-
-        res.json(response.data);
-    } catch (error) {
-        console.error('Error adding movie to watchlist:', error);
-        res.status(500).json({ error: 'Failed to add movie to watchlist' });
-    }
+    db.query(query, params, (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(result);
+    });
+  
 });
-
-app.get('/api/towatchlist/entries', async (req, res) => {
-
-    if (!req.session.api_key) {
-        return res.status(401).json({ error: 'Not authenticated' });
+  
+  // Route to add an entry to the "To Watch List"
+app.post('/towatchlist/entries', authenticateApiKey, (req, res) => {
+    const { movie_id, priority = '5', notes = '' } = req.body;
+    const userId = req.user.userId;
+  
+    if (!movie_id) {
+      return res.status(400).json({ message: 'Movie ID is required.' });
     }
-
-    const title = req.query.title; // Get title filter from query parameters
-    const movieid = req.query.movieid;
-
-    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries`;
-
-    try {
-        const response = await axios.get(API, {
-            headers: { "X-Api-Key": req.session.api_key }, // Pass API key in headers
-            params: { title: title, movieid: movieid}
-        });
-        res.json(response.data);
-    } catch (error) {
-        console.error('Error fetching movies:', error);
-        res.status(500).json({ error: 'Failed to fetch movies' });
-    }
+  
+    const query = `INSERT INTO toWatchList (userId, movieid, priority, notes) VALUES (?, ?, ?, ?)`;
+    db.query(query, (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(result);
+    });
 });
+  
 
-// COMPLETED WATCH LIST API HANDELING START!!
-
-app.get('/api/completedwatchlist/entries', async (req, res) => {
-    if (!req.session.api_key) {
-        return res.status(401).json({ error: 'Not authenticated' });
+/// COMPLETED WATCH LIST
+// Route to get "Completed Watch List" entries
+app.get('/completedwatchlist/entries', authenticateApiKey, (req, res) => {
+    const { title, movieid, most_watched } = req.query;
+    const userId = req.session.userId;
+  
+    let query = `SELECT cw.completedId, cw.rating, cw.notes, cw.date_initially_watched, cw.date_last_watched, cw.times_watched, cw.movieid, m.title, m.poster 
+                 FROM 3430_completedwatchlist cw 
+                 JOIN movies m ON cw.movieid = m.id 
+                 WHERE cw.userId = ?`;
+    let params = [userId];
+  
+    if (title) {
+      query += ' AND m.title LIKE ?';
+      params.push(`%${title}%`);
     }
-
-    const title = req.query.title; // Get title filter from query parameters
-    const movieid = req.query.movieid;
-
-    const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries`;
-    try {
-        const response = await axios.get(API, {
-            headers: { "X-Api-Key": req.session.api_key },
-            params: { title: title, movieid: movieid } // Pass the filter title as query parameter
-        });
-        res.json(response.data);
-    } catch (error) {
-        console.error('Error fetching movies:', error);
-        res.status(500).json({ error: 'Failed to fetch movies' });
+  
+    if (movieid) {
+      query += ' AND cw.movieid = ?';
+      params.push(movieid);
     }
-});
-
+  
+    if (most_watched) {
+      query += ' ORDER BY cw.times_watched DESC';
+    } else {
+      query += ' ORDER BY cw.rating DESC';
+    }
+  
+    db.query(query, params, (error, results) => {
+      if (error) return res.status(500).json({ message: 'Database error.' });
+      res.status(200).json(results);
+    });
+  });
 
 
 app.listen(PORT, () => {

@@ -39,21 +39,20 @@ function ToWatchList() {
   // Filter stuff ends
 
   useEffect(() => {
-    async function fetchKeyAndMovies() {
-      await fetchApiKey();
-      fetchMovies();
-    }
-    fetchKeyAndMovies();
-  }, []);
-  
-  useEffect(() => {
     fetchApiKey();
-  }, [movies]);
+    fetchMovies();
+  }, [movies, name]);
   
   async function fetchMovies() {
+    let apiUrl = 'http://localhost:5000/towatchlist/entries';
+    if (name) {
+        apiUrl += `?title=${name}`;
+    }
+
     try {
-      const response = await axios.get('http://localhost:5000/api/towatchlist/entries', {
+      const response = await axios.get(apiUrl, {
           params: { title: name }, // Pass title as query parameter
+          headers: { 'X-API-KEY': key },
           withCredentials: true
         });
       if (Array.isArray(response.data)) {
