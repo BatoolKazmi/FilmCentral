@@ -375,23 +375,34 @@ app.get('/towatchlist/entries', (req, res) => {
     });
   
 });
-  
+
   // Route to add an entry to the "To Watch List"
-app.post('/towatchlist/entries', authenticateApiKey, (req, res) => {
-    const { movie_id, priority = '5', notes = '' } = req.body;
-    const userId = req.user.userId;
-  
-    if (!movie_id) {
-      return res.status(400).json({ message: 'Movie ID is required.' });
+app.post('/towatchlist/entries', (req, res) => {
+    const { movieId, priority, notes } = req.body;
+    const userId = req.session.userId;
+
+    // Validate input data
+    if (!userId || !movieId || !priority) {
+        return res.status(400).json({ error: 'Missing required fields' });
     }
-  
-    const query = `INSERT INTO toWatchList (userId, movieid, priority, notes) VALUES (?, ?, ?, ?)`;
-    db.query(query, (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(result);
+
+    // Query to insert a new entry into the to-watch list
+    const query = 'INSERT INTO 3430_towatchlist (userId, movieId, priority, notes) VALUES (?, ?, ?, ?)';
+    const params = [userId, movieId, priority, notes];
+
+    db.query(query, params, (err, result) => {
+        if (err) {
+            console.error('Database error:', err.message);
+            return res.status(500).json({ error: 'Database error' });
+        }
+        // Successfully added to the watch list
+        res.status(201).json({ message: 'Movie added to watch list successfully' });
     });
 });
   
+
+  
+
 
 /// COMPLETED WATCH LIST
 // Route to get "Completed Watch List" entries
@@ -415,6 +426,34 @@ app.get('/completedwatchlist/entries', (req, res) => {
       res.status(200).json(results);
     });
   });
+
+  // Route to add an entry to the "To Watch List"
+app.post('/completedwatchlist/entries', (req, res) => {
+    const { movieId, rating, notes, times_watched } = req.body;
+    const userId = req.session.userId;
+
+    // Validate input data
+    if (!userId || !movieId) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const query = `
+        INSERT INTO 3430_completedwatchlist 
+        (userId, movieId, rating, notes, date_initially_watched, date_last_watched, times_watched) 
+        VALUES (?, ?, ?, ?, CURDATE(), CURDATE(), ?)
+    `;
+    const params = [userId, movieId, rating, notes, times_watched];
+
+    db.query(query, params, (err, result) => {
+        if (err) {
+        console.error('Database error:', err.message);
+        return res.status(500).json({ error: 'Database error' });
+        }
+
+        res.status(201).json({ message: 'Movie added to watch list successfully' });
+    });
+});
+  
 
 
 app.listen(PORT, () => {

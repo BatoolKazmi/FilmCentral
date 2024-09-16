@@ -29,10 +29,20 @@ function MovieCard({ movie, id }) {
 
   useEffect(() => {
     const checkIfMovieExists = async () => {
+      if (!apiKey) return;
+
       try {
         const [watchlistResponse, completedListResponse] = await Promise.all([
-          axios.get('http://localhost:5000/towatchlist/entries', { params: { title: movie.title, movieid: id }, headers: { 'x-api-key': apiKey }, withCredentials: true }),
-          axios.get('http://localhost:5000/completedwatchlist/entries', { params: { title: movie.title, movieid: id }, headers: { 'x-api-key': apiKey }, withCredentials: true })
+          axios.get('http://localhost:5000/towatchlist/entries', {
+            params: { title: movie.title, movieid: id },
+            headers: { 'x-api-key': apiKey },
+            withCredentials: true
+          }),
+          axios.get('http://localhost:5000/completedwatchlist/entries', {
+            params: { title: movie.title, movieid: id },
+            headers: { 'x-api-key': apiKey },
+            withCredentials: true
+          })
         ]);
 
         if (watchlistResponse.data.length > 0 || completedListResponse.data.length > 0) {
@@ -43,34 +53,31 @@ function MovieCard({ movie, id }) {
       }
     };
 
-    if (apiKey) {
-      checkIfMovieExists();
-    }
-  }, [movie.title, apiKey]);
+    checkIfMovieExists();
 
-  async function handleQuickAdd() {
-    setIsAdding(true); // Set state to indicate the process is ongoing
+  }, [movie.title, id, apiKey]);
+
+  // Function to add the movie to the watch list
+  async function addToWatchList() {
+    setIsAdding(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/towatchlist/entries', {
-        movie_id: id,
-        priority: "5",
-        notes: "",
-      }, { withCredentials: true });
+      const priority = 5; // Replace with actual priority logic
+      const notes = ''; // Replace with actual notes logic
 
-      if (response.status === 200) {
-        console.log("Movie added successfully:", response.data);
-        alert("Added To Watch List!");
-        setIsInWatchlist(true); // Update the state to disable the button
-      } else {
-        console.error("Failed to add movie:", response.status);
-      }
+      await axios.post(
+        'http://localhost:5000/towatchlist/entries',
+        { movieId: id, priority, notes },
+        { headers: { 'X-API-KEY': apiKey }, withCredentials: true }
+      );
+
+      // After adding to the watchlist, update state
+      setIsInWatchlist(true);
     } catch (error) {
-      console.error("Failed to add movie:", error);
+      console.error('Error adding movie to watch list:', error);
     } finally {
-      setIsAdding(false); // Reset state after process
+      setIsAdding(false);
     }
-
   }
 
   return (
@@ -81,7 +88,7 @@ function MovieCard({ movie, id }) {
       <Link to={`/movies/${id}`}>Movie Details</Link>
       <div>
         {/* <button onClick={promptForApiKey} disabled={isAdding}> */}
-        <button onClick={handleQuickAdd} disabled={isAdding || isInWatchlist}> 
+        <button onClick={addToWatchList} disabled={isAdding || isInWatchlist}> 
           {isAdding ? "Adding..." : (isInWatchlist ? "Already in a List" : "Quick Add to Watchlist")}
         </button>
       </div>
