@@ -395,30 +395,19 @@ app.post('/towatchlist/entries', authenticateApiKey, (req, res) => {
 
 /// COMPLETED WATCH LIST
 // Route to get "Completed Watch List" entries
-app.get('/completedwatchlist/entries', authenticateApiKey, (req, res) => {
-    const { title, movieid, most_watched } = req.query;
+app.get('/completedwatchlist/entries', (req, res) => {
+    const { title } = req.query;
     const userId = req.session.userId;
   
     let query = `SELECT cw.completedId, cw.rating, cw.notes, cw.date_initially_watched, cw.date_last_watched, cw.times_watched, cw.movieid, m.title, m.poster 
                  FROM 3430_completedwatchlist cw 
-                 JOIN movies m ON cw.movieid = m.id 
+                 JOIN 3430_movies m ON cw.movieid = m.id 
                  WHERE cw.userId = ?`;
     let params = [userId];
   
     if (title) {
       query += ' AND m.title LIKE ?';
       params.push(`%${title}%`);
-    }
-  
-    if (movieid) {
-      query += ' AND cw.movieid = ?';
-      params.push(movieid);
-    }
-  
-    if (most_watched) {
-      query += ' ORDER BY cw.times_watched DESC';
-    } else {
-      query += ' ORDER BY cw.rating DESC';
     }
   
     db.query(query, params, (error, results) => {

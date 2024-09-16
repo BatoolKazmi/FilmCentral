@@ -21,11 +21,12 @@ function CompletedWatchList() {
 
   const updateSearch = (ev) => {
     setName(ev.target.value);
-}
+  }
 
   useEffect(() => {
     fetchMovies();
-  }, [movies]);
+    fetchApiKey();
+  }, [movies, name]);
 
   // HANDLE SUBMISSION
   const handleSubmit = (ev) => {
@@ -34,19 +35,18 @@ function CompletedWatchList() {
     setName("")
     page(1);
     fetchMovies();
-}
-
-  // Filter stuff ends
-
-
-  useEffect(() => {
-    fetchApiKey();
-  }, [movies]);
+  }
 
   async function fetchMovies() {
+    let apiUrl = 'http://localhost:5000/completedwatchlist/entries';
+    if (name) {
+        apiUrl += `?title=${name}`;
+    }
+
     try {
-      const response = await axios.get('http://localhost:5000/api/completedwatchlist/entries', {
+      const response = await axios.get( apiUrl, {
         params: { title: name }, // Pass title as query parameter
+        headers: { 'X-API-KEY': key },
         withCredentials: true
       });
       if (Array.isArray(response.data)) {
