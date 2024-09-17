@@ -530,7 +530,34 @@ app.patch('/towatchlist/entries/:id/notes', (req, res) => {
     }
 });
   
+// deleted - to watch list
+app.delete('/towatchlist/entries/:id', (req, res) => {
+    const watchlistId = req.params.id;
+    const apiKey = req.headers['x-api-key'];
+    const movieId = req.body.movie_id;
 
+    if (!apiKey) {
+        return res.status(401).json({ message: 'API key is required.' });
+    }
+
+    const queryUser = 'SELECT userId FROM 3430_users WHERE api_key = ?';
+    db.query(queryUser, [apiKey], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (!result.length) return res.status(404).json({ message: 'User not found.' });
+
+        const userId = result[0].userId;
+
+        const queryDelete = 'DELETE FROM 3430_towatchlist WHERE watchListId = ? AND userId = ? AND movieId = ?';
+        db.query(queryDelete, [watchlistId, userId, movieId], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            if (result.affectedRows > 0) {
+                return res.status(200).json({ message: 'Movie removed from to-watch list.' });
+            } else {
+                return res.status(404).json({ message: 'Entry not found.' });
+            }
+        });
+    });
+});
 
 /// COMPLETED WATCH LIST
 // Route to get "Completed Watch List" entries
@@ -556,31 +583,64 @@ app.get('/completedwatchlist/entries', (req, res) => {
   });
 
   // Route to add an entry to the "To Watch List"
-app.post('/completedwatchlist/entries', (req, res) => {
-    const { movieId, rating, notes, times_watched } = req.body;
-    const userId = req.session.userId;
+  app.post('/completedwatchlist/entries', (req, res) => {
+    const { movie_id, rating, notes, date_initially_watched, date_last_watched, times_watched, towatchlistId, apiKey } = req.body;
+    const api_key = req.header["x-api-key"];
 
-    // Validate input data
-    if (!userId || !movieId) {
-        return res.status(400).json({ error: 'Missing required fields' });
+    console.log(api_key)
+    console.log("Starting to add entry to completed watch list...");
+    console.log("Request body:", req.body);
+
+    if (!towatchlistId) {
+        return res.status(400).json({ error: 'towatchlistId is required' });
     }
 
-    const query = `
-        INSERT INTO 3430_completedwatchlist 
-        (userId, movieId, rating, notes, date_initially_watched, date_last_watched, times_watched) 
-        VALUES (?, ?, ?, ?, CURDATE(), CURDATE(), ?)
-    `;
-    const params = [userId, movieId, rating, notes, times_watched];
+    const userQuery = `SELECT userId FROM 3430_users WHERE api_key = ?`;
 
-    db.query(query, params, (err, result) => {
+    db.query(userQuery, [apiKey], (err, result) => {
         if (err) {
-        console.error('Database error:', err.message);
-        return res.status(500).json({ error: 'Database error' });
+            console.error('Database error during user query:', err.message);
+            return res.status(500).json({ error: 'Database error' });
         }
 
-        res.status(201).json({ message: 'Movie added to watch list successfully' });
+        
+        console.log("Database query result:", result);
+
+        // Check if a result was returned
+        if (result.length === 0) {
+            console.log('No user found for the given watchListId:', towatchlistId);
+            return res.status(404).json({ error: 'No user found for the given watchListId' });
+        }
+
+        // Extract userId from the result
+        const userId = result[0].userId;
+        console.log("Extracted userId:", userId);
+
+        // Validate required input data
+        if (!userId || !movie_id) {
+            console.log('Missing required fields: userId or movie_id');
+            return res.status(400).json({ error: 'Missing required fields: userId or movie_id' });
+        }
+
+        const query = `
+            INSERT INTO 3430_completedwatchlist 
+            (userId, movieId, rating, notes, date_initially_watched, date_last_watched, times_watched) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+        const params = [userId, movie_id, rating, notes, date_initially_watched, date_last_watched, times_watched];
+
+        db.query(query, params, (err, result) => {
+            if (err) {
+                console.error('Database error during insert:', err.message);
+                return res.status(500).json({ error: 'Database error' });
+            }
+
+            console.log('Movie added to completed watch list successfully');
+            res.status(201).json({ message: 'Movie added to completed watch list successfully' });
+        });
     });
 });
+
 
 app.get('/completedwatchlist/entries/:id', async (req, res) => {
     const apiKey = req.query.key || req.headers['x-api-key'];
@@ -617,6 +677,35 @@ app.get('/completedwatchlist/entries/:id', async (req, res) => {
         console.error('Database error:', error.message);
         res.status(500).json({ error: "Database error" });
     }
+});
+
+// DELETE handler for removing a movie from the completed watchlist
+app.delete('/completedwatchlist/entries/:id', (req, res) => {
+    const completedListId = req.params.id;
+    const apiKey = req.headers['x-api-key'];
+    const movieId = req.body.movie_id;
+
+    if (!apiKey) {
+        return res.status(401).json({ message: 'API key is required.' });
+    }
+
+    const queryUser = 'SELECT userId FROM 3430_users WHERE api_key = ?';
+    db.query(queryUser, [apiKey], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (!result.length) return res.status(404).json({ message: 'User not found.' });
+
+        const userId = result[0].userId;
+
+        const queryDelete = 'DELETE FROM 3430_completedwatchlist WHERE completedListId = ? AND userId = ? AND movieId = ?';
+        db.query(queryDelete, [completedListId, userId, movieId], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            if (result.affectedRows > 0) {
+                return res.status(200).json({ message: 'Movie removed from completed watchlist.' });
+            } else {
+                return res.status(404).json({ message: 'Entry not found.' });
+            }
+        });
+    });
 });
   
 

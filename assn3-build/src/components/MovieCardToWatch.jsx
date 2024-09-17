@@ -6,7 +6,7 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
   const alt = `${movie.title} poster`;
   const [isProcessing, setIsProcessing] = useState(false);
   const [showRatingInput, setShowRatingInput] = useState(false);
-  const [userRating, setUserRating] = useState("");
+  const [userRating, setUserRating] = useState(1);
 
   if (movie.poster == null) {
     movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
@@ -16,7 +16,7 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
   async function handleDelete() {
     setIsProcessing(true);
     // const removeFromPlanningListAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${Watchlistid}`;
-    const removeFromPlanningListAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries/${Watchlistid}`;
+    const removeFromPlanningListAPI = `http://localhost:5000/towatchlist/entries/${Watchlistid}`;
 
     try {
       const removeResponse = await fetch(removeFromPlanningListAPI, {
@@ -44,12 +44,11 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
   async function handleMarkAsWatched() {
     setIsProcessing(true);
     // const removeFromWatchlistAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${Watchlistid}`;
-    const removeFromWatchlistAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries/${Watchlistid}`;
+    const removeFromWatchlistAPI = `http://localhost:5000/towatchlist/entries/${Watchlistid}`;
 
     // const addToCompletedListAPI =
     //   "https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries";
-    const addToCompletedListAPI =
-      "http://localhost:5000/completedwatchlist/entries";
+    const addToCompletedListAPI = "http://localhost:5000/completedwatchlist/entries";
     try {
       const removeResponse = await fetch(removeFromWatchlistAPI, {
         method: "DELETE",
@@ -73,6 +72,7 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
         return `${year}-${month}-${day}`;
       }
       const currentDate = new Date().toISOString();
+
       // Add to completed list
       const payload = {
         movie_id: id,
@@ -81,15 +81,19 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
         date_initially_watched: formatDate(currentDate), // Format date
         date_last_watched: formatDate(currentDate), // Format date
         times_watched: 1, // Default watch count
+        towatchlistId : Watchlistid,
+        apiKey: apiKey
       };
+
+      const json = JSON.stringify(payload);
 
       const addResponse = await fetch(addToCompletedListAPI, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-Api-Key": apiKey,
         },
-        body: JSON.stringify(payload),
+        body: json,
+        withCredentials: true
       });
 
       if (!addResponse.ok) {
