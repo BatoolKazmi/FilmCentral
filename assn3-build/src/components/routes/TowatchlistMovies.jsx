@@ -10,21 +10,27 @@ function ToWatchListMovies() {
   const [newNotes, setNewNotes] = useState(""); 
   const label = `Update Priority (?/10): `;
 
-  if (movie.poster == null) {
-    movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
-  }
   //const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/movies/${id}`;
   // const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${id}?key=${key}`;
-  const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries/${id}?key=${key}`;
+  const API = `http://localhost:5000/towatchlist/entries/${id}/${key}`;
 
   async function fetchContact() {
-    const resp = await fetch(API);
+    console.log(API)
+
+    const resp = await fetch(API, {
+      headers: {
+        'x-api-key':key,  // Add your API key here
+      },
+      withCredentials: true
+    });
+  
     const jsonResponse = await resp.json();
-    const set = jsonResponse;
+    const set = jsonResponse[0];
+
     setMovie(set);
     setPriority(jsonResponse.priority || "Select"); // Ensure default is set properly
     setNotes(jsonResponse.notes || "");
-    setNewNotes(jsonResponse.notes || ""); 
+    setNewNotes(jsonResponse.notes || "");
   }
 
   useEffect(() => {
@@ -32,14 +38,18 @@ function ToWatchListMovies() {
     fetchContact();
   }, [key]);
 
+  if (movie.poster == null) {
+    movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
+  }
+
   async function updatePriority(newPriority) {
     try {
       // const updateAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${id}/priority?key=${key}`;
-      const updateAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries/${id}/priority?key=${key}`;
+      const updateAPI = `http://localhost:5000/towatchlist/entries/${id}/priority`;
       const response = await fetch(updateAPI, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ key, priority: newPriority }),
+        body: JSON.stringify({ key: key, priority: newPriority }),
       });
       if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -51,7 +61,7 @@ function ToWatchListMovies() {
 
   async function updateNotes() {
     try {
-      const updateAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/towatchlist/entries/${id}/notes?key=${key}`;
+      const updateAPI = `http://localhost:5000/towatchlist/entries/${id}/notes?key=${key}`;
       const response = await fetch(updateAPI, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },

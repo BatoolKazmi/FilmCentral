@@ -7,21 +7,8 @@ import mysql from "mysql";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 
-// import { loginhandler } from "./loginhandler.js";
-// import { signuphandler } from "./signuphandler.js";
-// // const loginHandler = require('./loginhandler');
-// // const signupHandler = require('./signuphandler');
-
 const app = express();
 const PORT = 5000;
-
-app.use(bodyParser.json());
-app.use(cors({
-    origin: 'http://localhost:5173', // React app URL
-    credentials: true
-}));
-app.use(express.json());
-
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -36,6 +23,23 @@ app.use(session({
     resave: true,
     saveUninitialized: false
 }));
+
+// CORS configuration, allowing credentials
+app.use(cors({
+    origin: 'http://localhost:5173', // React app URL
+    credentials: true // Enable credentials to be sent across domains
+}));
+
+// Body parsing middleware
+app.use(bodyParser.json());
+app.use(express.json());
+
+// // Logging middleware to see session data
+// app.use((req, res, next) => {
+//     console.log('Session:', req.session);
+//     next();
+// });
+
 
 app.get('/', (req, res) => {
     return res.json("from backend side");
@@ -344,9 +348,9 @@ function authenticateApiKey(req, res, next) {
     // Replace 'your_valid_api_key' with the actual valid API key
     const validApiKey = req.session.api_key;
   
-    // if (apiKey !== validApiKey) {
-    //     return res.status(403).json({ error: 'Invalid API key' });
-    // }
+    if (apiKey !== validApiKey) {
+        return res.status(403).json({ error: 'Invalid API key' });
+    }
     
     next(); // API key is valid, proceed to the next middleware or route handler
 }
@@ -400,7 +404,131 @@ app.post('/towatchlist/entries', (req, res) => {
     });
 });
   
+app.get('/towatchlist/entries/:id/:key', (req, res) => {
 
+    const IdQuery = `SELECT userId FROM 3430_users WHERE api_key = ?`;
+    const api_key = req.params.key;
+    db.query(IdQuery, [api_key], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        const userId = result[0].userId;
+        
+        const towatchlistId = req.params.id;
+
+        const query = `SELECT 3430_towatchlist.watchListId, 3430_towatchlist.priority, 
+                        3430_towatchlist.notes, 3430_towatchlist.movieid, 3430_movies.title, 3430_movies.poster
+                        FROM 3430_towatchlist
+                        JOIN 3430_movies ON 3430_towatchlist.movieid = 3430_movies.id
+                        WHERE 3430_towatchlist.userId = ? AND 3430_towatchlist.watchListId = ?`;
+        
+        const params = [userId, towatchlistId];
+
+        db.query(query, params, (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.status(200).json(result);
+        });
+
+    });
+    
+    
+
+
+});
+
+///// Patch
+// PATCH handler for updating priority in the to-watch list
+app.patch('/towatchlist/entries/:id/priority', (req, res) => {
+    const watchlistId = req.params.id;
+    const newPriority = req.body.priority;
+    const apiKey = req.body.key;
+
+    console.log(`Received API key: ${apiKey}`);
+
+    if (!newPriority) {
+        return res.status(400).json({ message: 'New priority required.' });
+    }
+    
+    if (!apiKey) {
+        return res.status(401).json({ message: 'API key is required.' });
+    }
+
+    if (isNaN(newPriority)) {
+        return res.status(400).json({ message: 'Priority must be a number.' });
+    }
+
+    try {
+        const IdQuery = `SELECT 3430_users.userId FROM 3430_users WHERE 3430_users.api_key = ?`;
+        db.query(IdQuery, [apiKey], (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: 'Database query error.', details: err.message });
+            }
+
+            // Check if userId is found
+            if (result.length === 0) {
+                return res.status(404).json({ message: 'Invalid API key, user not found.' });
+            }
+
+            const userId = result[0].userId;
+            console.log(`User ID: ${userId}`);
+
+            const query = `UPDATE 3430_towatchlist SET 3430_towatchlist.priority = ? WHERE 3430_towatchlist.watchListId = ? AND 3430_towatchlist.userId = ?`;
+            db.query(query, [newPriority, watchlistId, userId], (err, result) => {
+                if (err) {
+                    return res.status(500).json({ error: 'Database query error.', details: err.message });
+                }
+
+                if (result.affectedRows > 0) {
+                    res.status(201).json({ message: 'Priority updated for the watchlist entry.' });
+                } else {
+                    res.status(404).json({ message: 'Watchlist entry not found or user is not authorized to modify this entry.' });
+                }
+            });
+        });
+       
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred while updating priority.' });
+    }
+});
+
+// PATCH handler for updating notes in the to-watch list
+app.patch('/towatchlist/entries/:id/notes', (req, res) => {
+    const watchlistId = req.params.id;
+    const newNote = req.body.notes;
+    const apiKey = req.body.key;
+
+    console.log(`Received API key: ${apiKey}`);
+
+    if (!newNote) {
+        return res.status(400).json({ message: 'New note required.' });
+    }
+    
+    if (!apiKey) {
+        return res.status(401).json({ message: 'API key is required.' });
+    }
+
+    try {
+        const IdQuery = `SELECT userId FROM 3430_users WHERE api_key = ?`;
+        db.query(IdQuery, [apiKey], (err, result) => {
+            
+            if (err) return res.status(500).json({ error: err.message });
+            const userId = result[0].userId;
+
+            const query = `UPDATE 3430_towatchlist SET notes = ? WHERE watchListId = ? AND userId = ?`;
+            db.query(query, [newNote, watchlistId, userId], (err, result) => {
+                if (result.affectedRows > 0) {
+                    res.status(201).json({ message: 'notes updated for the watchlist entry.' });
+                } else {
+                    res.status(501).json({ message: 'Failed to update notes for the watchlist entry.' });
+                }
+            });
+            
+        })
+       
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred while updating notes.' });
+    }
+});
   
 
 
@@ -452,6 +580,43 @@ app.post('/completedwatchlist/entries', (req, res) => {
 
         res.status(201).json({ message: 'Movie added to watch list successfully' });
     });
+});
+
+app.get('/completedwatchlist/entries/:id', async (req, res) => {
+    const apiKey = req.query.key || req.headers['x-api-key'];
+
+    if (!apiKey) {
+        return res.status(401).json({ message: "API key is required." });
+    }
+
+    try {
+        const user = await authenticateApiKey(apiKey);
+        if (!user) {
+            return res.status(401).json({ message: "Invalid API key." });
+        }
+
+        const userId = user.userId;
+        const completedWatchlistId = req.params.id;
+
+        const query = `SELECT 3430_completedWatchList.completedId, 3430_completedWatchList.rating, 
+                        3430_completedWatchList.notes, 3430_completedWatchList.date_initially_watched, 
+                        3430_completedWatchList.date_last_watched, 3430_completedWatchList.times_watched, 
+                        3430_completedWatchList.movieid, 3430_movies.title, 3430_movies.poster
+                       FROM 3430_completedWatchList
+                       JOIN 3430_movies ON 3430_completedWatchList.movieid = 3430_movies.id
+                       WHERE 3430_completedWatchList.userId = ? AND 3430_completedWatchList.completedId = ?`;
+        
+        const [rows] = await db.execute(query, [userId, completedWatchlistId]);
+
+        if (rows.length > 0) {
+            res.status(200).json(rows[0]);
+        } else {
+            res.status(404).json({ message: "No entry found for the provided ID." });
+        }
+    } catch (error) {
+        console.error('Database error:', error.message);
+        res.status(500).json({ error: "Database error" });
+    }
 });
   
 

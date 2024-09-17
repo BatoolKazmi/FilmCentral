@@ -49,7 +49,7 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
     // const addToCompletedListAPI =
     //   "https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries";
     const addToCompletedListAPI =
-      "https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries";
+      "http://localhost:5000/completedwatchlist/entries";
     try {
       const removeResponse = await fetch(removeFromWatchlistAPI, {
         method: "DELETE",
