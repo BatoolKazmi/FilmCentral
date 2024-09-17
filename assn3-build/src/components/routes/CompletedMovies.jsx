@@ -15,8 +15,8 @@ function CompletedMovies() {
 
   //const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/movies/${id}`;
   // const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries/${id}?key=${key}`;
-  const API = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries/${id}?key=${key}`;
-  const notesAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries/${id}/notes?key=${key}`;
+  const API = `http://localhost:5000/completedwatchlist/entries/${id}/${key}`;
+  const notesAPI = `http://localhost:5000/completedwatchlist/entries/${id}/notes`;
 
   async function fetchContact() {
     const resp = await fetch(API);
@@ -33,14 +33,13 @@ function CompletedMovies() {
   // IDK WHAT TO DO WITH GENRES AND PRODUCTION COMPANIES
   async function updateTimesWatched() {
     // const updateAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries/${id}/times-watched`;
-    const updateAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries/${id}/times-watched`
+    const updateAPI = `http://localhost:5000/completedwatchlist/entries/${id}/times-watched`
     const response = await fetch(updateAPI, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
-        "X-Api-Key": key, // API key header
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({}),
+      body: JSON.stringify({key: key}),
     });
 
     if (response.ok) {
@@ -54,14 +53,13 @@ function CompletedMovies() {
   async function updateRating(newRating) {
     try {
       // const updateAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries/${id}/rating?key=${key}`;
-      const updateAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries/${id}/rating?key=${key}`;
+      const updateAPI = `http://localhost:5000/completedwatchlist/entries/${id}/rating`;
       const response = await fetch(updateAPI, {
         method: "PATCH",
         headers: { 
-          "Content-Type": "application/json",
-          "X-Api-Key": key, // API key header
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify({key, rating: newRating }),
+        body: JSON.stringify({key: key, rating: newRating }),
       });
       if (response.ok) {
         setRating(newRating);
@@ -85,7 +83,7 @@ function CompletedMovies() {
   useEffect(() => {
     // Parse the genres string into an array
     fetchContact();
-  }, [key,rating, timesWatched]);
+  }, [key, rating, timesWatched]);
 
   // UPDATING NOTES
   async function updateNotes() {
@@ -93,10 +91,9 @@ function CompletedMovies() {
       const response = await fetch(notesAPI, {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json",
-          "X-Api-Key": key, // API key header
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify({ notes: newNotes }),  // Use the newNotes state
+        body: JSON.stringify({ notes: newNotes, key: key }),  // Use the newNotes state
       });
       if (response.ok) {
         setMovie(prevMovie => ({ ...prevMovie, notes: newNotes })); // Update the movie state with new notes

@@ -571,7 +571,8 @@ app.get('/completedwatchlist/entries', (req, res) => {
     let query = `SELECT cw.completedId, cw.rating, cw.notes, cw.date_initially_watched, cw.date_last_watched, cw.times_watched, cw.movieid, m.title, m.poster 
                  FROM 3430_completedwatchlist cw 
                  JOIN 3430_movies m ON cw.movieid = m.id 
-                 WHERE cw.userId = ?`;
+                 WHERE cw.userId = ?
+                 ORDER BY cw.rating DESC`;
     let params = [userId];
   
     if (title) {
@@ -713,6 +714,131 @@ app.delete('/completedwatchlist/entries/:id', (req, res) => {
                 return res.status(200).json({ message: 'Movie removed from completed watchlist.' });
             } else {
                 return res.status(404).json({ message: 'Entry not found.' });
+            }
+        });
+    });
+});
+
+// GET completed movie entry by ID and key
+app.get('/completedwatchlist/entries/:id/:key', (req, res) => {
+    const completedId = req.params.id;
+    const apiKey = req.params.key;
+
+    const IdQuery = `SELECT userId FROM 3430_users WHERE api_key = ?`;
+    db.query(IdQuery, [apiKey], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        const userId = result[0].userId;
+
+        const query = `
+            SELECT 3430_completedwatchlist.*, 3430_movies.title, 3430_movies.poster
+            FROM 3430_completedwatchlist
+            JOIN 3430_movies ON 3430_completedwatchlist.movieId = 3430_movies.id
+            WHERE 3430_completedwatchlist.userId = ? AND 3430_completedwatchlist.completedId = ?`;
+
+        db.query(query, [userId, completedId], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            if (result.length === 0) {
+                return res.status(404).json({ message: 'Movie not found in the completed watchlist.' });
+            }
+            res.status(200).json(result[0]);
+        });
+    });
+});
+
+// PATCH handler for updating times_watched
+app.patch('/completedwatchlist/entries/:id/times-watched', (req, res) => {
+    const movieId = req.params.id;
+    const apiKey = req.body.key;
+
+    const IdQuery = `SELECT userId FROM 3430_users WHERE api_key = ?`;
+    db.query(IdQuery, [apiKey], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        const userId = result[0].userId;
+
+        const query = `UPDATE 3430_completedwatchlist SET times_watched = times_watched + 1 
+                       WHERE completedId = ? AND userId = ?`;
+        db.query(query, [movieId, userId], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            if (result.affectedRows > 0) {
+                res.status(200).json({ message: 'Times watched updated successfully.' });
+            } else {
+                res.status(404).json({ message: 'Movie entry not found or unauthorized.' });
+            }
+        });
+    });
+});
+
+// PATCH handler for updating movie rating
+app.patch('/completedwatchlist/entries/:id/rating', (req, res) => {
+    const movieId = req.params.id;
+    const newRating = req.body.rating;
+    const apiKey = req.body.key;
+
+    if (!newRating || isNaN(newRating)) {
+        return res.status(400).json({ message: 'Valid rating is required.' });
+    }
+
+    const IdQuery = `SELECT userId FROM 3430_users WHERE api_key = ?`;
+    db.query(IdQuery, [apiKey], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        const userId = result[0].userId;
+
+        const query = `UPDATE 3430_completedwatchlist SET rating = ? 
+                       WHERE completedId = ? AND userId = ?`;
+        db.query(query, [newRating, movieId, userId], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            if (result.affectedRows > 0) {
+                res.status(200).json({ message: 'Rating updated successfully.' });
+            } else {
+                res.status(404).json({ message: 'Movie entry not found or unauthorized.' });
+            }
+        });
+    });
+});
+
+// PATCH handler for updating movie notes
+app.patch('/completedwatchlist/entries/:id/notes', (req, res) => {
+    const movieId = req.params.id;
+    const newNote = req.body.notes;
+    const apiKey = req.body.key;
+
+    if (!newNote) {
+        return res.status(400).json({ message: 'New note required.' });
+    }
+
+    const IdQuery = `SELECT userId FROM 3430_users WHERE api_key = ?`;
+    db.query(IdQuery, [apiKey], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        const userId = result[0].userId;
+
+        const query = `UPDATE 3430_completedwatchlist SET notes = ? 
+                       WHERE completedId = ? AND userId = ?`;
+        db.query(query, [newNote, movieId, userId], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            if (result.affectedRows > 0) {
+                res.status(200).json({ message: 'Notes updated successfully.' });
+            } else {
+                res.status(404).json({ message: 'Movie entry not found or unauthorized.' });
             }
         });
     });

@@ -15,12 +15,12 @@
 - [x] I want to be able to mark a movie as watched once I've seen it (which should remove it from my watch list and place it on the completed list)
 
 #### CompletedWatchList
-- [ ] I want to be able to add a score onto a movie that I've seen (either when moving it to completed or later)
-- [ ] I want to be able to see all my finished movies sorted by score or date watched (developers choice)
-- [ ] I want to be able to update the number of times I've watched a movie on my completed list if I've watched it again
+- [X] I want to be able to add a score onto a movie that I've seen (either when moving it to completed or later)
+- [x] I want to be able to see all my finished movies sorted by score or date watched (developers choice)
+- [X] I want to be able to update the number of times I've watched a movie on my completed list if I've watched it again
 - sorted by rating
 
-- [ ] I want to be able to remove things from my planning list even if I don't end up watching it (e.g., I added the wrong one, or I changed my mind, etc)
+- [X] I want to be able to remove things from my planning list even if I don't end up watching it (e.g., I added the wrong one, or I changed my mind, etc)
 
 
 ## Important to do:
