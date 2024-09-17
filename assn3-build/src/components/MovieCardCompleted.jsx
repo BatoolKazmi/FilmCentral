@@ -14,16 +14,15 @@ function MovieCardCompleted({ movie, id, completedId, apiKey, onRemove }) {
 
   async function handleRemove() {
     setIsProcessing(true);
-    const removeFromCompletedListAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries/${completedId}`;
+    const removeFromCompletedListAPI = `http://localhost:5000/completedwatchlist/entries/${completedId}`;
 
     try {
       const removeResponse = await fetch(removeFromCompletedListAPI, {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
-          "X-Api-Key": apiKey,
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify({ movie_id: id }),
+        body: JSON.stringify({ movie_id: id, key: apiKey }),
       });
 
       if (!removeResponse.ok) {
@@ -44,16 +43,16 @@ function MovieCardCompleted({ movie, id, completedId, apiKey, onRemove }) {
     setIsProcessing(true);
 
     // Step 1: Remove from Completed Watch List
-    const removeFromCompletedListAPI = `https://loki.trentu.ca/~batoolkazmi/3430/assn2/cois-3430-2024su-a2-Batool-Kazmi/api/completedwatchlist/entries/${completedId}`;
+    const removeFromCompletedListAPI = `http://localhost:5000/completedwatchlist/entries/${completedId}`;
 
+    const json = JSON.stringify({ movie_id: id, key: apiKey})
     try {
       const removeResponse = await fetch(removeFromCompletedListAPI, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "X-Api-Key": apiKey,
         },
-        body: JSON.stringify({ movie_id: id }),
+        body: json,
       });
 
       if (!removeResponse.ok) {
@@ -63,13 +62,13 @@ function MovieCardCompleted({ movie, id, completedId, apiKey, onRemove }) {
       console.log("Movie removed from completed list successfully");
 
       // Step 2: Add to To Watch List
-      const response = await axios.post('http://localhost:5000/api/towatchlist/entries', {
-        movie_id: id,
+      const response = await axios.post('http://localhost:5000/towatchlist/entries', {
+        movieId: id,
         priority: "5",
-        notes: "",
+        notes: "write a note!",
       }, { withCredentials: true });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         console.log("Movie added to To Watch List successfully:", response.data);
         alert("Added To Watch List!");
       } else {

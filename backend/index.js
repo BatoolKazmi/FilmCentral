@@ -364,7 +364,8 @@ app.get('/towatchlist/entries', (req, res) => {
     let query = `SELECT tw.watchListId, tw.priority, tw.notes, tw.movieid, m.title, m.poster 
                  FROM 3430_towatchlist tw 
                  JOIN 3430_movies m ON tw.movieid = m.id 
-                 WHERE tw.userId = ?`;
+                 WHERE tw.userId = ?
+                 ORDER BY tw.priority DESC`;
     let params = [userId];
 
     // Title search
@@ -384,6 +385,8 @@ app.get('/towatchlist/entries', (req, res) => {
 app.post('/towatchlist/entries', (req, res) => {
     const { movieId, priority, notes } = req.body;
     const userId = req.session.userId;
+    console.log("adding to watchlist")
+    console.log(userId)
 
     // Validate input data
     if (!userId || !movieId || !priority) {
@@ -583,7 +586,7 @@ app.get('/completedwatchlist/entries', (req, res) => {
   });
 
   // Route to add an entry to the "To Watch List"
-  app.post('/completedwatchlist/entries', (req, res) => {
+app.post('/completedwatchlist/entries', (req, res) => {
     const { movie_id, rating, notes, date_initially_watched, date_last_watched, times_watched, towatchlistId, apiKey } = req.body;
     const api_key = req.header["x-api-key"];
 
@@ -682,21 +685,28 @@ app.get('/completedwatchlist/entries/:id', async (req, res) => {
 // DELETE handler for removing a movie from the completed watchlist
 app.delete('/completedwatchlist/entries/:id', (req, res) => {
     const completedListId = req.params.id;
-    const apiKey = req.headers['x-api-key'];
+    const apiKey = req.body.key;
     const movieId = req.body.movie_id;
+
+    console.log(apiKey)
+    console.log(movieId)
+    console.log(completedListId)
 
     if (!apiKey) {
         return res.status(401).json({ message: 'API key is required.' });
     }
 
     const queryUser = 'SELECT userId FROM 3430_users WHERE api_key = ?';
+    
     db.query(queryUser, [apiKey], (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
+        console.log(result)
         if (!result.length) return res.status(404).json({ message: 'User not found.' });
 
         const userId = result[0].userId;
+        console.log(userId)
 
-        const queryDelete = 'DELETE FROM 3430_completedwatchlist WHERE completedListId = ? AND userId = ? AND movieId = ?';
+        const queryDelete = 'DELETE FROM 3430_completedwatchlist WHERE completedId = ? AND userId = ? AND movieid = ?';
         db.query(queryDelete, [completedListId, userId, movieId], (err, result) => {
             if (err) return res.status(500).json({ error: err.message });
             if (result.affectedRows > 0) {

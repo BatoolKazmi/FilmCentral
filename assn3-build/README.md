@@ -8,11 +8,11 @@
 - [x] I want to be able to **search for a specific movie**
 
 #### WatchList
-- [ ] I want to "quick add" a movie to my plan-to-watch list from the main page, with no notes and a default priority
-- [ ] I want to see all the movies on my watch list sorted by priority
-- [ ] I want to be able to update the priority of a movie on my watchlist
+- [x] I want to "quick add" a movie to my plan-to-watch list from the main page, with no notes and a default priority
+- [x] I want to see all the movies on my watch list sorted by priority
+- [x] I want to be able to update the priority of a movie on my watchlist
 
-- [ ] I want to be able to mark a movie as watched once I've seen it (which should remove it from my watch list and place it on the completed list)
+- [x] I want to be able to mark a movie as watched once I've seen it (which should remove it from my watch list and place it on the completed list)
 
 #### CompletedWatchList
 - [ ] I want to be able to add a score onto a movie that I've seen (either when moving it to completed or later)
