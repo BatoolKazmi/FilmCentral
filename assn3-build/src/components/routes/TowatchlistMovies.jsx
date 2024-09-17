@@ -28,15 +28,15 @@ function ToWatchListMovies() {
     const set = jsonResponse[0];
 
     setMovie(set);
-    setPriority(jsonResponse.priority || "Select"); // Ensure default is set properly
-    setNotes(jsonResponse.notes || "");
-    setNewNotes(jsonResponse.notes || "");
+    setPriority(jsonResponse.priority); 
+    setNotes(jsonResponse.notes);
+    setNewNotes(jsonResponse.notes);
   }
 
   useEffect(() => {
     // Parse the genres string into an array
     fetchContact();
-  }, [key]);
+  }, [key], priority, notes, newNotes);
 
   if (movie.poster == null) {
     movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
@@ -61,11 +61,11 @@ function ToWatchListMovies() {
 
   async function updateNotes() {
     try {
-      const updateAPI = `http://localhost:5000/towatchlist/entries/${id}/notes?key=${key}`;
+      const updateAPI = `http://localhost:5000/towatchlist/entries/${id}/notes`;
       const response = await fetch(updateAPI, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ key, notes: newNotes }),
+        body: JSON.stringify({ key: key, notes: newNotes }),
       });
       if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -102,7 +102,7 @@ function ToWatchListMovies() {
       <h1>{movie.title}</h1>
       <img src={movie.poster} alt={movie.title} />
       <p>
-        <strong>Priority:</strong> {priority}
+        <strong>Priority:</strong> {(!priority) ? movie.priority : priority}
       </p>
       <div>
         <label htmlFor="priority">{label}</label>
@@ -126,7 +126,7 @@ function ToWatchListMovies() {
         </select>
       </div>
       <p>
-        <strong>Notes:</strong> {notes}
+        <strong>Notes:</strong> {(!notes) ? movie.notes : notes}
       </p>
       <textarea
         name="notes"
