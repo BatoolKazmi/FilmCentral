@@ -16,12 +16,15 @@ export default function Signup() {
     const navigate = useNavigate();
 
     // HANDLE SUBMISSION
-    const handleSubmit = async (ev) => {
-      ev.preventDefault();
-      const validationErrors = SignupValidation(username, email, password, password2)
-      setErrors(validationErrors); // Clear errors
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
 
-      const API = "http://localhost:5000/signup";
+    // Frontend validation (optional)
+    const validationErrors = SignupValidation(username, email, password, password2);
+    setErrors(validationErrors); // Set validation errors
+
+    if (Object.keys(validationErrors).length === 0) { // Proceed only if no frontend validation errors
+      const API = "http://localhost:5000/signup";  // Your backend API endpoint
       try {
         const response = await axios.post(API, {
           username,
@@ -29,26 +32,33 @@ export default function Signup() {
           password2,
           email
         });
-        if (response.data.error) {
-          setErrors({ server: response.data.error });
-        } else {
-          alert("YOU SIGNED UP!!")
+
+        // Backend validation errors (received in response)
+        if (!response.data.message) {
+          alert("YOU SIGNED UP!!");
           navigate('/login');
         }
       } catch (err) {
-        console.error('There was an error!', err);
+        if (err.response && err.response.data) {
+          // Handle errors from the backend
+          setErrors({ server: err.response.data.message });
+        } else {
+          console.error('There was an unexpected error!', err);
+          setErrors({ server: 'An unexpected error occurred. Please try again later.' });
+        }
       }
-    };
+    }
+  };
 
   return (
     <>
       <main>
         <div id="center-container">
           <h2>Create Account</h2>
-          <form id="create-account" action="" onSubmit={handleSubmit}>
+          <form id="create-account" onSubmit={handleSubmit}>
+            {/* Username Input */}
             <div className="form-item col">
               <label htmlFor="username">Username:</label>
-              {/* Handling input change to update state */}
               <input
                 type="text"
                 id="username"
@@ -61,6 +71,8 @@ export default function Signup() {
                 {errors.username}
               </span>
             </div>
+            
+            {/* Email Input */}
             <div className="form-item col">
               <label htmlFor="email">Email:</label>
               <input
@@ -75,6 +87,8 @@ export default function Signup() {
                 {errors.email}
               </span>
             </div>
+            
+            {/* Password Input */}
             <div className="form-item col">
               <label htmlFor="password">Password:</label>
               <input
@@ -89,6 +103,8 @@ export default function Signup() {
                 {errors.p_strength}
               </span>
             </div>
+            
+            {/* Verify Password Input */}
             <div className="form-item col">
               <label htmlFor="password2">Verify Password:</label>
               <input
@@ -103,6 +119,14 @@ export default function Signup() {
                 {errors.p_match}
               </span>
             </div>
+            
+            {/* Backend Error Message */}
+            {errors.server && (
+              <div className="error-message">
+                {errors.server}
+              </div>
+            )}
+            
             <button id="submit" name="submit">Create Account</button>
             <Link to="/login">Sign In</Link>
           </form>

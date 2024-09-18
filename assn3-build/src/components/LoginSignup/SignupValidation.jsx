@@ -19,8 +19,8 @@ export default function SignupValidation(username, email, password, password2) {
     // Password strength validation
     if (!password) {
         errors.p_strength = "Password should not be empty";
-    } else if (password.length < 6) {
-        errors.p_strength = "Password should be at least 6 characters long";
+    } else if (password.length < 10) {
+        errors.p_strength = "Password should be at least 10 characters long";
     }
 
     // Password match validation
