@@ -816,6 +816,36 @@ app.patch('/completedwatchlist/entries/:id/times-watched', (req, res) => {
     });
 });
 
+// PATCH handler for decrementing times_watched
+app.patch('/completedwatchlist/entries/:id/times-watched/decrease', (req, res) => {
+    const movieId = req.params.id;
+    const apiKey = req.body.key;
+
+    const IdQuery = `SELECT userId FROM 3430_users WHERE api_key = ?`;
+    db.query(IdQuery, [apiKey], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        const userId = result[0].userId;
+
+        // Decrement times_watched, ensuring it doesn't go below 0
+        const query = `UPDATE 3430_completedwatchlist 
+                       SET times_watched = GREATEST(times_watched - 1, 1) 
+                       WHERE completedId = ? AND userId = ?`;
+        db.query(query, [movieId, userId], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            if (result.affectedRows > 0) {
+                res.status(200).json({ message: 'Times watched updated successfully.' });
+            } else {
+                res.status(404).json({ message: 'Movie entry not found or unauthorized.' });
+            }
+        });
+    });
+});
+
 // PATCH handler for updating movie rating
 app.patch('/completedwatchlist/entries/:id/rating', (req, res) => {
     const movieId = req.params.id;

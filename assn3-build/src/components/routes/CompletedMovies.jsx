@@ -50,6 +50,31 @@ function CompletedMovies() {
     }
   }
 
+  async function decrementTimesWatched() {
+    const updateAPI = `http://localhost:5000/completedwatchlist/entries/${id}/times-watched/decrease`;
+    
+    try {
+      const response = await fetch(updateAPI, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ key: key }),
+      });
+  
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        // Assuming the backend responds with the updated 'times_watched' count
+        setTimesWatched(jsonResponse.times_watched);
+      } else {
+        console.error("Failed to update times watched");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+  
+
   async function updateRating(newRating) {
     try {
       // const updateAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries/${id}/rating?key=${key}`;
@@ -165,6 +190,7 @@ function CompletedMovies() {
         <strong>Times Watched:</strong> {timesWatched}
       </p>
       <button onClick={updateTimesWatched}>Increase Times Watched</button>
+      <button onClick={decrementTimesWatched}>Decrease Times Watched</button>
       {/* GENRES & PRODUCTION COMPANIES??? */}
     </>
   );
