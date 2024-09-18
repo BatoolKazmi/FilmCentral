@@ -33,21 +33,25 @@ function MovieCard({ movie, id }) {
 
       try {
         const [watchlistResponse, completedListResponse] = await Promise.all([
-          axios.get('http://localhost:5000/towatchlist/entries', {
-            params: { title: movie.title, movieid: id },
+          axios.get('http://localhost:5000/towatchlist/check', {
+            params: { movieid: id },
             headers: { 'x-api-key': apiKey },
             withCredentials: true
           }),
-          axios.get('http://localhost:5000/completedwatchlist/entries', {
-            params: { title: movie.title, movieid: id },
+          axios.get('http://localhost:5000/completedwatchlist/check', {
+            params: { movieid: id },
             headers: { 'x-api-key': apiKey },
             withCredentials: true
           })
         ]);
 
+
         if (watchlistResponse.data.length > 0 || completedListResponse.data.length > 0) {
           setIsInWatchlist(true);
+        } else {
+            setIsInWatchlist(false);  // Make sure to reset if not in any list
         }
+
       } catch (error) {
         console.error('Error checking movie existence:', error);
       }
@@ -55,7 +59,7 @@ function MovieCard({ movie, id }) {
 
     checkIfMovieExists();
 
-  }, [movie.title, id, apiKey]);
+  }, [id, apiKey]);
 
   // Function to add the movie to the watch list
   async function addToWatchList() {

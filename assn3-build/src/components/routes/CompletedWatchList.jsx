@@ -40,7 +40,7 @@ function CompletedWatchList() {
   async function fetchMovies() {
     let apiUrl = 'http://localhost:5000/completedwatchlist/entries';
     if (name) {
-        apiUrl += `?title=${name}`;
+        apiUrl += `?name=${name}`;
     }
 
     try {

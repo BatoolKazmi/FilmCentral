@@ -358,30 +358,57 @@ function authenticateApiKey(req, res, next) {
 ////// TO WATCH LIST //////
 // Route to get "To Watch List" entries
 app.get('/towatchlist/entries', (req, res) => {
-    const { title } = req.query;
-    const userId = req.session.userId;
+    const { name } = req.query;  // Extract name from query params
+    const userId = req.session.userId;  // Retrieve userId from session
     
     let query = `SELECT tw.watchListId, tw.priority, tw.notes, tw.movieid, m.title, m.poster 
                  FROM 3430_towatchlist tw 
                  JOIN 3430_movies m ON tw.movieid = m.id 
-                 WHERE tw.userId = ?
-                 ORDER BY tw.priority DESC`;
-    let params = [userId];
+                 WHERE tw.userId = ?`;  // Base query
+    let params = [userId];  // Add userId to the parameters list
 
-    // Title search
-    if (title && title.trim() !== '') {
-        query += " AND m.title LIKE ?";
-        params.push(`%${title}%`);
+    // If a title search is provided, add the condition
+    if (name) {
+        query += " AND m.title LIKE ?";  // Search for movie titles similar to the provided name
+        params.push(`%${name}%`);  // Use wildcards for partial matches
     }
 
+    // Order the results by priority in descending order
+    query += ` ORDER BY tw.priority DESC`;
+
+    // Execute the query
     db.query(query, params, (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(result);
+        if (err) return res.status(500).json({ error: err.message });  // Error handling
+        res.json(result);  // Return the results as JSON
     });
-  
 });
 
-  // Route to add an entry to the "To Watch List"
+// Route to get specific "To Watch List" entries for a user and movie
+app.get('/towatchlist/check', (req, res) => {
+    const { movieid } = req.query;  // Extract 'movieid' from query parameters
+    const userId = req.session.userId;  // Get userId from session
+
+    // Validate that both userId and movieId are present
+    if (!userId || !movieid) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // Query to check if the movie is in the user's watch list
+    let query = `SELECT * FROM 3430_towatchlist WHERE userId = ? AND movieid = ?`;
+    let params = [userId, movieid];
+
+    // Execute the query
+    db.query(query, params, (error, results) => {
+        if (error) {
+            console.error("Database error: ", error);
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.status(200).json(results);  // Return results
+    });
+});
+
+
+// Route to add an entry to the "To Watch List"
 app.post('/towatchlist/entries', (req, res) => {
     const { movieId, priority, notes } = req.body;
     const userId = req.session.userId;
@@ -565,26 +592,37 @@ app.delete('/towatchlist/entries/:id', (req, res) => {
 /// COMPLETED WATCH LIST
 // Route to get "Completed Watch List" entries
 app.get('/completedwatchlist/entries', (req, res) => {
-    const { title } = req.query;
-    const userId = req.session.userId;
-  
-    let query = `SELECT cw.completedId, cw.rating, cw.notes, cw.date_initially_watched, cw.date_last_watched, cw.times_watched, cw.movieid, m.title, m.poster 
+    const { name } = req.query;  // Extract 'name' from query parameters
+    const userId = req.session.userId;  // Get userId from session
+
+    // Base query to get completed watchlist for the user
+    let query = `SELECT cw.completedId, cw.rating, cw.notes, cw.date_initially_watched, cw.date_last_watched, 
+                        cw.times_watched, cw.movieid, m.title, m.poster 
                  FROM 3430_completedwatchlist cw 
                  JOIN 3430_movies m ON cw.movieid = m.id 
-                 WHERE cw.userId = ?
-                 ORDER BY cw.rating DESC`;
-    let params = [userId];
-  
-    if (title) {
-      query += ' AND m.title LIKE ?';
-      params.push(`%${title}%`);
+                 WHERE cw.userId = ?`;
+    
+    let params = [userId];  // Params array to pass into query
+
+    // If a 'name' is provided, append a search condition for movie titles
+    if (name) {
+        query += ' AND m.title LIKE ?';
+        params.push(`%${name}%`);  // Add wildcard search
     }
-  
+
+    // Order the results by rating in descending order
+    query += ` ORDER BY cw.rating DESC`;
+
+    // Execute the query with the provided parameters
     db.query(query, params, (error, results) => {
-      if (error) return res.status(500).json({ message: 'Database error.' });
-      res.status(200).json(results);
+        if (error) {
+            console.error("Database error: ", error);  // Log error for debugging
+            return res.status(500).json({ message: 'Database error.' });  // Return error response
+        }
+        res.status(200).json(results);  // Return results in a 200 OK response
     });
-  });
+});
+
 
   // Route to add an entry to the "To Watch List"
 app.post('/completedwatchlist/entries', (req, res) => {
@@ -843,6 +881,31 @@ app.patch('/completedwatchlist/entries/:id/notes', (req, res) => {
         });
     });
 });
+
+// Route to get specific "Completed Watch List" entries for a user and movie
+app.get('/completedwatchlist/check', (req, res) => {
+    const { movieid } = req.query;  // Extract 'movieid' from query parameters
+    const userId = req.session.userId;  // Get userId from session
+
+    // Validate that both userId and movieId are present
+    if (!userId || !movieid) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // Query to check if the movie is in the user's completed watch list
+    let query = `SELECT * FROM 3430_completedwatchlist WHERE userId = ? AND movieid = ?`;
+    let params = [userId, movieid];
+
+    // Execute the query
+    db.query(query, params, (error, results) => {
+        if (error) {
+            console.error("Database error: ", error);
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.status(200).json(results);  // Return results
+    });
+});
+
   
 
 

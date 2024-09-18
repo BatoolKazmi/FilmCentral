@@ -32,7 +32,7 @@ function ToWatchList() {
     ev.preventDefault();
     // filters(name);
     setName("")
-    currentPage(1);
+    setCurrentPage(1);
     fetchMovies();
 }
 
@@ -46,7 +46,7 @@ function ToWatchList() {
   async function fetchMovies() {
     let apiUrl = 'http://localhost:5000/towatchlist/entries';
     if (name) {
-        apiUrl += `?title=${name}`;
+        apiUrl += `?name=${name}`;
     }
 
     try {
