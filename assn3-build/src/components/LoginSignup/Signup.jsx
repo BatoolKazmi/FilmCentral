@@ -53,12 +53,12 @@ export default function Signup() {
   return (
     <>
       <main>
-        <div id="center-container">
+        <div id="center-container" className='center-container'>
           <h2>Create Account</h2>
           <form id="create-account" onSubmit={handleSubmit}>
             {/* Username Input */}
             <div className="form-item col">
-              <label htmlFor="username">Username:</label>
+              <label htmlFor="username">Username</label>
               <input
                 type="text"
                 id="username"
@@ -74,7 +74,7 @@ export default function Signup() {
             
             {/* Email Input */}
             <div className="form-item col">
-              <label htmlFor="email">Email:</label>
+              <label htmlFor="email">Email</label>
               <input
                 type="text"
                 id="email"
@@ -90,7 +90,7 @@ export default function Signup() {
             
             {/* Password Input */}
             <div className="form-item col">
-              <label htmlFor="password">Password:</label>
+              <label htmlFor="password">Password</label>
               <input
                 type="password"
                 id="password"
@@ -106,7 +106,7 @@ export default function Signup() {
             
             {/* Verify Password Input */}
             <div className="form-item col">
-              <label htmlFor="password2">Verify Password:</label>
+              <label htmlFor="password2">Verify Password</label>
               <input
                 type="password"
                 id="password2"
@@ -126,8 +126,9 @@ export default function Signup() {
                 {errors.server}
               </div>
             )}
-            
-            <button id="submit" name="submit">Create Account</button>
+            <div>
+              <button id="submit" name="submit" className='centered'>Create Account</button>
+            </div>
             <Link to="/login">Sign In</Link>
           </form>
         </div>

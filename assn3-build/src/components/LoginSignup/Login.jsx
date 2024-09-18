@@ -73,11 +73,11 @@ function Login() {
   return (
     <>
       <main>
-        <div id="center-container">
+        <div id="center-container" className='center-container'>
           <h2>Login</h2>
           <form action="" onSubmit={handleSubmit}>
             <div className="form-item col">
-              <label htmlFor="username">Username:</label>
+              <label htmlFor="username">Username</label>
               <input
                 type="text"
                 id="username"
@@ -91,7 +91,7 @@ function Login() {
               </span>
             </div>
             <div className="form-item col">
-              <label htmlFor="password">Password:</label>
+              <label htmlFor="password">Password</label>
               <input
                 type="password"
                 id="password"
@@ -117,7 +117,9 @@ function Login() {
               <input type="checkbox" name="remember" value="remember" />
             </div> */}
 
-            <button type="submit" id="submit" name="submit" className="centered">Login</button>
+            <div>
+              <button type="submit" id="submit" name="submit" className="centered">Login</button>
+            </div>
 
             <Link to="/signup">Create a New Account</Link>
           </form>

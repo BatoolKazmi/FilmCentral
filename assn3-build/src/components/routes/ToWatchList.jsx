@@ -7,6 +7,7 @@ import Pagination from "../Pagination";
 import axios from "axios";
 // import DeckToWatch from "../DecktoWatch";
 import DeckToWatch from "../DeckToWatch";
+import "../../styles/MovieCard.css"
 
 function ToWatchList() {
   const [movies, setMovies] = useState([]);
@@ -132,7 +133,7 @@ function ToWatchList() {
                     onPageChange={(page) => setCurrentPage(page)}
                 />
             </div>
-      <main>
+      <div className="movies">
         {/* Info goes here! */}
         {key && (
         <DeckToWatch
@@ -141,7 +142,7 @@ function ToWatchList() {
           handleMovieRemoval={handleMovieRemoval}
         />
       )}
-      </main>
+      </div>
       <div>
           <Pagination
               currentPage={currentPage}

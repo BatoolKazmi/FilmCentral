@@ -1,7 +1,11 @@
 .current {
-    background-color: rebeccapurple;
+    background-color:  var(--light-three);
 }
 
 .deactivate {
-    background-color: red;
+    background-color: var(--light-four);
+}
+
+.deactivate:hover {
+    background-color: var(--light-four);
 }

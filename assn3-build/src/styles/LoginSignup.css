@@ -1,3 +1,52 @@
 .hidden {
     display: none;
 }
+
+main{
+    display: flex;
+    justify-content: center;
+}
+
+.center-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 7em 6em;
+    border-radius: 2em;
+
+    background-color: var(--dark-two);
+    grid-column: 2;
+    margin: 7em 10em;
+    max-width: 30em;
+    box-shadow: 0 0 2em var(--light-one);
+} 
+
+.center-container div {
+    margin: 2em;
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    padding: 1em;
+    margin: 1em 0em;
+    border-radius: 0.5em;
+    border: none;
+}
+
+label{
+    text-align: left;
+}
+
+.centered {
+    padding: 1em 10em;  /* Adjust padding to suit the button size */
+    border-radius: 1em;
+    font-size: 1.15em;
+    white-space: nowrap;
+    margin: 0em;
+}
+
+.error {
+    color: var(--error);
+    font-weight: 700;
+}

@@ -4,6 +4,7 @@ import MovieCard from "../MovieCard";
 import FilterForm from "../FilterForm";
 import MovieDeck from "../MovieDeck";
 import Pagination from "../Pagination";
+import "../../styles/MovieCard.css"
 
 function Home() {
     const [movies, setMovies] = useState([]);
@@ -71,10 +72,12 @@ function Home() {
                     onPageChange={(page) => setCurrentPage(page)}
                 />
             </div>
-            <main>
+            
+            <div className="movies">
                 {/* Info goes here! */}
                 <MovieDeck movies={currentPosts} />
-            </main>
+            </div>
+            
             <div>
                 <Pagination
                     currentPage={currentPage}

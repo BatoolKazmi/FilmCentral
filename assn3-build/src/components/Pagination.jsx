@@ -30,7 +30,7 @@ const getPagesCut = ({ pageCount, pagesCutCount, currentPage }) => {
 function Pagination({ currentPage, total, limit, onPageChange }) {
 
     const pageCount = Math.ceil(total / limit);
-    const pagesCut = getPagesCut({ pageCount, pagesCutCount: 10, currentPage });
+    const pagesCut = getPagesCut({ pageCount, pagesCutCount: 5, currentPage });
 
     let pages = [];
 

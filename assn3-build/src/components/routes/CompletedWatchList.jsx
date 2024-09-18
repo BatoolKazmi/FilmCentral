@@ -6,6 +6,7 @@ import Pagination from "../Pagination";
 import Logout from "../LoginSignup/Logout";
 import axios from "axios";
 import DeckCompleted from "../DeckCompleted";
+import "../../styles/MovieCard.css";
 
 function CompletedWatchList() {
   const [movies, setMovies] = useState([]);
@@ -114,10 +115,10 @@ function CompletedWatchList() {
                     onPageChange={(page) => setCurrentPage(page)}
                 />
             </div>
-      <main>
+      <div className="movies">
         {/* Info goes here! */}
         <DeckCompleted movies={currentPosts} api={key} handleMovieRemoval={handleMovieRemoval} />
-      </main>
+      </div>
       <div>
                 <Pagination
                     currentPage={currentPage}
