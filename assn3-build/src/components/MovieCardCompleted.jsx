@@ -88,7 +88,7 @@ function MovieCardCompleted({ movie, id, completedId, apiKey, onRemove }) {
   return (
     <article>
       <img src={movie.poster} alt={alt} />
-      <h2>{movie.title}</h2>
+      <h3>{movie.title}</h3>
       {/* What should go here? */}
       <div>
         <Link to={`/completedwatchlist/entries/${completedId}/${apiKey}`}>

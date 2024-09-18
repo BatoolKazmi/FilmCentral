@@ -27,7 +27,7 @@ const User = () =>  {
         <>
             <NavBar />
             <div>
-                <h2>User Stats</h2>
+                <h1>User Stats</h1>
                 <p>UserId: {stats.userId}</p>
                 <p>Username: {stats.username}</p>
                 <p>Email: {stats.email}</p>

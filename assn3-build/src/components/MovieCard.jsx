@@ -87,7 +87,7 @@ function MovieCard({ movie, id }) {
   return (
     <article>
       <img src={movie.poster} alt={alt} />
-      <h2>{movie.title}</h2>
+      <h3>{movie.title}</h3>
       {/* What should go here? */}
       <Link to={`/movies/${id}`}>Movie Details</Link>
       <div>
