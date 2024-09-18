@@ -623,11 +623,12 @@ app.get('/completedwatchlist/entries', (req, res) => {
     });
 });
 
-
   // Route to add an entry to the "To Watch List"
 app.post('/completedwatchlist/entries', (req, res) => {
     const { movie_id, rating, notes, date_initially_watched, date_last_watched, times_watched, towatchlistId, apiKey } = req.body;
     const api_key = req.header["x-api-key"];
+
+    const rate = parseInt(rating)
 
     console.log(api_key)
     console.log("Starting to add entry to completed watch list...");
@@ -644,7 +645,6 @@ app.post('/completedwatchlist/entries', (req, res) => {
             console.error('Database error during user query:', err.message);
             return res.status(500).json({ error: 'Database error' });
         }
-
         
         console.log("Database query result:", result);
 
@@ -669,7 +669,7 @@ app.post('/completedwatchlist/entries', (req, res) => {
             (userId, movieId, rating, notes, date_initially_watched, date_last_watched, times_watched) 
             VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-        const params = [userId, movie_id, rating, notes, date_initially_watched, date_last_watched, times_watched];
+        const params = [userId, movie_id, rate, notes, date_initially_watched, date_last_watched, times_watched];
 
         db.query(query, params, (err, result) => {
             if (err) {
@@ -677,12 +677,43 @@ app.post('/completedwatchlist/entries', (req, res) => {
                 return res.status(500).json({ error: 'Database error' });
             }
 
-            console.log('Movie added to completed watch list successfully');
-            res.status(201).json({ message: 'Movie added to completed watch list successfully' });
+            // Update movie's vote average and vote count
+            const selectMovieQuery = `SELECT vote_average, vote_count FROM 3430_movies WHERE id = ?`;
+            db.query(selectMovieQuery, [movie_id], (err, movieResult) => {
+                if (err) {
+                    console.error('Database error during movie selection:', err.message);
+                    return res.status(500).json({ error: 'Database error' });
+                }
+
+                if (movieResult.length === 0) {
+                    return res.status(404).json({ error: 'Movie not found' });
+                }
+
+                const oldRating = movieResult[0].vote_average;
+                const oldCount = movieResult[0].vote_count;
+                const newCount = oldCount + 1;
+
+
+                const a = oldRating * oldCount;
+                const b = a + rate;
+
+                const newVoteAverage = (b / newCount);
+
+                // Update vote average and count in the movies table
+                const updateMovieQuery = `UPDATE 3430_movies SET vote_average = ?, vote_count = ? WHERE id = ?`;
+                db.query(updateMovieQuery, [newVoteAverage, newCount, movie_id], (err, updateResult) => {
+                    if (err) {
+                        console.error('Database error during movie update:', err.message);
+                        return res.status(500).json({ error: 'Failed to update movie ratings' });
+                    }
+
+                    console.log('Movie added to completed watch list successfully');
+                    res.status(201).json({ message: 'Movie added to completed watch list successfully' });
+                });
+            });
         });
     });
 });
-
 
 app.get('/completedwatchlist/entries/:id', async (req, res) => {
     const apiKey = req.query.key || req.headers['x-api-key'];
@@ -721,38 +752,72 @@ app.get('/completedwatchlist/entries/:id', async (req, res) => {
     }
 });
 
-// DELETE handler for removing a movie from the completed watchlist
 app.delete('/completedwatchlist/entries/:id', (req, res) => {
     const completedListId = req.params.id;
     const apiKey = req.body.key;
     const movieId = req.body.movie_id;
 
-    console.log(apiKey)
-    console.log(movieId)
-    console.log(completedListId)
-
     if (!apiKey) {
         return res.status(401).json({ message: 'API key is required.' });
     }
 
+    // Step 1: Find the user using the API key
     const queryUser = 'SELECT userId FROM 3430_users WHERE api_key = ?';
-    
     db.query(queryUser, [apiKey], (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
-        console.log(result)
         if (!result.length) return res.status(404).json({ message: 'User not found.' });
 
         const userId = result[0].userId;
-        console.log(userId)
 
-        const queryDelete = 'DELETE FROM 3430_completedwatchlist WHERE completedId = ? AND userId = ? AND movieid = ?';
-        db.query(queryDelete, [completedListId, userId, movieId], (err, result) => {
+        // Step 2: Retrieve the user's rating for the movie
+        const querySelect = 'SELECT rating FROM 3430_completedwatchlist WHERE completedId = ? AND userId = ? AND movieid = ?';
+        db.query(querySelect, [completedListId, userId, movieId], (err, entryResult) => {
             if (err) return res.status(500).json({ error: err.message });
-            if (result.affectedRows > 0) {
-                return res.status(200).json({ message: 'Movie removed from completed watchlist.' });
-            } else {
-                return res.status(404).json({ message: 'Entry not found.' });
+
+            if (!entryResult.length) {
+                return res.status(404).json({ message: 'Entry not found in the completed watchlist.' });
             }
+
+            const userRating = entryResult[0].rating;
+
+            // Step 3: Delete the entry from the completed watchlist
+            const queryDelete = 'DELETE FROM 3430_completedwatchlist WHERE completedId = ? AND userId = ? AND movieid = ?';
+            db.query(queryDelete, [completedListId, userId, movieId], (err, deleteResult) => {
+                if (err) return res.status(500).json({ error: err.message });
+
+                if (deleteResult.affectedRows === 0) {
+                    return res.status(404).json({ message: 'Entry not found.' });
+                }
+
+                // Step 4: Retrieve the current movie's vote_average and vote_count
+                const queryMovie = 'SELECT vote_average, vote_count FROM 3430_movies WHERE id = ?';
+                db.query(queryMovie, [movieId], (err, movieResult) => {
+                    if (err) return res.status(500).json({ error: err.message });
+                    if (!movieResult.length) return res.status(404).json({ message: 'Movie not found.' });
+
+                    const oldVoteAverage = movieResult[0].vote_average;
+                    const oldVoteCount = movieResult[0].vote_count;
+
+                    // Step 5: Adjust the vote_count and vote_average
+                    const newVoteCount = oldVoteCount - 1;
+
+                    let newVoteAverage;
+                    if (newVoteCount > 0) {
+                        newVoteAverage = (((oldVoteAverage * oldVoteCount) - userRating) / newVoteCount);
+                    } else {
+                        // If the vote count is 0, reset the average to 0 or handle appropriately
+                        newVoteAverage = 0;
+                    }
+
+                    // Step 6: Update the movie's vote_average and vote_count
+                    const queryUpdateMovie = 'UPDATE 3430_movies SET vote_average = ?, vote_count = ? WHERE id = ?';
+                    db.query(queryUpdateMovie, [newVoteAverage, newVoteCount, movieId], (err, updateResult) => {
+                        if (err) return res.status(500).json({ error: err.message });
+
+                        return res.status(200).json({ message: 'Movie removed from completed watchlist and rating reset.' });
+                    });
+                });
+            });
         });
     });
 });
@@ -856,8 +921,10 @@ app.patch('/completedwatchlist/entries/:id/rating', (req, res) => {
         return res.status(400).json({ message: 'Valid rating is required.' });
     }
 
-    const IdQuery = `SELECT userId FROM 3430_users WHERE api_key = ?`;
-    db.query(IdQuery, [apiKey], (err, result) => {
+    const rate = parseInt(newRating)
+
+    const userQuery = `SELECT userId FROM 3430_users WHERE api_key = ?`;
+    db.query(userQuery, [apiKey], (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
 
         if (result.length === 0) {
@@ -866,18 +933,46 @@ app.patch('/completedwatchlist/entries/:id/rating', (req, res) => {
 
         const userId = result[0].userId;
 
-        const query = `UPDATE 3430_completedwatchlist SET rating = ? 
-                       WHERE completedId = ? AND userId = ?`;
-        db.query(query, [newRating, movieId, userId], (err, result) => {
+        // Get the old rating for this entry
+        const selectEntryQuery = `SELECT movieid, rating FROM 3430_completedwatchlist WHERE completedId = ? AND userId = ?`;
+        db.query(selectEntryQuery, [movieId, userId], (err, entryResult) => {
             if (err) return res.status(500).json({ error: err.message });
-            if (result.affectedRows > 0) {
-                res.status(200).json({ message: 'Rating updated successfully.' });
-            } else {
-                res.status(404).json({ message: 'Movie entry not found or unauthorized.' });
+
+            if (entryResult.length === 0) {
+                return res.status(404).json({ message: 'Completed watchlist entry not found.' });
             }
+
+            const movie_id = entryResult[0].movieid;
+            const oldRating = entryResult[0].rating;
+
+            // Update the rating in the completedwatchlist
+            const updateEntryQuery = `UPDATE 3430_completedwatchlist SET rating = ? WHERE completedId = ? AND userId = ?`;
+            db.query(updateEntryQuery, [rate, movieId, userId], (err, updateEntryResult) => {
+                if (err) return res.status(500).json({ error: err.message });
+
+                // Update the movie's vote average and vote count
+                const selectMovieQuery = `SELECT vote_average, vote_count FROM 3430_movies WHERE id = ?`;
+                db.query(selectMovieQuery, [movie_id], (err, movieResult) => {
+                    if (err) return res.status(500).json({ error: err.message });
+
+                    const oldMovieRating = movieResult[0].vote_average;
+                    const voteCount = movieResult[0].vote_count;
+
+                    // Recalculate the vote average by replacing the old rating with the new one
+                    const newVoteAverage = (((oldMovieRating * voteCount) - oldRating + rate) / voteCount);
+
+                    const updateMovieQuery = `UPDATE 3430_movies SET vote_average = ? WHERE id = ?`;
+                    db.query(updateMovieQuery, [newVoteAverage, movie_id], (err, updateMovieResult) => {
+                        if (err) return res.status(500).json({ error: err.message });
+
+                        res.status(200).json({ message: 'Rating updated successfully' });
+                    });
+                });
+            });
         });
     });
 });
+
 
 // PATCH handler for updating movie notes
 app.patch('/completedwatchlist/entries/:id/notes', (req, res) => {
@@ -934,10 +1029,7 @@ app.get('/completedwatchlist/check', (req, res) => {
         }
         res.status(200).json(results);  // Return results
     });
-});
-
-  
-
+}); 
 
 app.listen(PORT, () => {
     console.log('Server is running on port 5000 :)');
