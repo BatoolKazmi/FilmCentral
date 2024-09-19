@@ -2,51 +2,104 @@
     display: none;
 }
 
-main{
+main {
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-.center-container{
+.center-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 7em 6em;
+    padding: 2em; 
     border-radius: 2em;
-
     background-color: var(--dark-two);
-    grid-column: 2;
-    margin: 7em 10em;
-    max-width: 30em;
     box-shadow: 0 0 2em var(--light-one);
-} 
+    width: 100%;
+    max-width: 30em;
+    margin: 0 auto; /* Center container horizontally */
+}
 
 .center-container div {
-    margin: 2em;
+    margin: 1.5em 0; 
     display: flex;
     flex-direction: column;
+    width: 100%;
+    align-items: center; /* Center inputs and content horizontally */
 }
 
 input {
     padding: 1em;
-    margin: 1em 0em;
+    margin: 0.5em 0; 
     border-radius: 0.5em;
     border: none;
+    width: 100%; /* Full width input */
+    max-width: 20em; /* Limit max width to avoid stretching too far */
+    text-align: center; /* Center input text */
 }
 
-label{
+label {
     text-align: left;
+    width: 100%; /* Ensure label spans full width */
+    max-width: 20em; /* Same max width as input */
 }
 
 .centered {
-    padding: 1em 10em;  /* Adjust padding to suit the button size */
+    padding: 1em 2em; 
     border-radius: 1em;
-    font-size: 1.15em;
+    font-size: 1em;
     white-space: nowrap;
-    margin: 0em;
+    width: 100%; 
+    max-width: 20em;
+    text-align: center;
+    margin: 0.3em auto; /* Center the button */
 }
 
 .error {
     color: var(--error);
     font-weight: 700;
+}
+
+@media (max-width: 600px) {
+    .center-container {
+        padding: 1.5em; 
+        margin: 1.5em; 
+        max-width: 25em; 
+    }
+
+    .centered {
+        padding: 1em 1.5em;  
+    }
+
+    input {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 470px) {
+    .center-container {
+        padding: 2.5em 1em;
+        margin: 0.6em;
+        max-width: 18em;
+    }
+
+    input {
+        padding: 0.75em;
+        font-size: 0.9em;
+    }
+
+    .centered {
+        padding: 0.75em 1.5em;
+        font-size: 0.9em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    label {
+        font-size: 0.9em;
+    }
 }

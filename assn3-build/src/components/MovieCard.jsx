@@ -92,7 +92,7 @@ function MovieCard({ movie, id }) {
       <Link to={`/movies/${id}`}>Movie Details</Link>
       <div>
         {/* <button onClick={promptForApiKey} disabled={isAdding}> */}
-        <button onClick={addToWatchList} disabled={isAdding || isInWatchlist}> 
+        <button onClick={addToWatchList} disabled={isAdding || isInWatchlist} className={isAdding ? "Adding..." : (isInWatchlist ? "disable" : " ")}> 
           {isAdding ? "Adding..." : (isInWatchlist ? "Already in a List" : "Quick Add to Watchlist")}
         </button>
       </div>
