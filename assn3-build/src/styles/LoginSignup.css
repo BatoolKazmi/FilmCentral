@@ -13,13 +13,12 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2em; 
+    padding: 3em 0em; 
     border-radius: 2em;
     background-color: var(--dark-two);
-    box-shadow: 0 0 2em var(--light-one);
+    box-shadow: 0 0 1em var(--light-one);
     width: 100%;
     max-width: 30em;
-    margin: 0 auto; /* Center container horizontally */
 }
 
 .center-container div {
@@ -27,34 +26,26 @@ main {
     display: flex;
     flex-direction: column;
     width: 100%;
-    align-items: center; /* Center inputs and content horizontally */
+    align-items: center;
 }
 
-input {
+.center-container input {
     padding: 1em;
-    margin: 0.5em 0; 
-    border-radius: 0.5em;
+    border-radius: 1em;
+    width: 100%;
     border: none;
-    width: 100%; /* Full width input */
-    max-width: 20em; /* Limit max width to avoid stretching too far */
-    text-align: center; /* Center input text */
 }
 
-label {
+.center-container label {
     text-align: left;
-    width: 100%; /* Ensure label spans full width */
-    max-width: 20em; /* Same max width as input */
+    width: 110%;
+    margin: 0.4em;
 }
 
 .centered {
-    padding: 1em 2em; 
-    border-radius: 1em;
-    font-size: 1em;
-    white-space: nowrap;
-    width: 100%; 
-    max-width: 20em;
-    text-align: center;
-    margin: 0.3em auto; /* Center the button */
+    width: 110%;
+    padding: 1em;
+    border-radius: 2em;
 }
 
 .error {
@@ -62,31 +53,39 @@ label {
     font-weight: 700;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
     .center-container {
-        padding: 1.5em; 
+        padding: 3.5em 1em; 
         margin: 1.5em; 
         max-width: 25em; 
+        font-size: 0.9em;
     }
 
     .centered {
-        padding: 1em 1.5em;  
+        padding: 1em; 
+        width: 100%; 
     }
 
-    input {
+    .center-container input {
         font-size: 1em;
+        max-width: 13em;
+        padding: 0.8em;
+    }
+    
+    .center-container label {
+        width: 100%;
     }
 }
 
 @media (max-width: 470px) {
     .center-container {
         padding: 2.5em 1em;
-        margin: 0.6em;
+        margin: 1em;
         max-width: 18em;
     }
 
     input {
-        padding: 0.75em;
+        padding: 0.3em;
         font-size: 0.9em;
     }
 
