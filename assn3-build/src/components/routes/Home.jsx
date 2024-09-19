@@ -65,7 +65,7 @@ function Home() {
             <header>
                 {/* What component should go here? */}
                 <NavBar />
-                <h1>🎞️ Movies 🎥</h1>
+                <h1>🎞️ FilmCentral 🎥</h1>
                 <button onClick={toggleFilters}>
                     {showFilters ? "Hide Filters" : "Show Filters"}
                 </button>

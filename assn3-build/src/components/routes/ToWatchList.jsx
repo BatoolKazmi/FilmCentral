@@ -104,7 +104,7 @@ function ToWatchList() {
     <>
       <header>
         <NavBar />
-        <h1>To Watch List</h1>
+        <h1>To Watch List 🕒📽️</h1>
         <p>To Watch List is ordered by Priority</p>
         {/* <FindMovie onKeySubmit={getMovies} /> */}
       </header>

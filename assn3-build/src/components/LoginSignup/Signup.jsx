@@ -34,7 +34,7 @@ export default function Signup() {
         });
 
         // Backend validation errors (received in response)
-        if (!response.data.message) {
+        if (response.status === 201) {
           alert("YOU SIGNED UP!!");
           navigate('/login');
         }
