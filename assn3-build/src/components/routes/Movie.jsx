@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NavBar from "../NavBar";
+import "../../styles/details.css"
 
 function Movie() {
   let { id } = useParams();
@@ -42,38 +43,61 @@ function Movie() {
   return (
     <>
       <NavBar />
-      <h1>{movie.title}</h1>
-      <img src={movie.poster} alt={movie.title} />
-      <p>
-        <strong>Tagline:</strong> {movie.tagline}
-      </p>
-      <p>
-        <strong>Overview:</strong> {movie.overview}
-      </p>
-      <p>
-        <strong>Release Date:</strong> {movie.release_date}
-      </p>
-      <p>
-        <strong>Runtime:</strong> {movie.runtime} minutes
-      </p>
-      <p>
-        <strong>Vote Average:</strong> {movie.vote_average}
-      </p>
-      <p>
-        <strong>Vote Count:</strong> {movie.vote_count}
-      </p>
-      <p>
-        <strong>Original Language:</strong> {movie.original_language}
-      </p>
+      <div className="movie-details">
+        <h1>{movie.title}</h1>
+        <img src={movie.poster} alt={movie.title} />
 
-      <p>
-        <strong>Genres:</strong> {movie.genre_names ? movie.genre_names.replace(/,/g, ", ") : ""}
-      </p>
-      {/* PRODUCTION COMPANIES??? */}
-      <p>
-        <strong>Production Company:</strong> {movie.company_names ? movie.company_names.replace(/,/g, ", ") : ""}
-      </p>
+        <div className="user-stats">
+          <table>
+            <thead>
+              <tr>
+                <th>Field</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tagline</td>
+                <td>{movie.tagline}</td>
+              </tr>
+              <tr>
+                <td>Overview</td>
+                <td>{movie.overview}</td>
+              </tr>
+              <tr>
+                <td>Release Date</td>
+                <td>{movie.release_date}</td>
+              </tr>
+              <tr>
+                <td>Runtime</td>
+                <td>{movie.runtime} minutes</td>
+              </tr>
+              <tr>
+                <td>Vote Average</td>
+                <td>{movie.vote_average}</td>
+              </tr>
+              <tr>
+                <td>Vote Count</td>
+                <td>{movie.vote_count}</td>
+              </tr>
+              <tr>
+                <td>Original Language</td>
+                <td>{movie.original_language}</td>
+              </tr>
+              <tr>
+                <td>Genres</td>
+                <td>{movie.genre_names ? movie.genre_names.replace(/,/g, ", ") : ""}</td>
+              </tr>
+              <tr>
+                <td>Production Company</td>
+                <td>{movie.company_names ? movie.company_names.replace(/,/g, ", ") : ""}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </>
+
   );
 }
 

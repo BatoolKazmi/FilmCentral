@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NavBar from "../NavBar";
+import "../../styles/completeddetails.css"
 
 function CompletedMovies() {
   const { key, id } = useParams();
@@ -143,57 +144,57 @@ function CompletedMovies() {
   return (
     <>
       <NavBar />
-      <h1>{movie.title}</h1>
-      <img src={movie.poster} alt={movie.title} />
-        <p><strong>Rating:</strong> {(!rating) ? movie.rating : rating}</p>
-        <div>
-        <label htmlFor="score">Update Rating (?/10):</label>
-        <select
-          name="score"
-          id="score"
-          value={rating}
-          onChange={handleRatingChange}
-        >
-          {/* <option value="Select">Select</option> */}
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
+      <div className="movie-details">
+        <h1>{movie.title}</h1>
+        <img src={movie.poster} alt={movie.title} />
+
+        <div className="rating-section">
+          <p><strong>Rating:</strong> {(!rating) ? movie.rating : rating}</p>
+          <label htmlFor="score">Update Rating (?/10):</label>
+          <select
+            name="score"
+            id="score"
+            value={rating}
+            onChange={handleRatingChange}
+          >
+            <option value="">Select</option>
+            {[...Array(10).keys()].map(i => (
+              <option key={i + 1} value={i + 1}>{i + 1}</option>
+            ))}
+          </select>
+        </div>
+
+        <h3>Notes</h3>
+        <div className="movie-notes">
+          {(!newNotes) ? movie.notes : newNotes}
+        </div>
+
+        <div className="notes-section">
+          <label htmlFor="notes">Update Notes:</label>
+          <textarea
+            name="notes"
+            id="notes"
+            value={newNotes}
+            onChange={handleNotesChange}
+            placeholder="Write your notes here..."
+          />
+          <button onClick={handleNotesSubmit}>Submit Notes</button>
+        </div>
+
+        <div className="info-section">
+          <p><strong>First watched on:</strong> {movie.date_initially_watched}</p>
+          <p><strong>Last watched on:</strong> {movie.date_last_watched}</p>
+          <p><strong>Times Watched:</strong> {timesWatched}</p>
+        </div>
+
+        <div className="times-watched-buttons">
+          <button onClick={updateTimesWatched}>Increase Times Watched</button>
+          <button onClick={decrementTimesWatched}>Decrease Times Watched</button>
+        </div>
       </div>
-      <p>
-        <strong>Notes:</strong> {movie.notes}
-      </p>
-      <div>
-        <label htmlFor="notes">Update Notes:</label>
-        <textarea
-          name="notes"
-          id="notes"
-          value={newNotes}  // Display the value being edited for notes
-          onChange={handleNotesChange}  // Update the newNotes state on change
-        />
-        <button onClick={handleNotesSubmit}>Submit Notes</button>  {/* Submit button for the notes */}
-      </div>
-      <p>
-        <strong>First watched on:</strong> {movie.date_initially_watched}
-      </p>
-      <p>
-        <strong>Last watched on:</strong> {movie.date_last_watched}
-      </p>
-      <p>
-        <strong>Times Watched:</strong> {timesWatched}
-      </p>
-      <button onClick={updateTimesWatched}>Increase Times Watched</button>
-      <button onClick={decrementTimesWatched}>Decrease Times Watched</button>
-      {/* GENRES & PRODUCTION COMPANIES??? */}
     </>
   );
+
 }
 
 export default CompletedMovies;

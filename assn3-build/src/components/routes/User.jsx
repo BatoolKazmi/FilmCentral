@@ -2,6 +2,7 @@ import NavBar from "../NavBar";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 // import { useUser } from "../UserContext";
+import "../../styles/details.css"
 
 const User = () =>  {
   // const { user, logout } = useUser();
@@ -26,14 +27,36 @@ const User = () =>  {
     return (
         <>
             <NavBar />
-            <div>
+            <div className="user-stats">
                 <h1>User Stats</h1>
-                <p>UserId: {stats.userId}</p>
-                <p>Username: {stats.username}</p>
-                <p>Email: {stats.email}</p>
-                <p>API Key: {stats.api_key}</p>
-                <p>API Date: {stats.api_date}</p>
+                <table>
+                  <tr>
+                      <th>Field</th>
+                      <th>Details</th>
+                  </tr>
+                  <tr>
+                      <td>UserId</td>
+                      <td>{stats.userId}</td>
+                  </tr>
+                  <tr>
+                      <td>Username</td>
+                      <td>{stats.username}</td>
+                  </tr>
+                  <tr>
+                      <td>Email</td>
+                      <td>{stats.email}</td>
+                  </tr>
+                  <tr>
+                      <td>API Key</td>
+                      <td>{stats.api_key}</td>
+                  </tr>
+                  <tr>
+                      <td>API Date</td>
+                      <td>{stats.api_date}</td>
+                  </tr>
+                </table>
             </div>
+            
         </>
     );
 }

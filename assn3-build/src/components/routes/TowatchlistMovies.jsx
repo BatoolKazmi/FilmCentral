@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NavBar from "../NavBar";
+import "../../styles/towatchdetails.css";
 
 function ToWatchListMovies() {
   const { key, id } = useParams();
@@ -101,41 +102,48 @@ function ToWatchListMovies() {
       <NavBar />
       <h1>{movie.title}</h1>
       <img src={movie.poster} alt={movie.title} />
-      <p>
-        <strong>Priority:</strong> {(!priority) ? movie.priority : priority}
-      </p>
-      <div>
-        <label htmlFor="priority">{label}</label>
-        <select
-          name="priority"
-          id="priority"
-          value={priority}
-          onChange={handlePriorityChange}
-        >
-          <option value="">Select</option> 
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
-      </div>
-      <p>
-        <strong>Notes:</strong> {(!notes) ? movie.notes : notes}
-      </p>
-      <textarea
-        name="notes"
-        id="notes"
-        value={newNotes}
-        onChange={handleNotesChange} // Update state on change
-      />
-      <button onClick={handleNotesSubmit}>Submit</button>
+      <div className="movie-options">
+        {/* Priority Section */}
+        <div className="movie-priority">
+          <h3>Priority:</h3>
+          <p>
+            {(!priority) ? movie.priority : priority}
+          </p>
+        </div>
 
+        <div className="priority-selection">
+          <label htmlFor="priority">{label}</label>
+          <select
+            name="priority"
+            id="priority"
+            value={priority}
+            onChange={handlePriorityChange}
+          >
+            <option value="">Select</option>
+            {[...Array(10).keys()].map(i => (
+              <option key={i + 1} value={i + 1}>{i + 1}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Notes Section */}
+        <h3>Notes</h3>
+        <div className="movie-notes">
+          {(!notes) ? movie.notes : notes}
+        </div>
+
+        <div className="notes-section">
+          <label htmlFor="notes">Write a new note:</label>
+          <textarea
+            name="notes"
+            id="notes"
+            value={newNotes}
+            onChange={handleNotesChange}
+            placeholder="Write your notes here..."
+          />
+          <button onClick={handleNotesSubmit}>Submit</button>
+        </div>
+      </div>
       {/* GENRES & PRODUCTION COMPANIES??? */}
     </>
   );

@@ -1,0 +1,27 @@
+.user-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75em;
+
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 40em; 
+    margin: 1em auto;
+}
+
+.movie-details img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: 1em;
+}
+
+
+/* Media Query for Tablets */
+@media (min-width: 47.50em) {
+    .user-stats {
+        font-size: 1em;
+    }
+}

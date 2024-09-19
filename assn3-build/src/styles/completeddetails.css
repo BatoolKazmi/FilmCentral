@@ -1,0 +1,135 @@
+/* WATCH LIST */
+.movie-details {
+    margin: 2em auto;
+    padding: 2em;
+    border-radius: 1em;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 30em;
+}
+
+.rating-section p {
+    margin: 1.5em;
+}
+
+.movie-details strong {
+    color: var(--light-two);
+    font-weight: 900;
+}
+
+
+.movie-details img {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 2em;
+    max-width: 100%;
+    height: auto;
+    border-radius: 1em;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Optional: Adds shadow to image */
+}
+
+/* Rating Section */
+.rating-section {
+    font-size: 1.2em;
+}
+
+h3, label {
+    color: var(--light-two);
+}
+
+.rating-section label {
+    font-weight: 700;
+    margin-bottom: 1em;
+    font-size: 1.2em;
+}
+
+.rating-section select {
+    width: 100%;
+    max-width: 10em;
+    padding: 0.8em;
+    border-radius: 0.5em;
+    font-size: 1.1em;
+    border: 0.1em solid var(--light-one);
+    box-sizing: border-box;
+    margin: 0.5em;
+}
+
+/* Notes Section */
+.notes-section {
+    margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+}
+
+.notes-section label {
+    font-weight: 700;
+    margin-bottom: 0.5em;
+    font-size: 1.2em;
+}
+
+.notes-section textarea {
+    width: 100%;
+    max-width: 100%;
+    min-height: 10em;
+    padding: 1em;
+    border-radius: 0.5em;
+    font-size: 1.1em;
+    box-sizing: border-box;
+    border: 0.1em solid var(--light-one);
+    margin-bottom: 1em;
+}
+
+.notes-section textarea:focus {
+    border: var(--light-three) 0.3em solid;
+    outline: none;
+}
+
+/* Submit Button */
+.notes-section button {
+    padding: 0.8em 2.5em;
+    background-color: var(--light-two);
+    color: var(--dark-one);
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+    margin-top: 1em;
+}
+
+.notes-section button:hover {
+    background-color: var(--light-three);
+}
+
+/* Additional Information */
+.info-section p {
+    font-size: 1.1em;
+    margin-bottom: 1em;
+}
+
+.info-section strong {
+    font-weight: 700;
+}
+
+/* Buttons for Times Watched */
+.times-watched-buttons {
+    display: flex;
+    gap: 1em;
+    margin-top: 1em;
+}
+
+.times-watched-buttons button {
+    padding: 0.8em 2em;
+    margin: 0em;
+    background-color: var(--light-two);
+    color: var(--dark-one);
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+
+.times-watched-buttons button:hover {
+    background-color: var(--light-three);
+}

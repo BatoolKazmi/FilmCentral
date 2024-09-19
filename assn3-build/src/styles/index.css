@@ -99,3 +99,26 @@ article:hover {
     box-shadow: 0 0 1.2em var(--light-five); /* Glowing border effect */
 }
 
+table {
+    padding: 1em;
+    border: var(--light-two) solid 0.5em;
+    margin: 1em;
+    box-sizing: border-box;
+    transition: box-shadow 0.3s ease; 
+    max-width: 40em;
+}
+
+td,
+th {
+    padding: 1em;
+    border: var(--light-two) 0.01em solid;
+}
+
+th {
+    font-weight: 700;
+    color: var(--light-two);
+}
+
+table:hover {
+    box-shadow: 0 0 3em var(--light-three);
+}
