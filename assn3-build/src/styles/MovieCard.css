@@ -8,7 +8,7 @@ img {
     display: grid;
     justify-items: center;
     gap: 1em;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     margin: 1.5em;
 }
 
@@ -17,7 +17,7 @@ img {
     .movies {
         display: grid;
         gap: 1em;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 
     body {
@@ -58,5 +58,22 @@ img {
         grid-template-columns: repeat(4, 1fr);
     }
 }
+
+@media screen and (min-width: 120em) {
+
+    .movies {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media screen and (min-width: 150em) {
+
+    .movies {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
 
 

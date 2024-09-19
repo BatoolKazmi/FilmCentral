@@ -4,7 +4,7 @@
     margin-left: 1em;
     text-decoration: none;
     text-align: center;
-    color: white;
+    color: var(--light-one);
 }
 
 a.active {
@@ -12,7 +12,17 @@ a.active {
 }
 
 .navbar {
-    background-color: black;
-    padding: 1em;
-    font-size: 1.5rem;
+    background-color: var(--dark-one);
+    padding: 0.5em;
+    margin-bottom: 2em;
+    font-size: 1em;
+    border-bottom: var(--light-one) 0.1em solid;
+}
+
+@media screen and (min-width: 100em) {
+
+    .navbar {
+        font-size: 1.5em;
+    }
+    
 }

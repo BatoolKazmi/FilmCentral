@@ -18,6 +18,7 @@
     --dark-two: #282927;
 
     --error: #E50914;
+    --error-two: #9b070e;
 
     background-color: var(--dark-one);
     color: var(--light-one);
@@ -36,6 +37,7 @@ h1 {
     color: var(--light-two);
     font-weight: 900;
     text-align: center;
+    margin: 0.1em;
 }
 
 h2 {
@@ -67,6 +69,10 @@ button {
     background-color: var(--light-two);
     border: none;
     color: var(--dark-one);
+    font-size: 1em;
+}
+
+nav button {
     font-size: 0.7em;
 }
 
@@ -92,3 +98,4 @@ article {
 article:hover {
     box-shadow: 0 0 1.2em var(--light-five); /* Glowing border effect */
 }
+

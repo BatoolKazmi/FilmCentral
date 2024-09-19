@@ -8,6 +8,7 @@ import axios from "axios";
 // import DeckToWatch from "../DecktoWatch";
 import DeckToWatch from "../DeckToWatch";
 import "../../styles/MovieCard.css"
+import "../../styles/filterform.css"
 
 function ToWatchList() {
   const [movies, setMovies] = useState([]);
@@ -115,7 +116,7 @@ function ToWatchList() {
         className="FilterForm"
         onSubmit={handleSubmit}>
         <div>
-            <label htmlFor="search">Search the Title: </label>
+            <label htmlFor="search">Search the Title </label>
             <input
                 type="text"
                 name="search"

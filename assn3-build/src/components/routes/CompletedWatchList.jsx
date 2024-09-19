@@ -7,6 +7,7 @@ import Logout from "../LoginSignup/Logout";
 import axios from "axios";
 import DeckCompleted from "../DeckCompleted";
 import "../../styles/MovieCard.css";
+import "../../styles/filterform.css"
 
 function CompletedWatchList() {
   const [movies, setMovies] = useState([]);
@@ -97,7 +98,7 @@ function CompletedWatchList() {
         className="FilterForm"
         onSubmit={handleSubmit}>
         <div>
-            <label htmlFor="search">Search the Title: </label>
+            <label htmlFor="search">Search the Title </label>
             <input
                 type="text"
                 name="search"

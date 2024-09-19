@@ -79,80 +79,80 @@ function FilterForm({ filters, page }) {
 
     return (
         <>
-            <form
-                className="FilterForm"
-                onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="search">Search the Title: </label>
-                    <input
-                        type="text"
-                        name="search"
-                        id="search"
-                        value={see}
-                        onChange={updateSearch} 
-                        placeholder="Search a Title of a Movie" />
-                </div>
-
-                <div>
-                    <label htmlFor="rate">{label}</label>
-                    <select name="rate" id="rate" value={rate} onChange={updateRate}>
-                        <option value="Select">Select Rating</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label htmlFor="genres">Genre Type: </label>
-                    <select name="genres" id="genres" value={genre} onChange={updateGenres}>
-                        <option value="Select">Select Genre</option>
-                        {genres.map((genre, index) => (
-                            <option value={genre.name} key={index}>{genre.name}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="selectBox">
-                    <label htmlFor="companies">Production Company: </label>
-                    <input type="text" 
-                        className="search-box" 
-                        placeholder="Select Company" 
-                        onChange={updateCompanySearch}
-                        value={companySearch} /> 
-                    <ul className="options">
+            <div>
+                <form
+                    className="FilterForm"
+                    onSubmit={handleSubmit}>
+                    <div>
+                        <label htmlFor="search">Search the Title: </label>
+                        <input
+                            type="text"
+                            name="search"
+                            id="search"
+                            value={see}
+                            onChange={updateSearch}
+                            placeholder="Search a Title of a Movie" />
+                    </div>
+                    <div>
+                        <label htmlFor="rate">{label}</label>
+                        <select name="rate" id="rate" value={rate} onChange={updateRate}>
+                            <option value="Select">Select Rating</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label htmlFor="genres">Genre Type: </label>
+                        <select name="genres" id="genres" value={genre} onChange={updateGenres}>
+                            <option value="Select">Select Genre</option>
+                            {genres.map((genre, index) => (
+                                <option value={genre.name} key={index}>{genre.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                
+                    <div className="selectBox">
+                        <label htmlFor="companies">Production Company: </label>
+                        <input type="text"
+                            className="search-box"
+                            placeholder="Select Company"
+                            onChange={updateCompanySearch}
+                            value={companySearch} />
                         <ul className="options">
-                            {/* <li value="Select">Select Company</li>
-                            {companies.map((company, index) => (
-                                <li value={company.name} key={index}>{company.name}</li>
-                            ))} */}
-                             {filteredCompanies.length > 0 ? (
-                                filteredCompanies.map((company, index) => (
-                            <li
-                                key={index}
-                                onClick={() => selectCompany(company.name)}
-                                className={company === company.name ? "selected" : ""}
-                            >
-                                {company.name}
-                            </li>
-                            ))
-                            ) : (
-                                <li>No matching companies</li>
-                            )}
+                            <ul className="options">
+                                {/* <li value="Select">Select Company</li>
+                                {companies.map((company, index) => (
+                                    <li value={company.name} key={index}>{company.name}</li>
+                                ))} */}
+                                 {filteredCompanies.length > 0 ? (
+                                    filteredCompanies.map((company, index) => (
+                                <li
+                                    key={index}
+                                    onClick={() => selectCompany(company.name)}
+                                    className={company === company.name ? "selected" : ""}
+                                >
+                                    {company.name}
+                                </li>
+                                ))
+                                ) : (
+                                    <li>No matching companies</li>
+                                )}
+                            </ul>
                         </ul>
-                    </ul>
-                    <div className="selected-option" value>{company || "Select an option"}</div> 
-                    <button id="clear-button" onClick={() => setCompany("")} >Clear Selection</button>
-                </div>
-
-                <button>Find Movie!</button>
-            </form>
+                        <div className="selected-option" value>{company || "Select an option"}</div>
+                        <button id="clear-button" onClick={() => setCompany("")} >Clear Selection</button>
+                    </div>
+                    <button className="find-movie">Find Movie!</button>
+                </form>
+            </div>
         </>
     );
 }

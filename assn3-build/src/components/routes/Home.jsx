@@ -12,6 +12,7 @@ function Home() {
     const [rate, setRate] = useState("");
     const [genre, setGenre] = useState("");
     const [company, setCompany] = useState("");
+    const [showFilters, setShowFilters] = useState(false);
 
     function getFilter(name, rate, genre, company) {
         setName(name);
@@ -55,14 +56,22 @@ function Home() {
 
     const currentPosts = movies.slice(firstPostIndex, lastPostIndex);
 
+    const toggleFilters = () => {
+        setShowFilters(prev => !prev);
+    };
 
     return (
         <>
             <header>
                 {/* What component should go here? */}
                 <NavBar />
-                <h1>Movies</h1>
-                <FilterForm filters={getFilter} page={setCurrentPage} />
+                <h1>🎞️ Movies 🎥</h1>
+                <button onClick={toggleFilters}>
+                    {showFilters ? "Hide Filters" : "Show Filters"}
+                </button>
+                {showFilters && (
+                    <FilterForm filters={getFilter} page={setCurrentPage} />
+                )}
             </header>
             <div>
                 <Pagination
