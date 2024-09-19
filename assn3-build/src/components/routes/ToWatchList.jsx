@@ -25,10 +25,6 @@ function ToWatchList() {
     setName(ev.target.value);
   }
 
-  useEffect(() => {
-    fetchMovies();
-  }, [movies]);
-
   // HANDLE SUBMISSION
   const handleSubmit = (ev) => {
     ev.preventDefault();
