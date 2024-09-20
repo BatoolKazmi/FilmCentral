@@ -2,6 +2,8 @@
 
 [![Watch the video](./testing-node/Screenshot%202024-09-19%20204240.png)](https://www.youtube.com/watch?v=Uk9QsJd1IkI)
 
+**Link to demo video:** https://www.youtube.com/watch?v=Uk9QsJd1IkI
+
 ## Summary
 
 FilmCentral is a movie tracking app designed to help users organize and manage their movie-watching experience. Users can browse a comprehensive movie catalog, create a personalized watchlist, and track movies they’ve completed. It allows users to prioritize what they want to watch, filter and search for specific movies, and record scores for completed films. The app offers seamless transitions between the watchlist and the completed list, empowering users to manage and update their lists with ease.
