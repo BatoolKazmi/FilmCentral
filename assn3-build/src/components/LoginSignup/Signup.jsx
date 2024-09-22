@@ -122,7 +122,7 @@ export default function Signup() {
             
             {/* Backend Error Message */}
             {errors.server && (
-              <div className="error-message">
+              <div className="error">
                 {errors.server}
               </div>
             )}

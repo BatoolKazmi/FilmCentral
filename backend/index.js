@@ -3,7 +3,7 @@ import session from "express-session";
 import cors from "cors";
 import bodyParser from "body-parser";
 import axios from "axios";
-import mysql from "mysql";
+import mysql from "mysql2";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import dotenv from 'dotenv';
@@ -13,13 +13,25 @@ dotenv.config();
 const app = express();
 const PORT = 5000;
 
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+// const db = mysql.createConnection({
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USER,
+//     password: process.env.DB_PASSWORD,
+//     database: process.env.DB_NAME
 
-})
+// })
+
+const urlDB = `mysql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
+
+const db = mysql.createConnection(urlDB);
+
+db.connect((err) => {
+    if (err) {
+        console.error('Error connecting to the database:', err);
+        return;
+    }
+    console.log('Connected to the database!');
+});
 
 app.use(session({
     secret: 'New_Secret_Session',
