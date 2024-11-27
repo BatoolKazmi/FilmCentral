@@ -40,7 +40,7 @@ app.use(session({
 
 // CORS configuration, allowing credentials
 app.use(cors({
-    origin: '', // React app URL - http://localhost:5173
+    origin: '', // React app URL - http://localhost:5174
     credentials: true // Enable credentials to be sent across domains
 }));
 
