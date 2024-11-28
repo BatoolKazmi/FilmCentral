@@ -10,7 +10,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-
 const app = express();
 const PORT = 5000;
 
@@ -45,8 +44,6 @@ db.getConnection((err, connection) => {
     }
 });
 
-export default db;
-
 app.use(session({
     secret: 'New_Secret_Session',
     resave: true,
@@ -73,6 +70,9 @@ app.use(express.json());
 app.get('/', (req, res) => {
     return res.json("from backend side");
 });
+
+
+
 
 /////////////////// MOOOOVIES //////////////////////////////////////
 app.get('/movies', (req, res) => {
@@ -1063,3 +1063,9 @@ app.get('/completedwatchlist/check', (req, res) => {
 app.listen(PORT, () => {
     console.log('Server is running on port 5000 :)');
 });
+
+// Named export for db
+export { db };
+
+// Default export for app
+export default app;
