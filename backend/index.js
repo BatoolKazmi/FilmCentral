@@ -52,7 +52,7 @@ app.use(session({
 
 // CORS configuration, allowing credentials
 app.use(cors({
-    origin: '', // React app URL - http://localhost:5174
+    origin: 'https://film-central-000.vercel.app/', // React app URL - http://localhost:5174
     credentials: true // Enable credentials to be sent across domains
 }));
 
