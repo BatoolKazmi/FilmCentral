@@ -14,24 +14,38 @@ dotenv.config();
 const app = express();
 const PORT = 5000;
 
-const db = mysql.createConnection({
+// const db = mysql.createConnection({
+//     host: process.env.MYSQL_ADDON_HOST,
+//     user: process.env.MYSQL_ADDON_USER,
+//     password: process.env.MYSQL_ADDON_PASSWORD,
+//     database: process.env.MYSQL_ADDON_DB
+// })
+
+const db = mysql.createPool({
     host: process.env.MYSQL_ADDON_HOST,
     user: process.env.MYSQL_ADDON_USER,
     password: process.env.MYSQL_ADDON_PASSWORD,
-    database: process.env.MYSQL_ADDON_DB
-})
+    database: process.env.MYSQL_ADDON_DB,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+});
+
 
 // const urlDB = `mysql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
 
 // const db = mysql.createConnection(urlDB);
 
-db.connect((err) => {
+db.getConnection((err, connection) => {
     if (err) {
         console.error('Error connecting to the database:', err);
-        return;
+    } else {
+        console.log('Connected to the database!');
+        connection.release(); // Release the connection back to the pool
     }
-    console.log('Connected to the database!');
 });
+
+export default db;
 
 app.use(session({
     secret: 'New_Secret_Session',
