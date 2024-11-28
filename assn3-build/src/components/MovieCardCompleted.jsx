@@ -14,7 +14,7 @@ function MovieCardCompleted({ movie, id, completedId, apiKey, onRemove }) {
 
   async function handleRemove() {
     setIsProcessing(true);
-    const removeFromCompletedListAPI = `http://localhost:5000/completedwatchlist/entries/${completedId}`;
+    const removeFromCompletedListAPI = `https://film-central.vercel.app/completedwatchlist/entries/${completedId}`;
 
     try {
       const removeResponse = await fetch(removeFromCompletedListAPI, {
@@ -43,7 +43,7 @@ function MovieCardCompleted({ movie, id, completedId, apiKey, onRemove }) {
     setIsProcessing(true);
 
     // Step 1: Remove from Completed Watch List
-    const removeFromCompletedListAPI = `http://localhost:5000/completedwatchlist/entries/${completedId}`;
+    const removeFromCompletedListAPI = `https://film-central.vercel.app/completedwatchlist/entries/${completedId}`;
 
     const json = JSON.stringify({ movie_id: id, key: apiKey})
     try {
@@ -62,7 +62,7 @@ function MovieCardCompleted({ movie, id, completedId, apiKey, onRemove }) {
       console.log("Movie removed from completed list successfully");
 
       // Step 2: Add to To Watch List
-      const response = await axios.post('http://localhost:5000/towatchlist/entries', {
+      const response = await axios.post('https://film-central.vercel.app/towatchlist/entries', {
         movieId: id,
         priority: "5",
         notes: "write a note!",
