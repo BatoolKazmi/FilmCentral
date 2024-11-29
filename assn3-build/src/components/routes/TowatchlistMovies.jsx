@@ -13,7 +13,7 @@ function ToWatchListMovies() {
 
   //const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/movies/${id}`;
   // const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${id}?key=${key}`;
-  const API = `https://film-central.vercel.app/towatchlist/entries/${id}/${key}`;
+  const API = `http://localhost:5000/towatchlist/entries/${id}/${key}`;
 
   async function fetchContact() {
     console.log(API)
@@ -46,7 +46,7 @@ function ToWatchListMovies() {
   async function updatePriority(newPriority) {
     try {
       // const updateAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${id}/priority?key=${key}`;
-      const updateAPI = `https://film-central.vercel.app/towatchlist/entries/${id}/priority`;
+      const updateAPI = `http://localhost:5000/towatchlist/entries/${id}/priority`;
       const response = await fetch(updateAPI, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -62,7 +62,7 @@ function ToWatchListMovies() {
 
   async function updateNotes() {
     try {
-      const updateAPI = `https://film-central.vercel.app/towatchlist/entries/${id}/notes`;
+      const updateAPI = `http://localhost:5000/towatchlist/entries/${id}/notes`;
       const response = await fetch(updateAPI, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },

@@ -43,13 +43,13 @@ function FilterForm({ filters, page }) {
 
 
     async function fetchContact() {
-        const genresApi = "https://film-central.vercel.app/genres";
+        const genresApi = "http://localhost:5000/genres";
         const resp = await fetch(genresApi);
         const jsonResponse = await resp.json();
         const set = jsonResponse;
         setGenres(set);
 
-        const companyApi = "https://film-central.vercel.app/companies";
+        const companyApi = "http://localhost:5000/companies";
         const rep = await fetch(companyApi);
         const json = await rep.json();
         const comp = json;
