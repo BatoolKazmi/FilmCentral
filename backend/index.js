@@ -52,10 +52,9 @@ app.use(session({
 
 // CORS configuration, allowing credentials
 app.use(cors({
-    origin: 'http://localhost:5173', // Change this to your actual React app URL
-    credentials: true // Enable credentials (cookies) to be sent
+    origin: 'http://localhost:5173', // React app URL - http://localhost:5173
+    credentials: true // Enable credentials to be sent across domains
 }));
-
 
 // Body parsing middleware
 app.use(bodyParser.json());
@@ -71,6 +70,9 @@ app.use(express.json());
 app.get('/', (req, res) => {
     return res.json("from backend side");
 });
+
+
+
 
 /////////////////// MOOOOVIES //////////////////////////////////////
 app.get('/movies', (req, res) => {
@@ -188,19 +190,23 @@ app.get('/genres', (req, res) => {
 
 // POST endpoint routing
 //login
-app.post('/login', async (req, res) => {
+app.post('/login', async (req,res) => {
+
     const { username, password } = req.body;
 
     if (!username || !password) {
         return res.status(400).json({ message: "Username and password are required." });
     }
 
-    try {
+    try{
+        // Query to check if user exists
         const query = 'SELECT userId, username, email, password, api_key, api_date FROM 3430_users WHERE username = ?';
         
         db.query(query, [username], (err, result) => {
+            
             if (err) return res.status(500).json({ error: err.message });
 
+            // Check if user exists
             if (!result || result.length === 0) {
                 return res.status(401).json({ message: "Invalid username or password." });
             }
@@ -208,23 +214,24 @@ app.post('/login', async (req, res) => {
             const user = result[0];
 
             bcrypt.compare(password, user.password, (err, result) => {
-                if(err) {
+                
+                if(err){
+                    // handle error
                     return res.status(500).json({ message: "Error" });
                 }
 
                 if (!result) {
                     return res.status(401).json({ message: "Invalid username or password" });
                 }
-                
-                // Setting session
+            
+                // Start session and store user information
                 req.session.userId = user.userId;
                 req.session.username = user.username;
                 req.session.email = user.email;
                 req.session.api_key = user.api_key;
                 req.session.api_date = user.api_date;
 
-                console.log('Session data:', req.session); // Add this log to check if session is being set
-
+                // Send successful response
                 res.status(200).json({
                     message: "Login successful.",
                     userId: user.userId,
@@ -233,14 +240,16 @@ app.post('/login', async (req, res) => {
                     api_key: user.api_key,
                     api_date: user.api_date
                 });
+
             });
         });
-    } catch (error) {
+        
+    }catch (error){
         console.error(error);
         res.status(500).json({ message: "Login Failed" });
     }
+   
 });
-
 
 app.post('/signup', async (req,res) => {
     const { username, password, password2, email } = req.body;
@@ -309,7 +318,6 @@ app.post('/signup', async (req,res) => {
 
 // protecting route (authenticate session)
 app.get('/api/auth/session', (req, res) => {
-    console.log('Session Data:', req.session);  // Log session data
     if (req.session.userId) {
         res.json({ 
             user: req.session.userId,
