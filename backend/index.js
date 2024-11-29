@@ -47,12 +47,7 @@ db.getConnection((err, connection) => {
 app.use(session({
     secret: 'New_Secret_Session',
     resave: true,
-    saveUninitialized: false,
-    cookie: {
-        httpOnly: true, // Prevent client-side JavaScript from accessing the cookie
-        secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS
-        maxAge: 3600000, // 1 hour expiry (in ms)
-    }
+    saveUninitialized: false
 }));
 
 // CORS configuration, allowing credentials
