@@ -30,8 +30,6 @@ const db = mysql.createPool({
     connectionLimit: 5,
 });
 
-const sessionStore = new MySQLStore({}, db); // Use promise pool for session store
-
 app.use(session({
     secret: 'New_Secret_Session',
     resave: false,
@@ -41,7 +39,6 @@ app.use(session({
         httpOnly: true,
         sameSite: 'none',
     },
-    store: sessionStore,
 }));
 
 
