@@ -7,6 +7,7 @@ import mysql from "mysql2";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import dotenv from 'dotenv';
+import MySQLStore from 'express-mysql-session';
 
 dotenv.config();
 
@@ -26,10 +27,32 @@ const db = mysql.createPool({
     password: process.env.MYSQL_ADDON_PASSWORD,
     database: process.env.MYSQL_ADDON_DB,
     waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
+    connectionLimit: 5,
 });
 
+const sessionStore = new MySQLStore({}, db); // Use promise pool for session store
+
+app.use(session({
+    secret: 'New_Secret_Session',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: true,
+        httpOnly: true,
+        sameSite: 'none',
+    },
+    store: sessionStore,
+}));
+
+// CORS configuration, allowing credentials
+app.use(cors({
+    origin: 'http://localhost:5173', // React app URL - http://localhost:5173
+    credentials: true, // Enable credentials to be sent across domains
+}));
+
+// Body parsing middleware
+app.use(bodyParser.json());
+app.use(express.json());
 
 // const urlDB = `mysql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
 
@@ -44,21 +67,7 @@ db.getConnection((err, connection) => {
     }
 });
 
-app.use(session({
-    secret: 'New_Secret_Session',
-    resave: true,
-    saveUninitialized: false
-}));
 
-// CORS configuration, allowing credentials
-app.use(cors({
-    origin: 'http://localhost:5173', // React app URL - http://localhost:5173
-    credentials: true, // Enable credentials to be sent across domains
-}));
-
-// Body parsing middleware
-app.use(bodyParser.json());
-app.use(express.json());
 
 // // Logging middleware to see session data
 // app.use((req, res, next) => {
