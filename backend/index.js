@@ -44,11 +44,14 @@ app.use(session({
     store: sessionStore,
 }));
 
-// CORS configuration, allowing credentials
+
 app.use(cors({
-    origin: 'http://localhost:5173', // React app URL - http://localhost:5173
-    credentials: true, // Enable credentials to be sent across domains
+    origin: 'http://localhost:5173', // Replace with your frontend's origin
+    credentials: true, // Allow cookies and credentials
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 }));
+
 
 // Body parsing middleware
 app.use(bodyParser.json());
