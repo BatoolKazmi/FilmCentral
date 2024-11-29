@@ -24,7 +24,10 @@ const db = mysql.createPool({
     host: process.env.MYSQL_ADDON_HOST,
     user: process.env.MYSQL_ADDON_USER,
     password: process.env.MYSQL_ADDON_PASSWORD,
-    database: process.env.MYSQL_ADDON_DB
+    database: process.env.MYSQL_ADDON_DB,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
 });
 
 
@@ -42,21 +45,15 @@ db.getConnection((err, connection) => {
 });
 
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'secret', // Make sure you have a secret in .env
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        httpOnly: true, // Prevent JavaScript access
-        secure: false, // Set to true only in production with HTTPS
-        maxAge: 1000 * 60 * 60 * 24, // Cookie expiration (1 day)
-    }
+    secret: 'New_Secret_Session',
+    resave: true,
+    saveUninitialized: false
 }));
 
 // CORS configuration, allowing credentials
 app.use(cors({
-    origin: 'http://localhost:5173', // React app URL - 
-    // https://film-central-xygb.vercel.app
-    credentials: true, // Enable credentials to be sent across domains
+    origin: 'http://localhost:5173', // React app URL - https://film-central-xygb.vercel.app
+    credentials: true // Enable credentials to be sent across domains
 }));
 
 // Body parsing middleware
@@ -226,15 +223,13 @@ app.post('/login', async (req,res) => {
                 if (!result) {
                     return res.status(401).json({ message: "Invalid username or password" });
                 }
-                
+            
                 // Start session and store user information
                 req.session.userId = user.userId;
                 req.session.username = user.username;
                 req.session.email = user.email;
                 req.session.api_key = user.api_key;
                 req.session.api_date = user.api_date;
-
-                console.log('Session after login:', req.session);
 
                 // Send successful response
                 res.status(200).json({
@@ -324,15 +319,12 @@ app.post('/signup', async (req,res) => {
 // protecting route (authenticate session)
 app.get('/api/auth/session', (req, res) => {
     if (req.session.userId) {
-        res.status(200).json({
-            userId: req.session.userId,
-            username: req.session.username,
-            email: req.session.email,
-            api_key: req.session.api_key,
-            api_date: req.session.api_date
+        res.json({ 
+            user: req.session.userId,
+            api_key: req.session.api_key
         });
     } else {
-        res.status(401).json({ message: 'Unauthorized' });
+        res.status(401).json({ error: 'Not authenticated' });
     }
 });
 
