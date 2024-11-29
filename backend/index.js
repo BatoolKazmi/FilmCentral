@@ -24,10 +24,7 @@ const db = mysql.createPool({
     host: process.env.MYSQL_ADDON_HOST,
     user: process.env.MYSQL_ADDON_USER,
     password: process.env.MYSQL_ADDON_PASSWORD,
-    database: process.env.MYSQL_ADDON_DB,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
+    database: process.env.MYSQL_ADDON_DB
 });
 
 
@@ -327,12 +324,15 @@ app.post('/signup', async (req,res) => {
 // protecting route (authenticate session)
 app.get('/api/auth/session', (req, res) => {
     if (req.session.userId) {
-        res.json({ 
-            user: req.session.userId,
-            api_key: req.session.api_key
+        res.status(200).json({
+            userId: req.session.userId,
+            username: req.session.username,
+            email: req.session.email,
+            api_key: req.session.api_key,
+            api_date: req.session.api_date
         });
     } else {
-        res.status(401).json({ error: 'Not authenticated' });
+        res.status(401).json({ message: 'Unauthorized' });
     }
 });
 
