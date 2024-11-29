@@ -9,13 +9,9 @@ export default function ProtectedRoute({ children }) {
     const fetchUser = async () => {
         try {
             const response = await axios.get('https://film-central.vercel.app/api/auth/session', { withCredentials: true });
-            if (response.data.user) {
-                setUser(response.data.user);
-            } else {
-                setUser(null);
-            }
+            setUser(response.data.user || null);
         } catch (error) {
-            console.error('Error fetching user session:', error);
+            console.error('Error fetching user session:', error.response?.data || error.message);
             setUser(null);
         } finally {
             setLoading(false);

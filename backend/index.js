@@ -7,7 +7,6 @@ import mysql from "mysql2";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import dotenv from 'dotenv';
-import MySQLStore from 'express-mysql-session';
 
 dotenv.config();
 
@@ -37,7 +36,6 @@ app.use(session({
     cookie: {
         secure: true,
         httpOnly: true,
-        sameSite: 'none',
     },
 }));
 
