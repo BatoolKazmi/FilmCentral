@@ -45,17 +45,21 @@ db.getConnection((err, connection) => {
 });
 
 app.use(session({
-    secret: 'your-secret-key',
+    secret: process.env.SESSION_SECRET || 'secret', // Make sure you have a secret in .env
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: {
+        httpOnly: true, // Prevent JavaScript access
+        secure: false, // Set to true only in production with HTTPS
+        maxAge: 1000 * 60 * 60 * 24, // Cookie expiration (1 day)
+    }
 }));
 
 // CORS configuration, allowing credentials
 app.use(cors({
-    origin: ' http://localhost:5173', // React app URL - 
+    origin: 'http://localhost:5173', // React app URL - 
     // https://film-central-xygb.vercel.app
-    credentials: true // Enable credentials to be sent across domains
+    credentials: true, // Enable credentials to be sent across domains
 }));
 
 // Body parsing middleware
@@ -225,13 +229,15 @@ app.post('/login', async (req,res) => {
                 if (!result) {
                     return res.status(401).json({ message: "Invalid username or password" });
                 }
-            
+                
                 // Start session and store user information
                 req.session.userId = user.userId;
                 req.session.username = user.username;
                 req.session.email = user.email;
                 req.session.api_key = user.api_key;
                 req.session.api_date = user.api_date;
+
+                console.log('Session after login:', req.session);
 
                 // Send successful response
                 res.status(200).json({
