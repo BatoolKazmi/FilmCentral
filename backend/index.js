@@ -45,9 +45,10 @@ db.getConnection((err, connection) => {
 });
 
 app.use(session({
-    secret: 'New_Secret_Session',
-    resave: true,
-    saveUninitialized: false
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
 }));
 
 // CORS configuration, allowing credentials
