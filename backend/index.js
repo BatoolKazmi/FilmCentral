@@ -33,6 +33,15 @@ const db = mysql.createPool({
 });
 
 app.use(
+    cors({
+        origin: 'http://localhost:5173', // Your frontend origin
+        credentials: true, // Allow cookies and credentials
+        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
+        allowedHeaders: ['Content-Type', 'Authorization'], // Allow custom headers
+    })
+);
+
+app.use(
     session({
         key: 'session_cookie_name',
         secret: 'New_Secret_Session',
@@ -45,14 +54,7 @@ app.use(
     })
 );
 
-app.use(
-    cors({
-        origin: 'http://localhost:5173', // Your frontend origin
-        credentials: true, // Allow cookies and credentials
-        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
-        allowedHeaders: ['Content-Type', 'Authorization'], // Allow custom headers
-    })
-);
+
 
 
 // Body parsing middleware
