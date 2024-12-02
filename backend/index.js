@@ -49,7 +49,7 @@ app.use(cors({
 // Body parsing middleware
 app.use(bodyParser.json());
 app.use(express.json());
-app.enable('trust proxy')
+app.set("trust proxy", 1);
 
 // const urlDB = `mysql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
 
