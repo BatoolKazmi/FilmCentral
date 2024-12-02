@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import dotenv from 'dotenv';
 
+
 dotenv.config();
 
 const app = express();
@@ -30,13 +31,13 @@ const db = mysql.createPool({
     connectionLimit: 5,
 });
 
-app.use(session({
-    secret: 'New_Secret_Session',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false },
-}));
-
+app.use(
+    session({
+        secret: 'New_Secret_Session',
+        resave: false,
+        saveUninitialized: false,
+    })
+);
 
 app.use(cors({
     origin: 'http://localhost:5173', // Replace with your frontend's origin
@@ -47,6 +48,7 @@ app.use(cors({
 // Body parsing middleware
 app.use(bodyParser.json());
 app.use(express.json());
+app.enable('trust proxy')
 
 // const urlDB = `mysql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
 
