@@ -9,7 +9,7 @@ function Movie() {
 
   async function fetchMovie() {
     try {
-        const API = `http://localhost:5000/movies/${id}`;
+        const API = `https://film-central.vercel.app/movies/${id}`;
         const response = await fetch(API);
 
         if (!response.ok) {
