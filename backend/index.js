@@ -53,6 +53,9 @@ app.use(cors({
     credentials: true, // Allow cookies and credentials
 }));
 
+app.options('*', cors()); // Handle preflight requests for all routes
+
+
 
 // Body parsing middleware
 app.use(bodyParser.json());
