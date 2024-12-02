@@ -32,18 +32,15 @@ const db = mysql.createPool({
     connectionLimit: 5,
 });
 
-const sessionStore = new MySQLStore({}, db.promise());
-
 app.use(
     session({
-        key: 'session_cookie_name', // Change this if needed
-        secret: 'New_Secret_Session', // Replace with your own secret
-        store: sessionStore, // Use MySQL session store
-        resave: false,       // Don't save sessions that haven't been modified
-        saveUninitialized: false, // Don't create empty sessions
+        key: 'session_cookie_name',
+        secret: 'New_Secret_Session',
+        resave: false,
+        saveUninitialized: false,
         cookie: {
-            maxAge: 1000 * 60 * 60, // Session expires after 1 hour
-            secure: false,          // Set true if using HTTPS
+            maxAge: 1000 * 60 * 60, // 1 hour session expiry
+            secure: false, // Set to true if using HTTPS
         },
     })
 );
