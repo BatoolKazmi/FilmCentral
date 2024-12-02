@@ -33,18 +33,12 @@ app.use(session({
     secret: 'New_Secret_Session',
     resave: false,
     saveUninitialized: false,
-    cookie: {
-        secure: true,
-        httpOnly: true,
-    },
 }));
 
 
 app.use(cors({
     origin: 'http://localhost:5173', // Replace with your frontend's origin
     credentials: true, // Allow cookies and credentials
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 }));
 
 
@@ -77,9 +71,6 @@ db.getConnection((err, connection) => {
 app.get('/', (req, res) => {
     return res.json("from backend side");
 });
-
-
-
 
 /////////////////// MOOOOVIES //////////////////////////////////////
 app.get('/movies', (req, res) => {
