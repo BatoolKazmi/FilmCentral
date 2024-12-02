@@ -35,7 +35,8 @@ app.use(
     session({
         secret: 'New_Secret_Session',
         resave: false,
-        saveUninitialized: false,
+        saveUninitialized: true,
+        proxy: true, // Required for Heroku & Digital Ocean (regarding X-Forwarded-For)
     })
 );
 

@@ -16,8 +16,8 @@ function CompletedMovies() {
 
   //const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/movies/${id}`;
   // const API = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries/${id}?key=${key}`;
-  const API = `https://film-central.vercel.app/completedwatchlist/entries/${id}/${key}`;
-  const notesAPI = `https://film-central.vercel.app/completedwatchlist/entries/${id}/notes`;
+  const API = `http://localhost:5000/completedwatchlist/entries/${id}/${key}`;
+  const notesAPI = `http://localhost:5000/completedwatchlist/entries/${id}/notes`;
 
   async function fetchContact() {
     const resp = await fetch(API);
@@ -34,7 +34,7 @@ function CompletedMovies() {
   // IDK WHAT TO DO WITH GENRES AND PRODUCTION COMPANIES
   async function updateTimesWatched() {
     // const updateAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries/${id}/times-watched`;
-    const updateAPI = `https://film-central.vercel.app/completedwatchlist/entries/${id}/times-watched`
+    const updateAPI = `http://localhost:5000/completedwatchlist/entries/${id}/times-watched`
     const response = await fetch(updateAPI, {
       method: "PATCH",
       headers: {
@@ -52,7 +52,7 @@ function CompletedMovies() {
   }
 
   async function decrementTimesWatched() {
-    const updateAPI = `https://film-central.vercel.app/completedwatchlist/entries/${id}/times-watched/decrease`;
+    const updateAPI = `http://localhost:5000/completedwatchlist/entries/${id}/times-watched/decrease`;
     
     try {
       const response = await fetch(updateAPI, {
@@ -79,7 +79,7 @@ function CompletedMovies() {
   async function updateRating(newRating) {
     try {
       // const updateAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries/${id}/rating?key=${key}`;
-      const updateAPI = `https://film-central.vercel.app/completedwatchlist/entries/${id}/rating`;
+      const updateAPI = `http://localhost:5000/completedwatchlist/entries/${id}/rating`;
       const response = await fetch(updateAPI, {
         method: "PATCH",
         headers: { 
