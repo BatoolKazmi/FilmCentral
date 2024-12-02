@@ -33,6 +33,7 @@ app.use(session({
     secret: 'New_Secret_Session',
     resave: false,
     saveUninitialized: false,
+    cookie: { secure: false },
 }));
 
 
