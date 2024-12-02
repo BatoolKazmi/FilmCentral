@@ -7,6 +7,7 @@ import mysql from "mysql2";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import dotenv from 'dotenv';
+import MySQLStore from "express-mysql-session";
 
 
 dotenv.config();
@@ -31,12 +32,19 @@ const db = mysql.createPool({
     connectionLimit: 5,
 });
 
+const sessionStore = new MySQLStore({}, db.promise());
+
 app.use(
     session({
-        secret: 'New_Secret_Session',
-        resave: false,
-        saveUninitialized: true,
-        proxy: true, // Required for Heroku & Digital Ocean (regarding X-Forwarded-For)
+        key: 'session_cookie_name', // Change this if needed
+        secret: 'New_Secret_Session', // Replace with your own secret
+        store: sessionStore, // Use MySQL session store
+        resave: false,       // Don't save sessions that haven't been modified
+        saveUninitialized: false, // Don't create empty sessions
+        cookie: {
+            maxAge: 1000 * 60 * 60, // Session expires after 1 hour
+            secure: false,          // Set true if using HTTPS
+        },
     })
 );
 
