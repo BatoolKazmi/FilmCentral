@@ -38,11 +38,6 @@ app.use(
         secret: "New_Secret_Session",
         resave: false,
         saveUninitialized: false,
-        cookie: {
-            maxAge: 1000 * 60 * 60, // 1 hour
-            httpOnly: true,
-            secure: false, // Set to true in production with HTTPS
-        },
     })
 );
 
@@ -53,7 +48,6 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 app.use(express.json());
-app.set("trust proxy", 1);
 
 // Routes
 app.get("/", (req, res) => {
