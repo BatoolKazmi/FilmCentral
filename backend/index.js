@@ -35,18 +35,23 @@ db.getConnection((err, connection) => {
 app.use(
     session({
         key: "session_cookie_name",
-        secret:"New_Secret_Session",
+        secret: "New_Secret_Session",
         resave: false,
         saveUninitialized: false,
         cookie: {
             maxAge: 1000 * 60 * 60, // 1 hour
             httpOnly: true,
+            secure: false, // Set to true in production with HTTPS
+            sameSite: "lax", // Adjust this as needed
         },
     })
 );
 
 // Middleware
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ 
+    origin: "http://localhost:5173", 
+    credentials: true, // Allow cookies and credentials to be sent
+}));
 app.use(bodyParser.json());
 app.use(express.json());
 app.set("trust proxy", 1);
