@@ -18,7 +18,7 @@ function MovieCard({ movie, id }) {
     // Fetch API key from the server
     const fetchApiKey = async () => {
       try {
-        const response = await axios.get('https://film-central.vercel.app/api/getApiKey', { withCredentials: true });
+        const response = await axios.get('http://localhost:5000/api/getApiKey', { withCredentials: true });
         setApiKey(response.data.apiKey);
       } catch (error) {
         console.error('Failed to fetch API key:', error);
@@ -33,12 +33,12 @@ function MovieCard({ movie, id }) {
 
       try {
         const [watchlistResponse, completedListResponse] = await Promise.all([
-          axios.get('https://film-central.vercel.app/towatchlist/check', {
+          axios.get('http://localhost:5000/towatchlist/check', {
             params: { movieid: id },
             headers: { 'x-api-key': apiKey },
             withCredentials: true
           }),
-          axios.get('https://film-central.vercel.app/completedwatchlist/check', {
+          axios.get('http://localhost:5000/completedwatchlist/check', {
             params: { movieid: id },
             headers: { 'x-api-key': apiKey },
             withCredentials: true
@@ -70,7 +70,7 @@ function MovieCard({ movie, id }) {
       const notes = ''; // Replace with actual notes logic
 
       await axios.post(
-        'https://film-central.vercel.app/towatchlist/entries',
+        'http://localhost:5000/towatchlist/entries',
         { movieId: id, priority, notes },
         { headers: { 'X-API-KEY': apiKey }, withCredentials: true }
       );
