@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import mysql from "mysql2";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 dotenv.config();
 
@@ -38,6 +39,10 @@ app.use(
         secret: "New_Secret_Session",
         resave: false,
         saveUninitialized: false,
+        cookie: {
+            maxAge: 1000 * 60 * 60, // 1 hour session expiry
+            httpOnly: true, // Set to true if using HTTPS
+        },
     })
 );
 
