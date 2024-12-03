@@ -2,26 +2,16 @@ import express from "express";
 import session from "express-session";
 import cors from "cors";
 import bodyParser from "body-parser";
-import axios from "axios";
 import mysql from "mysql2";
-import bcrypt from "bcryptjs";
-import crypto from "crypto";
-import dotenv from 'dotenv';
-import MySQLStore from "express-mysql-session";
-
+import dotenv from "dotenv";
+import bcrypt from "bcrypt";
 
 dotenv.config();
 
 const app = express();
 const PORT = 5000;
 
-// const db = mysql.createConnection({
-//     host: process.env.MYSQL_ADDON_HOST,
-//     user: process.env.MYSQL_ADDON_USER,
-//     password: process.env.MYSQL_ADDON_PASSWORD,
-//     database: process.env.MYSQL_ADDON_DB
-// })
-
+// MySQL Database Pool
 const db = mysql.createPool({
     host: process.env.MYSQL_ADDON_HOST,
     user: process.env.MYSQL_ADDON_USER,
@@ -32,60 +22,38 @@ const db = mysql.createPool({
     connectionLimit: 5,
 });
 
-app.use(
-    cors({
-        origin: 'http://localhost:5173', // Your frontend origin
-        credentials: true, // Allow cookies and credentials
-        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
-        allowedHeaders: ['Content-Type', 'Authorization'], // Allow custom headers
-    })
-);
-
-app.use(
-    session({
-        key: 'session_cookie_name',
-        secret: 'New_Secret_Session',
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            maxAge: 1000 * 60 * 60, // 1 hour session expiry
-            secure: false, // Set to true if using HTTPS
-        },
-    })
-);
-
-
-
-
-// Body parsing middleware
-app.use(bodyParser.json());
-app.use(express.json());
-app.set("trust proxy", 1);
-
-// const urlDB = `mysql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
-
-// const db = mysql.createConnection(urlDB);
-
 db.getConnection((err, connection) => {
     if (err) {
-        console.error('Error connecting to the database:', err);
+        console.error("Error connecting to the database:", err);
     } else {
-        console.log('Connected to the database!');
-        connection.release(); // Release the connection back to the pool
+        console.log("Connected to the database!");
+        connection.release();
     }
 });
 
 
+app.use(
+    session({
+        key: "session_cookie_name",
+        secret:"New_Secret_Session",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            maxAge: 1000 * 60 * 60, // 1 hour
+            httpOnly: true,
+        },
+    })
+);
 
-// // Logging middleware to see session data
-// app.use((req, res, next) => {
-//     console.log('Session:', req.session);
-//     next();
-// });
+// Middleware
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(bodyParser.json());
+app.use(express.json());
+app.set("trust proxy", 1);
 
-
-app.get('/', (req, res) => {
-    return res.json("from backend side");
+// Routes
+app.get("/", (req, res) => {
+    res.json("from backend side");
 });
 
 /////////////////// MOOOOVIES //////////////////////////////////////

@@ -42,7 +42,7 @@ function ToWatchList() {
   }, [movies, name]);
   
   async function fetchMovies() {
-    let apiUrl = 'http://localhost:5000/towatchlist/entries';
+    let apiUrl = 'https://film-central-backend.vercel.app/towatchlist/entries';
     if (name) {
         apiUrl += `?name=${name}`;
     }
@@ -66,7 +66,7 @@ function ToWatchList() {
 
   async function fetchApiKey() {
     try {
-      const response = await axios.get('http://localhost:5000/api/getApiKey', { withCredentials: true });
+      const response = await axios.get('https://film-central-backend.vercel.app/api/getApiKey', { withCredentials: true });
       setKey(response.data.apiKey);
     } catch (error) {
       console.error("Failed to fetch API key:", error);

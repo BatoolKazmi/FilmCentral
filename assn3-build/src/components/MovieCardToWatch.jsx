@@ -16,7 +16,7 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
   async function handleDelete() {
     setIsProcessing(true);
     // const removeFromPlanningListAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${Watchlistid}`;
-    const removeFromPlanningListAPI = `http://localhost:5000/towatchlist/entries/${Watchlistid}`;
+    const removeFromPlanningListAPI = `https://film-central-backend.vercel.app/towatchlist/entries/${Watchlistid}`;
 
     try {
       const removeResponse = await fetch(removeFromPlanningListAPI, {
@@ -44,11 +44,11 @@ function MovieCardTowatch({ movie, id, Watchlistid, apiKey, onRemove }) {
   async function handleMarkAsWatched() {
     setIsProcessing(true);
     // const removeFromWatchlistAPI = `https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/towatchlist/entries/${Watchlistid}`;
-    const removeFromWatchlistAPI = `http://localhost:5000/towatchlist/entries/${Watchlistid}`;
+    const removeFromWatchlistAPI = `https://film-central-backend.vercel.app/towatchlist/entries/${Watchlistid}`;
 
     // const addToCompletedListAPI =
     //   "https://loki.trentu.ca/~shelmahkipngetich/3430/assn/assn2/cois-3430-2024su-a2-Shelmah/api/completedwatchlist/entries";
-    const addToCompletedListAPI = "http://localhost:5000/completedwatchlist/entries";
+    const addToCompletedListAPI = "https://film-central-backend.vercel.app/completedwatchlist/entries";
     try {
       const removeResponse = await fetch(removeFromWatchlistAPI, {
         method: "DELETE",

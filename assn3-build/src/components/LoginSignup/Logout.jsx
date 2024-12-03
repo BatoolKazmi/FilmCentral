@@ -8,7 +8,7 @@ const Logout = () => {
   const handleLogout = async () => {
     try {
         // Call the backend logout route
-        await axios.get('http://localhost:5000/logout', { withCredentials: true });
+        await axios.get('https://film-central-backend.vercel.app/logout', { withCredentials: true });
 
         // // Perform any frontend logout operations
         // logout();
