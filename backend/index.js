@@ -6,11 +6,14 @@ import mysql from "mysql2";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import MySQLStoreFactory from "express-mysql-session";
 
 dotenv.config();
 
 const app = express();
 const PORT = 5000;
+
+const MySQLStore = MySQLStoreFactory(session);
 
 // MySQL Database Pool
 const db = mysql.createPool({
@@ -20,8 +23,8 @@ const db = mysql.createPool({
     database: process.env.MYSQL_ADDON_DB,
     port: process.env.MYSQL_ADDON_PORT,
     waitForConnections: true,
-    connectionLimit: 5, // Match this with `max_user_connections`
-    queueLimit: 0, // Unlimited queuing
+    connectionLimit: 5,
+    queueLimit: 0,
 });
 
 db.getConnection((err, connection) => {
@@ -33,12 +36,27 @@ db.getConnection((err, connection) => {
     }
 });
 
+// Session Store
+const sessionStore = new MySQLStore({
+    host: process.env.MYSQL_ADDON_HOST,
+    user: process.env.MYSQL_ADDON_USER,
+    password: process.env.MYSQL_ADDON_PASSWORD,
+    database: process.env.MYSQL_ADDON_DB,
+    port: process.env.MYSQL_ADDON_PORT,
+});
+
 
 app.use(
     session({
-        secret:"New_Secret_Session",
+        secret: "New_Secret_Session",
         resave: false,
         saveUninitialized: false,
+        store: sessionStore,
+        cookie: {
+            secure: process.env.NODE_ENV === "production", // Ensure cookies are secure in production
+            httpOnly: true,
+            sameSite: "lax", // Adjust as per your CORS setup
+        },
     })
 );
 
