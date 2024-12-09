@@ -19,6 +19,9 @@ const db = mysql.createPool({
     password: process.env.MYSQL_ADDON_PASSWORD,
     database: process.env.MYSQL_ADDON_DB,
     port: process.env.MYSQL_ADDON_PORT,
+    waitForConnections: true,
+    connectionLimit: 5, // Match this with `max_user_connections`
+    queueLimit: 0, // Unlimited queuing
 });
 
 db.getConnection((err, connection) => {
@@ -1091,9 +1094,6 @@ app.get('/watchlist/check', (req, res) => {
             const toWatchIds = toWatchResults.map(row => row.movieid);
             const completedIds = completedResults.map(row => row.movieid);
 
-            console.log("to watch ids", toWatchIds); // Debugging log
-            console.log("to completed ids", completedIds); // Debugging log
-
             // Check where the movieid is present
             if (toWatchIds.includes(Number(movieid))) {
                 return res.status(200).json({ inList: 'toWatchlist' });
@@ -1102,7 +1102,7 @@ app.get('/watchlist/check', (req, res) => {
             } else {
                 return res.status(200).json({ inList: false });
             }
-            
+
         });
     });
 });
