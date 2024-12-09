@@ -332,7 +332,7 @@ app.post('/signup', async (req,res) => {
 
 // protecting route (authenticate session)
 app.get('/api/auth/session', (req, res) => {
-    console.log('Session:', req.session);
+    console.log(req.session)
     if (req.session.userId) {
         res.json({ 
             user: req.session.userId,
