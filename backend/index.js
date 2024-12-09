@@ -63,22 +63,25 @@ setInterval(() => {
 }, 5000);
 
 
-app.use(
-    session({
-        secret: "New_Secret_Session",
-        resave: false,
-        saveUninitialized: false,
-        store: sessionStore,
-        cookie: {
-            secure: process.env.NODE_ENV === "production", // Ensure cookies are secure in production
-            httpOnly: true,
-            sameSite: "lax", // Adjust as per your CORS setup
-        },
-    })
-);
+app.use(session({
+    secret: "New_Secret_Session",
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+    cookie: {
+        secure: false,              // Set false for localhost; true for production with HTTPS
+        httpOnly: true,             // Helps prevent XSS attacks
+        sameSite: "",            // Adjust as needed ('none' for cross-origin production)
+    },
+}));
+
 
 // Middleware
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ 
+    origin: "http://localhost:5173", 
+    credentials: true 
+}));
+
 app.use(bodyParser.json());
 app.use(express.json());
 app.set("trust proxy", 1);
