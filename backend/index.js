@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import mysql from "mysql2";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 dotenv.config();
 
@@ -18,8 +19,6 @@ const db = mysql.createPool({
     password: process.env.MYSQL_ADDON_PASSWORD,
     database: process.env.MYSQL_ADDON_DB,
     port: process.env.MYSQL_ADDON_PORT,
-    waitForConnections: true,
-    connectionLimit: 5,
 });
 
 db.getConnection((err, connection) => {
@@ -34,14 +33,9 @@ db.getConnection((err, connection) => {
 
 app.use(
     session({
-        key: "session_cookie_name",
         secret:"New_Secret_Session",
         resave: false,
         saveUninitialized: false,
-        cookie: {
-            maxAge: 1000 * 60 * 60, // 1 hour
-            httpOnly: true,
-        },
     })
 );
 
@@ -394,31 +388,6 @@ app.get('/towatchlist/entries', (req, res) => {
         res.json(result);  // Return the results as JSON
     });
 });
-
-// Route to get specific "To Watch List" entries for a user and movie
-app.get('/towatchlist/check', (req, res) => {
-    const { movieid } = req.query;  // Extract 'movieid' from query parameters
-    const userId = req.session.userId;  // Get userId from session
-
-    // Validate that both userId and movieId are present
-    if (!userId || !movieid) {
-        return res.status(400).json({ error: 'Missing required fields' });
-    }
-
-    // Query to check if the movie is in the user's watch list
-    let query = `SELECT * FROM 3430_towatchlist WHERE userId = ? AND movieid = ?`;
-    let params = [userId, movieid];
-
-    // Execute the query
-    db.query(query, params, (error, results) => {
-        if (error) {
-            console.error("Database error: ", error);
-            return res.status(500).json({ message: 'Database error' });
-        }
-        res.status(200).json(results);  // Return results
-    });
-});
-
 
 // Route to add an entry to the "To Watch List"
 app.post('/towatchlist/entries', (req, res) => {
@@ -1020,28 +989,126 @@ app.patch('/completedwatchlist/entries/:id/notes', (req, res) => {
 });
 
 // Route to get specific "Completed Watch List" entries for a user and movie
-app.get('/completedwatchlist/check', (req, res) => {
+// CHECK HERE PLEASE:
+// app.get('/completedwatchlist/check', (req, res) => {
+//     const { movieid } = req.query;  // Extract 'movieid' from query parameters
+//     const userId = req.session.userId;  // Get userId from session
+
+//     // Validate that both userId and movieid are present
+//     if (!userId || !movieid) {
+//         return res.status(400).json({ error: 'Missing required fields' });
+//     }
+
+//     // Query to get the list of movies in the user's completed watch list
+//     const query = `SELECT movieid FROM 3430_completedwatchlist WHERE userId = ?`;
+//     const params = [userId];
+
+//     // Execute the query
+//     db.query(query, params, (error, results) => {
+//         if (error) {
+//             console.error("Database error: ", error);
+//             return res.status(500).json({ message: 'Database error' });
+//         }
+
+//         // Extract movie IDs from the results
+//         const movieIds = results.map(row => row.movieid);
+
+//         // Check if the movieid provided is in the list
+//         const isMovieInList = movieIds.includes(movieid);
+
+//         // Respond with the result
+//         if (isMovieInList) {
+//             res.status(200).json({ message: 'Movie is already in the completed watch list', inList: true });
+//         } else {
+//             res.status(200).json({ message: 'Movie is not in the completed watch list', inList: false });
+//         }
+//     });
+// });
+
+// Route to get specific "To Watch List" entries for a user and movie
+// CHECK HERE PLEASE:
+// app.get('/towatchlist/check', (req, res) => {
+//     const { movieid } = req.query;  // Extract 'movieid' from query parameters
+//     const userId = req.session.userId;  // Get userId from session
+
+//     // Validate that both userId and movieId are present
+//     if (!userId || !movieid) {
+//         return res.status(400).json({ error: 'Missing required fields' });
+//     }
+
+//     // Query to get the list of movies in the user's "to-watch" list
+//     const query = `SELECT movieid FROM 3430_towatchlist WHERE userId = ?`;
+//     const params = [userId];
+
+//     // Execute the query
+//     db.query(query, params, (error, results) => {
+//         if (error) {
+//             console.error("Database error: ", error);
+//             return res.status(500).json({ message: 'Database error' });
+//         }
+
+//         // Extract movie IDs from the results
+//         const movieIds = results.map(row => row.movieid);
+
+//         // Check if the movieid provided is in the list
+//         const isMovieInList = movieIds.includes(movieid);
+
+//         // Respond with the result
+//         if (isMovieInList) {
+//             res.status(200).json({ message: 'Movie is already in the "to-watch" list', inList: true });
+//         } else {
+//             res.status(200).json({ message: 'Movie is not in the "to-watch" list', inList: false });
+//         }
+//     });
+// });
+
+app.get('/watchlist/check', (req, res) => {
     const { movieid } = req.query;  // Extract 'movieid' from query parameters
     const userId = req.session.userId;  // Get userId from session
 
-    // Validate that both userId and movieId are present
     if (!userId || !movieid) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    // Query to check if the movie is in the user's completed watch list
-    let query = `SELECT * FROM 3430_completedwatchlist WHERE userId = ? AND movieid = ?`;
-    let params = [userId, movieid];
+    // Queries to check both lists
+    const toWatchQuery = `SELECT movieid FROM 3430_towatchlist WHERE userId = ?`;
+    const completedWatchQuery = `SELECT movieid FROM 3430_completedwatchlist WHERE userId = ?`;
 
-    // Execute the query
-    db.query(query, params, (error, results) => {
+    // Execute queries in parallel
+    db.query(toWatchQuery, [userId], (error, toWatchResults) => {
         if (error) {
-            console.error("Database error: ", error);
-            return res.status(500).json({ message: 'Database error' });
+            console.error("Database error on toWatchQuery: ", error);
+            return res.status(500).json({ message: 'Database error on toWatchQuery', error: error.message });
         }
-        res.status(200).json(results);  // Return results
+
+        db.query(completedWatchQuery, [userId], (error, completedResults) => {
+            if (error) {
+                console.error("Database error on completedWatchQuery: ", error);
+                return res.status(500).json({ message: 'Database error on completedWatchQuery', error: error.message });
+            }
+
+            // Map the results to extract only movieid values
+            const toWatchIds = toWatchResults.map(row => row.movieid);
+            const completedIds = completedResults.map(row => row.movieid);
+
+            console.log("to watch ids", toWatchIds); // Debugging log
+            console.log("to completed ids", completedIds); // Debugging log
+
+            // Check where the movieid is present
+            if (toWatchIds.includes(Number(movieid))) {
+                return res.status(200).json({ inList: 'toWatchlist' });
+            } else if (completedIds.includes(Number(movieid))) {
+                return res.status(200).json({ inList: 'completedWatchlist' });
+            } else {
+                return res.status(200).json({ inList: false });
+            }
+            
+        });
     });
-}); 
+});
+
+
+
 
 app.listen(PORT, () => {
     console.log('Server is running on port 5000 :)');

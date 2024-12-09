@@ -24,7 +24,7 @@ export default function Signup() {
     setErrors(validationErrors); // Set validation errors
 
     if (Object.keys(validationErrors).length === 0) { // Proceed only if no frontend validation errors
-      const API = "https://film-central-backend.vercel.app/signup";  // Your backend API endpoint
+      const API = "http://localhost:5000/signup";  // Your backend API endpoint
       try {
         const response = await axios.post(API, {
           username,
