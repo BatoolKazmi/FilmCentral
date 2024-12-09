@@ -45,9 +45,22 @@ const sessionStore = new MySQLStore(
         database: process.env.MYSQL_ADDON_DB,
         port: process.env.MYSQL_ADDON_PORT,
         createDatabaseTable: true,
+        clearExpired: true,
+        checkExpirationInterval: 900000, // Cleanup every 15 minutes
+        expiration: 86400000, // Session expires after 1 day
     },
     db
 );
+
+setInterval(() => {
+    db.query("SELECT COUNT(*) AS activeConnections FROM information_schema.PROCESSLIST", (err, results) => {
+        if (err) {
+            console.error("Error fetching active connections:", err);
+        } else {
+            console.log("Active connections:", results[0].activeConnections);
+        }
+    });
+}, 5000);
 
 
 app.use(
