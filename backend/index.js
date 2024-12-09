@@ -43,7 +43,7 @@ app.use(
 );
 
 // Middleware
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: "", credentials: true }));
 app.use(bodyParser.json());
 app.use(express.json());
 app.set("trust proxy", 1);
