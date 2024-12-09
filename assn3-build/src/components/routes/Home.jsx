@@ -25,7 +25,7 @@ function Home() {
     async function fetchMovies() {
         try {
             // Construct the API URL based on filters
-            let apiUrl = 'http://localhost:5000/movies';
+            let apiUrl = 'https://film-central-end.vercel.app/movies';
             if (name || rate || genre || company) {
                 apiUrl += `?title=${name}&vote_average=${rate}&genres=${genre}&company=${company}`;
             }
