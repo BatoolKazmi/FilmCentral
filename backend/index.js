@@ -23,7 +23,7 @@ const db = mysql.createPool({
     database: process.env.MYSQL_ADDON_DB,
     port: process.env.MYSQL_ADDON_PORT,
     waitForConnections: true,
-    connectionLimit: 5,
+    connectionLimit: 10,
     queueLimit: 0,
 });
 
@@ -37,13 +37,17 @@ db.getConnection((err, connection) => {
 });
 
 // Session Store
-const sessionStore = new MySQLStore({
-    host: process.env.MYSQL_ADDON_HOST,
-    user: process.env.MYSQL_ADDON_USER,
-    password: process.env.MYSQL_ADDON_PASSWORD,
-    database: process.env.MYSQL_ADDON_DB,
-    port: process.env.MYSQL_ADDON_PORT,
-});
+const sessionStore = new MySQLStore(
+    {
+        host: process.env.MYSQL_ADDON_HOST,
+        user: process.env.MYSQL_ADDON_USER,
+        password: process.env.MYSQL_ADDON_PASSWORD,
+        database: process.env.MYSQL_ADDON_DB,
+        port: process.env.MYSQL_ADDON_PORT,
+        createDatabaseTable: true,
+    },
+    db
+);
 
 
 app.use(
