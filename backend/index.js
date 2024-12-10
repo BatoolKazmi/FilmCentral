@@ -88,8 +88,10 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.set("trust proxy", 1);
 
+const env = process.env.NODE_ENV || 'development'; // Default to 'development' if NODE_ENV is not set
+
 // Serve React static files (if in production)
-if (process.env.NODE_ENV === 'production') {
+if (env === 'production') {
     // Serve the static files from React's build folder
     app.use(express.static(path.join(__dirname, 'client/build')));
 
@@ -103,6 +105,7 @@ if (process.env.NODE_ENV === 'production') {
         res.json("from backend side");
     });
 }
+
 
 /////////////////// MOOOOVIES //////////////////////////////////////
 app.get('/movies', (req, res) => {
