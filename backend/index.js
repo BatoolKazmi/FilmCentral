@@ -91,8 +91,11 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.set("trust proxy", 1);
 
+
+const nodeEnv = process.env.NODE_ENV || "development";
+
 // Serve static files from Vite's build folder in production
-if (process.env.NODE_ENV === "production") {
+if (nodeEnv === "production") {
     app.use(express.static(path.join(__dirname, "dist"))); // Use dist for Vite build
 
     // Always return the main index.html for any route not handled by the API
