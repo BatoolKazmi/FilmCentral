@@ -9,6 +9,7 @@ function MovieCard({ movie, id }) {
   const [isInWatchlist, setIsInWatchlist] = useState(false);
   const [isInCompleted, setIsInCompleted] = useState(false);
   const [apiKey, setApiKey] = useState("");
+  const [checkingMovie, setCheckingMovie] = useState(true); // New loading state for checking movie existence
 
   if (movie.poster == null) {
     movie.poster = "https://wallpapercave.com/wp/wp6408959.jpg";
@@ -32,6 +33,7 @@ function MovieCard({ movie, id }) {
       if (!apiKey) return;
   
       try {
+        setCheckingMovie(true); // Start checking movie existence
         const response = await axios.get('https://film-central-end.vercel.app/watchlist/check', {
           params: { movieid: id },
           headers: { 'x-api-key': apiKey },
@@ -53,12 +55,13 @@ function MovieCard({ movie, id }) {
         }
       } catch (error) {
         console.error("Error checking movie existence:", error);
+      } finally {
+        setCheckingMovie(false); // Finish checking movie existence
       }
     };
   
     checkIfMovieExists();
   }, [id, apiKey]);
-  
   
   // Function to add the movie to the watch list
   async function addToWatchList() {
@@ -91,10 +94,10 @@ function MovieCard({ movie, id }) {
       <div>
         <button
           onClick={addToWatchList}
-          disabled={isAdding || isInWatchlist || isInCompleted}
-          className={isAdding ? "Adding..." : (isInWatchlist || isInCompleted ? "disable" : "")}
+          disabled={isAdding || isInWatchlist || isInCompleted || checkingMovie} // Disable if movie is being checked
+          className={isAdding || checkingMovie ? "Adding..." : (isInWatchlist || isInCompleted ? "disable" : "")}
         >
-          {isAdding ? "Adding..." : (isInWatchlist || isInCompleted ? "Already in a List" : "Quick Add to Watchlist")}
+          {isAdding ? "Adding..." : checkingMovie ? "Checking..." : (isInWatchlist || isInCompleted ? "Already in a List" : "Quick Add to Watchlist")}
         </button>
       </div>
     </article>

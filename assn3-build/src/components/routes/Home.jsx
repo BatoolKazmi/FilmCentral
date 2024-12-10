@@ -4,7 +4,7 @@ import MovieCard from "../MovieCard";
 import FilterForm from "../FilterForm";
 import MovieDeck from "../MovieDeck";
 import Pagination from "../Pagination";
-import "../../styles/MovieCard.css"
+import "../../styles/MovieCard.css";
 
 function Home() {
     const [movies, setMovies] = useState([]);
@@ -13,6 +13,7 @@ function Home() {
     const [genre, setGenre] = useState("");
     const [company, setCompany] = useState("");
     const [showFilters, setShowFilters] = useState(false);
+    const [loading, setLoading] = useState(false); // Added loading state
 
     function getFilter(name, rate, genre, company) {
         setName(name);
@@ -24,7 +25,7 @@ function Home() {
     // Fetch movies based on filters
     async function fetchMovies() {
         try {
-            // Construct the API URL based on filters
+            setLoading(true); // Set loading to true before fetching
             let apiUrl = 'https://film-central-end.vercel.app/movies';
             if (name || rate || genre || company) {
                 apiUrl += `?title=${name}&vote_average=${rate}&genres=${genre}&company=${company}`;
@@ -38,6 +39,8 @@ function Home() {
             setMovies(jsonResponse);
         } catch (error) {
             console.error("Error fetching movies:", error);
+        } finally {
+            setLoading(false); // Set loading to false after fetching
         }
     }
 
@@ -46,10 +49,8 @@ function Home() {
     }, [name, rate, genre, company]);
 
     // Adding pagination
-    ///
     const [currentPage, setCurrentPage] = useState(1);
-    // Do like 20, 30, 40 or 50
-    const [moviesPerPage, setmoviesPerPage] = useState(30);
+    const [moviesPerPage] = useState(30);
 
     const lastPostIndex = currentPage * moviesPerPage;
     const firstPostIndex = lastPostIndex - moviesPerPage;
@@ -63,7 +64,6 @@ function Home() {
     return (
         <>
             <header>
-                {/* What component should go here? */}
                 <NavBar />
                 <h1>🎞️ FilmCentral 🎥</h1>
                 <button onClick={toggleFilters}>
@@ -73,31 +73,36 @@ function Home() {
                     <FilterForm filters={getFilter} page={setCurrentPage} />
                 )}
             </header>
-            <div>
-                <Pagination
-                    currentPage={currentPage}
-                    total={movies.length}
-                    limit={30}
-                    onPageChange={(page) => setCurrentPage(page)}
-                />
-            </div>
-            
-            <div className="movies">
-                {/* Info goes here! */}
-                <MovieDeck movies={currentPosts} />
-            </div>
-            
-            <div>
-                <Pagination
-                    currentPage={currentPage}
-                    total={movies.length}
-                    limit={30}
-                    onPageChange={(page) => setCurrentPage(page)}
-                />
-            </div>
 
+            {loading ? (
+                <div className="loading">Loading movies, please wait...</div>
+            ) : (
+                <>
+                    <div>
+                        <Pagination
+                            currentPage={currentPage}
+                            total={movies.length}
+                            limit={30}
+                            onPageChange={(page) => setCurrentPage(page)}
+                        />
+                    </div>
+
+                    <div className="movies">
+                        <MovieDeck movies={currentPosts} />
+                    </div>
+
+                    <div>
+                        <Pagination
+                            currentPage={currentPage}
+                            total={movies.length}
+                            limit={30}
+                            onPageChange={(page) => setCurrentPage(page)}
+                        />
+                    </div>
+                </>
+            )}
         </>
-    )
-};
+    );
+}
 
 export default Home;
