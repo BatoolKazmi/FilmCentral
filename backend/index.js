@@ -63,17 +63,21 @@ setInterval(() => {
 }, 5000);
 
 
-app.use(session({
-    secret: "New_Secret_Session",
-    resave: false,
-    saveUninitialized: false,
-    store: sessionStore,
-    cookie: {
-        secure: false,              // Set false for localhost; true for production with HTTPS
-        httpOnly: true,             // Helps prevent XSS attacks
-        sameSite: "",            // Adjust as needed ('none' for cross-origin production)
-    },
-}));
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET || "your-secret-key",
+        resave: false,
+        saveUninitialized: false,
+        store: sessionStore,
+        cookie: {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // Cookies are sent over HTTPS only in production
+            maxAge: 86400000, // 1 day
+            sameSite: "lax", // Helps with CSRF protection
+        },
+    })
+);
+
 
 
 // Middleware
