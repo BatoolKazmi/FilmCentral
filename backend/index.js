@@ -82,7 +82,7 @@ app.use(
 
 // Middleware
 app.use(cors({ 
-    origin: "http://localhost:5173", 
+    origin: "https://film-central.vercel.app", 
     credentials: true 
 }));
 
