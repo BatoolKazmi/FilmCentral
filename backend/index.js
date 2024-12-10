@@ -71,9 +71,9 @@ app.use(
         store: sessionStore,
         cookie: {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // Cookies are sent over HTTPS only in production
+            secure: true, // Cookies are sent over HTTPS only in production
             maxAge: 86400000, // 1 day
-            sameSite: "lax", // Helps with CSRF protection
+            sameSite: "None", // Helps with CSRF protection
         },
     })
 );
