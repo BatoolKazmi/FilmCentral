@@ -93,7 +93,7 @@ app.set("trust proxy", 1);
 
 
 const nodeEnv = process.env.NODE_ENV || "development";
-nodeEnv = "production";
+nodeEnv === "production";
 
 // Serve static files from Vite's build folder in production
 if (nodeEnv === "production") {
