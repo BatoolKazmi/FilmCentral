@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import MySQLStoreFactory from "express-mysql-session";
+import path from "path"; 
 
 dotenv.config();
 
@@ -94,6 +95,22 @@ app.set("trust proxy", 1);
 app.get("/", (req, res) => {
     res.json("from backend side");
 });
+
+// Serve React static files (if in production)
+if (process.env.NODE_ENV === "production") {
+    // Serve static files from React's build folder
+    app.use(express.static(path.join(__dirname, "client", "build")));
+
+    // Always return the main index.html for any route not handled by the API
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+    });
+} else {
+    // If not in production, handle API routes
+    app.get("/", (req, res) => {
+        res.json("from backend side");
+    });
+}
 
 /////////////////// MOOOOVIES //////////////////////////////////////
 app.get('/movies', (req, res) => {
