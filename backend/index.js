@@ -7,7 +7,6 @@ import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import MySQLStoreFactory from "express-mysql-session";
-import path from 'path'; // Added to handle static files for React
 
 dotenv.config();
 
@@ -63,6 +62,7 @@ setInterval(() => {
     });
 }, 5000);
 
+
 app.use(
     session({
         secret: process.env.SESSION_SECRET || "your-secret-key",
@@ -78,6 +78,8 @@ app.use(
     })
 );
 
+
+
 // Middleware
 app.use(cors({ 
     origin: "https://film-central.vercel.app", 
@@ -88,24 +90,10 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.set("trust proxy", 1);
 
-const env = process.env.NODE_ENV || 'development'; // Default to 'development' if NODE_ENV is not set
-
-// Serve React static files (if in production)
-if (env === 'production') {
-    // Serve the static files from React's build folder
-    app.use(express.static(path.join(__dirname, 'client/build')));
-
-    // Always return the main index.html for any route not handled by the API
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-    });
-} else {
-    // If not in production, handle API routes
-    app.get("/", (req, res) => {
-        res.json("from backend side");
-    });
-}
-
+// Routes
+app.get("/", (req, res) => {
+    res.json("from backend side");
+});
 
 /////////////////// MOOOOVIES //////////////////////////////////////
 app.get('/movies', (req, res) => {
