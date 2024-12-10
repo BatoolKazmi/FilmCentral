@@ -14,45 +14,73 @@ import Logout from "../LoginSignup/Logout";
 const routes = [
   {
     path: "/",
-    element: <ProtectedRoute><Home /></ProtectedRoute>,
-    errorElement: <ErrorPage />,
+    element: (
+      <ProtectedRoute>
+        <Home />
+      </ProtectedRoute>
+    ),
+    errorElement: <ErrorPage />, // Global error handling for this route
   },
   {
     path: "/towatchlist",
-    element: <ProtectedRoute><ToWatchList /></ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <ToWatchList />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/completedwatchlist",
-    element: <ProtectedRoute><CompletedWatchList /></ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <CompletedWatchList />
+      </ProtectedRoute>
+    ),
   },
   {
-    path: "/movies/:id",
-    element: <ProtectedRoute><Movie /></ProtectedRoute>,
+    path: "/movies/:id", // Route with dynamic parameter
+    element: (
+      <ProtectedRoute>
+        <Movie />
+      </ProtectedRoute>
+    ),
   },
   {
-    path: "/completedwatchlist/entries/:id/:key",
-    element: <ProtectedRoute><CompletedMovies /></ProtectedRoute>,
+    path: "/completedwatchlist/entries/:id/:key", // Nested dynamic parameter
+    element: (
+      <ProtectedRoute>
+        <CompletedMovies />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/towatchlist/entries/:id/:key",
-    element: <ProtectedRoute><ToWatchListMovies /></ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <ToWatchListMovies />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/login",
-    element: <Login/>
+    element: <Login />, // No protection, public route
   },
   {
     path: "/signup",
-    element: <Signup/>
+    element: <Signup />, // No protection, public route
   },
   {
     path: "/user",
-    element: <ProtectedRoute><User/></ProtectedRoute>
+    element: (
+      <ProtectedRoute>
+        <User />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/logout",
-    element: <Logout/>
-  }
+    element: <Logout />, // Handle session cleanup and redirection
+  },
 ];
 
 export default routes;
